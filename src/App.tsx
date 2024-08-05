@@ -1,12 +1,30 @@
-import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import publicRoutes from "./routes/routes";
 import "./App.css";
+import DefaultLayout from "./Layout/DefaultLayout/DefaultLayout";
 function App() {
   return (
-    <div>
-      <h1 className="text-red-600 text-5xl">Hello world!</h1>
-      <FontAwesomeIcon icon={faHouse} />
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          {publicRoutes.map((router, index) => {
+            const Layout = DefaultLayout;
+            const Page = router.component;
+            return (
+              <Route
+                key={index}
+                path={router.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
