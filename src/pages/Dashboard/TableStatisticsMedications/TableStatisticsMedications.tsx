@@ -71,19 +71,19 @@ export default function TableStatisticsMedications() {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell width={"25%"} align="left">
+            <StyledTableCell width={"20%"} align="left">
               Tên
             </StyledTableCell>
-            <StyledTableCell width={"25%"} align="center">
+            <StyledTableCell width={"20%"} align="center">
               Tên công ty
             </StyledTableCell>
-            <StyledTableCell width={"25%"} align="center">
+            <StyledTableCell width={"20%"} align="center">
               Số lượng
             </StyledTableCell>
-            <StyledTableCell width={"25%"} align="center">
+            <StyledTableCell width={"20%"} align="center">
               Giá
             </StyledTableCell>
-            <StyledTableCell width={"25%"} align="center">
+            <StyledTableCell width={"20%"} align="center">
               Tình trạng
             </StyledTableCell>
           </TableRow>
@@ -92,23 +92,23 @@ export default function TableStatisticsMedications() {
           {infoMedications.map((item) => (
             <StyledTableRow key={item.name}>
               <StyledTableCell
-                width={"25%"}
+                width={"20%"}
                 align="left"
                 component="th"
                 scope="row"
               >
                 {item.name}
               </StyledTableCell>
-              <StyledTableCell width={"25%"} align="center">
+              <StyledTableCell width={"20%"} align="center">
                 {item.company}
               </StyledTableCell>
-              <StyledTableCell width={"25%"} align="center">
+              <StyledTableCell width={"20%"} align="center">
                 {item.price}
               </StyledTableCell>
-              <StyledTableCell width={"25%"} align="center">
+              <StyledTableCell width={"20%"} align="center">
                 {item.quantity}
               </StyledTableCell>
-              <StyledTableCell width={"25%"} align="center">
+              <StyledTableCell width={"20%"} align="center">
                 {item.status}
               </StyledTableCell>
             </StyledTableRow>
