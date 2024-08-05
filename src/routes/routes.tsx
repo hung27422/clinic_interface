@@ -1,5 +1,5 @@
 import config from "../configs/configs";
-import HomePage from "../pages/Home/Home";
+import HomePage from "../pages/Dashboard/Dashboard";
 import Patient from "../pages/Patient/Patient";
 const publicRoutes = [
   { path: config.router.home, component: HomePage },

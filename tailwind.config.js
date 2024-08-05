@@ -6,6 +6,11 @@ export default {
       fontFamily: {
         barlow: ['"Barlow Condensed"', "sans-serif"],
       },
+      colors: {
+        background: "#8ad5eb",
+        page: "#f5f5f5",
+        primary: "#1b9fc9",
+      },
     },
   },
   plugins: [],

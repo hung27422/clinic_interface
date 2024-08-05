@@ -5,3 +5,8 @@
     @apply font-barlow;
   }
 }
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
