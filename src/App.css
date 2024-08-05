@@ -10,3 +10,6 @@
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  height: 40px;
+}
