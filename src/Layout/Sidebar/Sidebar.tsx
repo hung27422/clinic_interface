@@ -19,15 +19,19 @@ const menus = [
 ];
 function Sidebar() {
   const pathName = useLocation();
+  const isActive = (itemPathname: string) => {
+    return (
+      pathName.pathname === itemPathname ||
+      pathName.pathname.startsWith(itemPathname + "/")
+    );
+  };
   return (
     <div className="flex flex-col p-6">
       {menus.map((item, index) => {
         return (
           <Link
             className={`flex items-center px-4 py-1 mt-1 cursor-pointer rounded-md ${
-              pathName.pathname === item.pathname
-                ? " text-white bg-primary"
-                : ""
+              isActive(item.pathname) ? " text-white bg-primary" : ""
             } `}
             key={index}
             to={item.pathname}

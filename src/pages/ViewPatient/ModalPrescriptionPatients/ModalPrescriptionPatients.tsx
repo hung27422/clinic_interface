@@ -108,13 +108,25 @@ export default function ModalPrescriptionPatients() {
               </div>
             </div>
           </div>
-          <Button
-            style={{ height: "40px" }}
-            variant="contained"
-            onClick={addFields}
-          >
-            Thêm hàng
-          </Button>
+          <div className="flex justify-between items-center">
+            <div>
+              <Button
+                style={{ height: "40px", marginRight: "12px" }}
+                variant="contained"
+                onClick={addFields}
+              >
+                Thêm hàng
+              </Button>
+              <Button
+                style={{ height: "40px" }}
+                variant="contained"
+                color="success"
+              >
+                In toa thuốc
+              </Button>
+            </div>
+            <span className="text-xl">Cập nhật: 08/06/2024</span>
+          </div>
         </Box>
       </Modal>
     </div>
