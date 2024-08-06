@@ -12,7 +12,7 @@ const menus = [
   },
   {
     id: 2,
-    title: "Patients",
+    title: "Bệnh nhân",
     pathname: config.router.patients,
     icon: <FontAwesomeIcon icon={faHospitalUser} className="w-6 h-6 mr-3" />,
   },

@@ -6,7 +6,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ModalInfoPatients from "../ModalInfoPatients/ModalInfoPatients";
+import { Link } from "react-router-dom";
+import config from "../../../configs/configs";
+import { Button } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -86,7 +88,9 @@ export default function TablePatient() {
                 {item.address}
               </StyledTableCell>
               <StyledTableCell width={"15%"} align="center">
-                <ModalInfoPatients />
+                <Link to={`${config.router.viewpatient}123`}>
+                  <Button variant="outlined">Thông tin</Button>
+                </Link>
               </StyledTableCell>
             </StyledTableRow>
           ))}

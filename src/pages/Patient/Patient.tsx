@@ -2,18 +2,18 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TablePatient from "./TablePatient/TablePatient";
 import PaginationClinic from "../../components/Pagination/Pagination";
-import { Button } from "@mui/material";
+import ModalAddNewPatient from "./ModalAddNewPatient/ModalAddNewPatient";
 
 function Patient() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <div></div>
-        <h2 className="text-5xl font-bold tracking-widest text-center">
-          Patient
+        <div className="w-60"></div>
+        <h2 className=" text-5xl font-bold tracking-widest text-center">
+          Danh Sách Bệnh Nhân
         </h2>
-        <div>
-          <Button variant="contained">New Patient</Button>
+        <div className="w-60 text-right">
+          <ModalAddNewPatient />
         </div>
       </div>
       <div>
