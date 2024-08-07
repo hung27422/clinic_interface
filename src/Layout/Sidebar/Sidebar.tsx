@@ -6,6 +6,7 @@ import {
   faHouse,
   faNotesMedical,
 } from "@fortawesome/free-solid-svg-icons";
+import SidebarBottom from "./SidebarsBottom/SidebarsBottom";
 
 const menus = [
   {
@@ -36,23 +37,28 @@ function Sidebar() {
     );
   };
   return (
-    <div className="flex flex-col p-6">
-      {menus.map((item, index) => {
-        return (
-          <Link
-            className={`flex items-center px-4 py-2 mt-1 cursor-pointer rounded-md ${
-              isActive(item.pathname) ? " text-white bg-primary" : ""
-            } `}
-            key={index}
-            to={item.pathname}
-          >
-            {item.icon}
-            <span className="text-lg font-bold tracking-widest">
-              {item.title}
-            </span>
-          </Link>
-        );
-      })}
+    <div className="flex flex-col p-6 relative height-sidebar ">
+      <div>
+        {menus.map((item, index) => {
+          return (
+            <Link
+              className={`flex items-center px-4 py-2 mt-1 cursor-pointer rounded-md ${
+                isActive(item.pathname) ? " text-white bg-primary" : ""
+              } `}
+              key={index}
+              to={item.pathname}
+            >
+              {item.icon}
+              <span className="text-lg font-bold tracking-widest">
+                {item.title}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+      <div className="absolute bottom-4 w-full">
+        <SidebarBottom />
+      </div>
     </div>
   );
 }

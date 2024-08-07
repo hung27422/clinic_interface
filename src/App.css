@@ -13,3 +13,6 @@
 .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
   height: 40px;
 }
+.height-sidebar {
+  height: calc(100vh - 16px);
+}
