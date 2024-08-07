@@ -1,7 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import config from "../../configs/configs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHospitalUser, faHouse } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHospitalUser,
+  faHouse,
+  faNotesMedical,
+} from "@fortawesome/free-solid-svg-icons";
 
 const menus = [
   {
@@ -15,6 +19,12 @@ const menus = [
     title: "Bệnh nhân",
     pathname: config.router.patients,
     icon: <FontAwesomeIcon icon={faHospitalUser} className="w-6 h-6 mr-3" />,
+  },
+  {
+    id: 3,
+    title: "Quản lý thuốc",
+    pathname: config.router.medications,
+    icon: <FontAwesomeIcon icon={faNotesMedical} className="w-6 h-6 mr-3" />,
   },
 ];
 function Sidebar() {
@@ -30,7 +40,7 @@ function Sidebar() {
       {menus.map((item, index) => {
         return (
           <Link
-            className={`flex items-center px-4 py-1 mt-1 cursor-pointer rounded-md ${
+            className={`flex items-center px-4 py-2 mt-1 cursor-pointer rounded-md ${
               isActive(item.pathname) ? " text-white bg-primary" : ""
             } `}
             key={index}

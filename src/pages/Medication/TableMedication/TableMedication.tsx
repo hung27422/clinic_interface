@@ -6,11 +6,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Link } from "react-router-dom";
-import config from "../../../configs/configs";
-import { Button } from "@mui/material";
-import ModalDeletePatient from "../ModalDeletePatient/ModalDeletePatient";
-import ModalUpdatePatient from "../ModalUpdatePatient/ModalUpdatePatient";
+import ModalDeleteMedication from "../ModalDeleteMedication/ModalDeleteMedication";
+import ModalUpdateMedication from "../ModalUpdateMedication/ModalUpdateMedication";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,28 +29,58 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const infoPatients = [
+const infoMedications = [
   {
     id: 1,
-    name: "Phi Nguyễn",
-    age: 22,
-    address: "828 Sư Vạn Hạnh",
-    phone: "123456789",
+    name: "Socola kẹo mút",
+    company: "Socola",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
   },
-  { id: 3, name: "Phúc Lưu", age: 22, address: "Quận 10", phone: "123456789" },
-  { id: 4, name: "Hải Phạm", age: 22, address: "Tân Bình", phone: "123456789" },
+  {
+    id: 2,
+    name: "Kẹo bạc hà",
+    company: "Candy",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
+  },
+  {
+    id: 3,
+    name: "Kẹo dâu",
+    company: "Candy",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
+  },
+  {
+    id: 4,
+    name: "Socola kẹo mút",
+    company: "Socola",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
+  },
   {
     id: 5,
-    name: "Thanh Sang",
-    age: 22,
-    address: "Bình Tân",
-    phone: "123456789",
+    name: "Socola kẹo mút",
+    company: "Socola",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
   },
-  { id: 6, name: "Tấn Hùng", age: 22, address: "Thủ Đức", phone: "123456789" },
-  { id: 7, name: "Phúc Lưu", age: 22, address: "Quận 10", phone: "123456789" },
+  {
+    id: 6,
+    name: "Socola kẹo mút",
+    company: "Socola",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
+  },
 ];
 
-export default function TablePatient() {
+export default function TableMedication() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -62,25 +89,28 @@ export default function TablePatient() {
             <StyledTableCell width={"5%"} align="left">
               ID
             </StyledTableCell>
-            <StyledTableCell width={"10%"} align="center">
+            <StyledTableCell width={"20%"} align="center">
               Tên
             </StyledTableCell>
+            <StyledTableCell width={"20%"} align="center">
+              Tên công ty
+            </StyledTableCell>
             <StyledTableCell width={"10%"} align="center">
-              Tuổi
+              Số lượng
             </StyledTableCell>
             <StyledTableCell width={"15%"} align="center">
-              Số điện thoại
+              Giá
             </StyledTableCell>
-            <StyledTableCell width={"25%"} align="center">
-              Địa chỉ
+            <StyledTableCell width={"15%"} align="center">
+              Tình trạng
             </StyledTableCell>
-            <StyledTableCell width={"25%"} align="center">
-              Xem thông tin
+            <StyledTableCell width={"15%"} align="center">
+              Hành động
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {infoPatients.map((item) => (
+          {infoMedications.map((item) => (
             <StyledTableRow key={item.name}>
               <StyledTableCell
                 width={"5%"}
@@ -90,30 +120,28 @@ export default function TablePatient() {
               >
                 {item.id}
               </StyledTableCell>
-              <StyledTableCell width={"10%"} align="center">
+              <StyledTableCell width={"20%"} align="center">
                 {item.name}
               </StyledTableCell>
-              <StyledTableCell width={"10%"} align="center">
-                {item.age}
+              <StyledTableCell width={"20%"} align="center">
+                {item.company}
               </StyledTableCell>
               <StyledTableCell width={"15%"} align="center">
-                {item.phone}
+                {item.price}
               </StyledTableCell>
-              <StyledTableCell width={"25%"} align="center">
-                {item.address}
+              <StyledTableCell width={"10%"} align="center">
+                {item.quantity}
               </StyledTableCell>
-              <StyledTableCell width={"25%"} align="center">
+              <StyledTableCell width={"15%"} align="center">
+                {item.status}
+              </StyledTableCell>
+              <StyledTableCell width={"15%"} align="right">
                 <div className="flex justify-center">
-                  <div className="mr-2">
-                    <Link to={`${config.router.viewpatient}123`}>
-                      <Button variant="contained">Thông tin</Button>
-                    </Link>
+                  <div className="mr-3">
+                    <ModalDeleteMedication />
                   </div>
-                  <div className="mr-2">
-                    <ModalDeletePatient />
-                  </div>
-                  <div>
-                    <ModalUpdatePatient />
+                  <div className="">
+                    <ModalUpdateMedication />
                   </div>
                 </div>
               </StyledTableCell>

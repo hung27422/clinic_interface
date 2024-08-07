@@ -29,16 +29,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const infoPatients = [
   {
+    id: 1,
     name: "Phi Nguyễn",
     age: 22,
     address: "828 Sư Vạn Hạnh",
     phone: "123456789",
   },
-  { name: "Hải Phạm", age: 22, address: "Tân Bình", phone: "123456789" },
-  { name: "Phúc Lưu", age: 22, address: "Quận 10", phone: "123456789" },
-  { name: "Thanh Sang", age: 22, address: "Bình Tân", phone: "123456789" },
-  { name: "Tấn Hùng", age: 22, address: "Thủ Đức", phone: "123456789" },
-  { name: "Phúc Lưu", age: 22, address: "Quận 10", phone: "123456789" },
+  { id: 3, name: "Phúc Lưu", age: 22, address: "Quận 10", phone: "123456789" },
+  { id: 4, name: "Hải Phạm", age: 22, address: "Tân Bình", phone: "123456789" },
+  {
+    id: 5,
+    name: "Thanh Sang",
+    age: 22,
+    address: "Bình Tân",
+    phone: "123456789",
+  },
+  { id: 6, name: "Tấn Hùng", age: 22, address: "Thủ Đức", phone: "123456789" },
+  { id: 7, name: "Phúc Lưu", age: 22, address: "Quận 10", phone: "123456789" },
 ];
 
 export default function TableStatisticsPatient() {
@@ -47,6 +54,9 @@ export default function TableStatisticsPatient() {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
+            <StyledTableCell width={"5%"} align="left">
+              ID
+            </StyledTableCell>
             <StyledTableCell width={"20%"} align="left">
               Tên
             </StyledTableCell>
@@ -65,11 +75,14 @@ export default function TableStatisticsPatient() {
           {infoPatients.map((item) => (
             <StyledTableRow key={item.name}>
               <StyledTableCell
-                width={"20%"}
+                width={"5%"}
                 align="left"
                 component="th"
                 scope="row"
               >
+                {item.id}
+              </StyledTableCell>
+              <StyledTableCell width={"15%"} align="center">
                 {item.name}
               </StyledTableCell>
               <StyledTableCell width={"20%"} align="center">

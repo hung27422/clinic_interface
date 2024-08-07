@@ -1,0 +1,110 @@
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import { TextField } from "@mui/material";
+import { useNavigate } from "react-router";
+import config from "../../../configs/configs";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  bgcolor: "background.paper",
+  border: "2px solid #1b9fc9",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 5,
+};
+
+export default function ModalUpdateMedication() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const navigate = useNavigate();
+  const handleSaveInfoPatient = () => {
+    navigate(`${config.router.viewpatient}123`);
+  };
+  return (
+    <div>
+      <Button variant="contained" onClick={handleOpen}>
+        Sửa
+      </Button>
+      <Modal
+        open={open}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <h2 className="text-4xl font-bold text-center mb-4">
+            Sửa Thông Tin Thuốc
+          </h2>
+          <div>
+            <div className="mb-3">
+              <TextField
+                label="Tên"
+                variant="outlined"
+                className="w-full mb-2 pb-2"
+              />
+            </div>
+            <div className="mb-3">
+              <TextField
+                label="Công ty"
+                variant="outlined"
+                className="w-full mb-2 pb-2"
+              />
+            </div>
+            <div className="mb-3">
+              <TextField
+                label="Số lượng"
+                variant="outlined"
+                className="w-full mb-2 pb-2"
+              />
+            </div>{" "}
+            <div className="mb-3">
+              <TextField
+                label="Giá"
+                variant="outlined"
+                className="w-full mb-2 pb-2"
+              />
+            </div>
+            <div className="mb-3">
+              <TextField
+                label="Thành phần"
+                variant="outlined"
+                className="w-full mb-2 pb-2"
+              />
+            </div>
+            <div className="mb-3">
+              <TextField
+                label="Trạng thái"
+                variant="outlined"
+                className="w-full mb-2 pb-2"
+              />
+            </div>
+          </div>
+          <div className="ml-auto mr-auto w-full text-center">
+            <Button
+              onClick={handleSaveInfoPatient}
+              style={{ marginRight: "2px" }}
+              variant="contained"
+            >
+              Lưu
+            </Button>
+            <Button
+              style={{ marginLeft: "2px" }}
+              className="ml-2"
+              variant="contained"
+              color="error"
+              onClick={handleClose}
+            >
+              Hủy
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+    </div>
+  );
+}
