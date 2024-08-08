@@ -4,10 +4,13 @@ import App from "./App.tsx";
 import "./index.css";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import ContextClinic from "./Context/ContextClinic.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <App />
+      <ContextClinic>
+        <App />
+      </ContextClinic>
     </LocalizationProvider>
   </React.StrictMode>
 );

@@ -25,4 +25,5 @@ const publicRoutes = [
     layout: LoginLayout,
   },
 ];
+
 export default publicRoutes;

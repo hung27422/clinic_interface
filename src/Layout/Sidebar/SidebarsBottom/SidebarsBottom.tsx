@@ -4,8 +4,11 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Avatar } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
+import { ClinicContext } from "../../../Context/ContextClinic";
 
 export default function SidebarsBottom() {
+  const { setIsAuthenticated } = React.useContext(ClinicContext);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -15,6 +18,9 @@ export default function SidebarsBottom() {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  };
   return (
     <div>
       <Button
@@ -55,7 +61,7 @@ export default function SidebarsBottom() {
         <MenuItem className="min-w-52" onClick={handleClose}>
           Tài khoản
         </MenuItem>
-        <MenuItem onClick={handleClose}>Đăng xuất</MenuItem>
+        <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
       </Menu>
     </div>
   );

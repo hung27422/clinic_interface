@@ -1,6 +1,12 @@
 import { Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router";
+import config from "../../configs/configs";
 
 function Login() {
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    navigate(config.router.home);
+  };
   return (
     <div className="flex flex-col items-center justify-center w-[80%] h-[90%] bg-page rounded-lg border-primary border-2">
       <h2 className="text-5xl text-primary mb-6">Đăng Nhập</h2>
@@ -23,6 +29,7 @@ function Login() {
         <Button
           style={{ width: "200px", height: "40px", fontSize: "18px" }}
           variant="contained"
+          onClick={handleLogin}
         >
           Đăng Nhập
         </Button>
