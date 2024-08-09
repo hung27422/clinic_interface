@@ -115,11 +115,16 @@ export default function ModalPrescriptionPatients() {
               <Button
                 style={{ height: "40px", marginRight: "12px" }}
                 variant="contained"
+                color="warning"
                 onClick={addFields}
               >
                 Thêm hàng
               </Button>
+              <Button style={{ height: "40px" }} variant="contained">
+                Lưu
+              </Button>
             </div>
+
             <span className="text-xl">
               Cập nhật: {new Date().toLocaleDateString()}
             </span>
