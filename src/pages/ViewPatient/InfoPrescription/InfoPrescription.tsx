@@ -35,10 +35,10 @@ function InfoPrescription() {
     if (divRef.current) {
       const printContent = divRef.current.innerHTML;
       const originalContent = document.body.innerHTML;
-
       document.body.innerHTML = printContent;
       window.print();
       document.body.innerHTML = originalContent;
+      window.location.reload(); // Để refresh lại trang và phục hồi trạng thái ban đầu
     }
   };
   return (
