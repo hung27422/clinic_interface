@@ -21,6 +21,7 @@ export default function ModalPrescriptionPatients() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   const [medicinal, setMedicinal] = React.useState([
     { id: 1, label: "Tên thuốc" },
   ]);
@@ -39,6 +40,7 @@ export default function ModalPrescriptionPatients() {
     ]);
     setNumberDate([...numberDate, { id: newId, label: "Số ngày dùng" }]);
   };
+
   return (
     <div>
       <Button onClick={handleOpen} variant="contained">
@@ -108,7 +110,7 @@ export default function ModalPrescriptionPatients() {
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center pt-3">
             <div>
               <Button
                 style={{ height: "40px", marginRight: "12px" }}
@@ -117,15 +119,10 @@ export default function ModalPrescriptionPatients() {
               >
                 Thêm hàng
               </Button>
-              <Button
-                style={{ height: "40px" }}
-                variant="contained"
-                color="success"
-              >
-                In toa thuốc
-              </Button>
             </div>
-            <span className="text-xl">Cập nhật: 08/06/2024</span>
+            <span className="text-xl">
+              Cập nhật: {new Date().toLocaleDateString()}
+            </span>
           </div>
         </Box>
       </Modal>
