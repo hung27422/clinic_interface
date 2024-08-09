@@ -29,7 +29,10 @@ const InfoPrescriptions = [
 ];
 function InfoPrescription() {
   const isPres = true;
-
+  const now = new Date();
+  const date = now.getDate();
+  const month = now.getMonth() + 1;
+  const year = now.getFullYear();
   const divRef = React.useRef<HTMLDivElement>(null);
   const handlePrint = () => {
     if (divRef.current) {
@@ -45,14 +48,35 @@ function InfoPrescription() {
     <>
       {isPres ? (
         <div>
-          <div ref={divRef} className="p-2">
-            <h2 className="text-3xl font-semibold text-center ">
-              Thông tin toa thuốc
-            </h2>
+          <div ref={divRef}>
+            <div className="flex flex-col ml-4 items-center">
+              <span className="text-2xl font-semibold">Quầy thuốc HufLit</span>
+              <span className="text-lg font-normal text-gray-600">
+                828 Sư Vạn Hạnh,Phường 13, Quận 10, TP.HCM
+              </span>
+            </div>
+            <div className="">
+              <h2 className="text-3xl font-semibold text-center py-3">
+                Đơn Thuốc
+              </h2>
+              <div className="grid grid-cols-2 mx-4">
+                <div className="col-span-1 flex flex-col">
+                  <span className="text-lg">
+                    Tên: <span className="font-bold">Phi Nguyễn</span>
+                  </span>
+                  <span className="text-lg">
+                    Chuẩn đoán: <span className="font-bold">Có thai</span>
+                  </span>
+                </div>
+                <span className="col-span-1 text-lg">
+                  Địa chỉ: <span className="font-bold">Cầu Thị Nghè</span>
+                </span>
+              </div>
+            </div>
             <div className="grid grid-cols-3 text-center mt-3 font-semibold border-b-2 pb-2">
-              <span className="col-span-1 text-2xl">Tên</span>
-              <span className="col-span-1 text-2xl">Số lượng</span>
-              <span className="col-span-1 text-2xl">Số ngày dùng</span>
+              <span className="col-span-1 text-xl">Tên thuốc</span>
+              <span className="col-span-1 text-xl">Số lượng</span>
+              <span className="col-span-1 text-xl">Số ngày dùng</span>
             </div>
             <div className="pt-2 text-center">
               {InfoPrescriptions.map((item, index) => {
@@ -70,6 +94,17 @@ function InfoPrescription() {
                   </div>
                 );
               })}
+            </div>
+            <div className="flex flex-col ml-4 text-xl mx-4">
+              <span className="mt-3">Lời dặn:</span>
+              <div className="flex flex-col items-end justify-center mt-4">
+                <div className="flex flex-col items-center">
+                  <span>
+                    Ngày {date} tháng {month} năm {year}
+                  </span>
+                  <span>Bác sĩ khám bệnh</span>
+                </div>
+              </div>
             </div>
           </div>
           <div className="mt-6 text-center">
