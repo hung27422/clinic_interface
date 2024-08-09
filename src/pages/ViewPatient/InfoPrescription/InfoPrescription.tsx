@@ -39,7 +39,6 @@ function InfoPrescription() {
       document.body.innerHTML = printContent;
       window.print();
       document.body.innerHTML = originalContent;
-      window.location.reload(); // Để refresh lại trang và phục hồi trạng thái ban đầu
     }
   };
   return (
