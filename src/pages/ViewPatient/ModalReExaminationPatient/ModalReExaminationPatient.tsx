@@ -17,7 +17,7 @@ const style = {
   borderRadius: 5,
 };
 
-export default function ModalReExaminationPatinent() {
+export default function ModalReExaminationPatient() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

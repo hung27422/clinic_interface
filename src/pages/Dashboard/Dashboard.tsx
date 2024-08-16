@@ -3,6 +3,7 @@ import "../../App.css";
 import TableStatisticsPatient from "./TableStatisticsPatient/TableStatisticsPatient";
 import TableStatisticsMedications from "./TableStatisticsMedications/TableStatisticsMedications";
 import PaginationClinic from "../../components/Pagination/Pagination";
+import TableStatisticsTop10Medications from "./TableStatisticsTop10Medications/TableStatisticsTop10Medications";
 const statistical = [
   {
     title: "Tổng số bệnh nhân",
@@ -43,6 +44,11 @@ function HomePage() {
             </div>
           );
         })}
+      </div>
+      {/* Thống kê top 10 thuốc bán chạy */}
+      <div className="mt-4">
+        <h2 className="font-bold text-2xl mb-2">Top 10 thuốc bán chạy</h2>
+        <TableStatisticsTop10Medications />
       </div>
       {/* Thống kê bệnh nhân */}
       <div className="mt-4">

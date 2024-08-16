@@ -76,9 +76,41 @@ const infoMedications = [
     quantity: "100",
     status: "Còn",
   },
+  {
+    id: 7,
+    name: "Kẹo dâu",
+    company: "Candy",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
+  },
+  {
+    id: 8,
+    name: "Socola kẹo mút",
+    company: "Socola",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
+  },
+  {
+    id: 9,
+    name: "Socola kẹo mút",
+    company: "Socola",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
+  },
+  {
+    id: 10,
+    name: "Socola kẹo mút",
+    company: "Socola",
+    price: "2000",
+    quantity: "100",
+    status: "Còn",
+  },
 ];
 
-export default function TableStatisticsMedications() {
+export default function TableStatisticsTop10Medications() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">

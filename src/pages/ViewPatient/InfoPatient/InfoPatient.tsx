@@ -1,41 +1,17 @@
 import { Button, TextField } from "@mui/material";
-import ModalPrescriptionPatients from "../ModalPrescriptionPatients/ModalPrescriptionPatients";
-import ModalReExaminationPatinent from "../ModalReExaminationPatinent/ModalReExaminationPatinent";
+import IsInfoPatient from "./IsInfoPatient";
 
 function InfoPatient() {
   const isInfo = true;
   return (
     <div>
       {isInfo ? (
-        <div className="flex flex-col ">
-          <span className="text-2xl">
-            <span className="font-bold">Tên:</span> Phi Nguyễn
-          </span>
-          <span className="text-2xl">
-            <span className="font-bold">Lý do khám:</span> Có thai
-          </span>
-          <span className="text-2xl">
-            <span className="font-bold">Tiền căn:</span> Không có
-          </span>
-          <span className="text-2xl">
-            <span className="font-bold">Tổng quát:</span> Tốt
-          </span>
-          <span className="text-2xl">
-            <span className="font-bold">Chuẩn đoán:</span> 3 tháng nữa đẻ (Con
-            trai)
-          </span>
-          <div className="mt-5 flex items-center">
-            <div className="mr-2">
-              <ModalPrescriptionPatients />
-            </div>
-            <div>
-              <ModalReExaminationPatinent />
-            </div>
-          </div>
+        <div className="pr-4">
+          <IsInfoPatient />
         </div>
       ) : (
-        <div className="w-full text-center mt-2">
-          <span className="block p-2">
+        <div className="w-full text-center mt-2 mr-2">
+          <span className="block p-2 text-xl">
             Chưa có thông tin bệnh của bệnh nhân. Vui lòng nhập thông tin!!
           </span>
           <div>

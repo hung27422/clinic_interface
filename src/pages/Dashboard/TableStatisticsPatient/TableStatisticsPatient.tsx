@@ -57,7 +57,7 @@ export default function TableStatisticsPatient() {
             <StyledTableCell width={"5%"} align="left">
               ID
             </StyledTableCell>
-            <StyledTableCell width={"20%"} align="left">
+            <StyledTableCell width={"20%"} align="center">
               Tên
             </StyledTableCell>
             <StyledTableCell width={"20%"} align="center">
