@@ -60,9 +60,15 @@ export default function TableInfoPrescription() {
       <Table sx={{ minWidth: 350 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell align="center">Tên thuốc</StyledTableCell>
-            <StyledTableCell align="center">Số lượng</StyledTableCell>
-            <StyledTableCell align="center">Số ngày dùng</StyledTableCell>
+            <StyledTableCell width={"40%"} align="center">
+              Tên thuốc
+            </StyledTableCell>
+            <StyledTableCell width={"30%"} align="center">
+              Số lượng
+            </StyledTableCell>
+            <StyledTableCell width={"30%"} align="center">
+              Số ngày dùng
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
