@@ -1,10 +1,21 @@
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-export default function PaginationClinic() {
+interface Props {
+  count: number; // Tổng số trang
+  page: number; // Trang hiện tại
+  onChange: (event: React.ChangeEvent<unknown>, value: number) => void; // Hàm xử lý thay đổi trang
+}
+export default function PaginationClinic({ count, page, onChange }: Props) {
   return (
     <Stack spacing={2}>
-      <Pagination count={10} variant="outlined" color="primary" />
+      <Pagination
+        page={page}
+        count={count}
+        onChange={onChange}
+        variant="outlined"
+        color="primary"
+      />
     </Stack>
   );
 }

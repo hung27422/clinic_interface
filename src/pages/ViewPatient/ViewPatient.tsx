@@ -1,15 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import config from "../../configs/configs";
 import InfoPatient from "./InfoPatient/InfoPatient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import TableInfoPrescription from "./InfoPatient/TableInfoPrescription";
-
 import ModalUpdatePrescription from "./ModalUpdatePrescription/ModalUpdatePrescription.tsx";
 import ModalPrint from "./ModalPrint/ModalPrint.tsx";
+import useViewPatients from "../../hooks/api/useViewPatients.tsx";
 
 function ViewPatients() {
-  const isPres = true;
+  const { id } = useParams<{ id: string }>();
+
+  const { data: dataViewPatient } = useViewPatients({
+    id: id ?? "",
+  });
+  console.log(dataViewPatient);
+
+  if (!dataViewPatient) return null;
   return (
     <div>
       <div className="grid grid-cols-3 items-center">
@@ -26,9 +33,9 @@ function ViewPatients() {
 
       <div className="grid grid-cols-2 gap-4 mt-10">
         <div className="col-span-1">
-          <InfoPatient />
+          <InfoPatient data={dataViewPatient} />
         </div>
-        {isPres ? (
+        {dataViewPatient.length !== 0 ? (
           <div className="col-span-1">
             <h2 className="text-center text-3xl font-semibold mb-3">
               Thông tin thuốc kê toa

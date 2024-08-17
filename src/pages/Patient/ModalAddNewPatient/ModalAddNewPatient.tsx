@@ -3,8 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
-import { useNavigate } from "react-router";
-import config from "../../../configs/configs";
+import useHandleSaveInfoPatient from "./hook/useHandleSaveInfoPatient";
 
 const style = {
   position: "absolute",
@@ -23,9 +22,26 @@ export default function ModalAddNewPatient() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const navigate = useNavigate();
-  const handleSaveInfoPatient = () => {
-    navigate(`${config.router.viewpatient}123`);
+  const { handleSaveInfoPatient } = useHandleSaveInfoPatient();
+  const [patientInfo, setPatientInfo] = React.useState({
+    name: "",
+    age: "" as number | "",
+    address: "",
+    phone: "",
+  });
+
+  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPatientInfo((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleAddInfoPatient = () => {
+    const age = Number(patientInfo.age);
+    handleSaveInfoPatient({
+      name: patientInfo.name,
+      age: age,
+      address: patientInfo.address,
+      phone: patientInfo.phone,
+    });
   };
   return (
     <div>
@@ -47,6 +63,8 @@ export default function ModalAddNewPatient() {
                 label="Họ và tên"
                 variant="outlined"
                 className="w-full mb-2 pb-2"
+                name="name"
+                onChange={handleChangeValue}
               />
             </div>
             <div className="mb-3">
@@ -54,26 +72,32 @@ export default function ModalAddNewPatient() {
                 label="Tuổi"
                 variant="outlined"
                 className="w-full mb-2 pb-2"
+                name="age"
+                onChange={handleChangeValue}
+              />
+            </div>
+            <div className="mb-3">
+              <TextField
+                label="Địa chỉ"
+                variant="outlined"
+                className="w-full mb-2 pb-2"
+                name="address"
+                onChange={handleChangeValue}
               />
             </div>
             <div className="mb-3">
               <TextField
                 label="Số điện thoại"
                 variant="outlined"
+                name="phone"
                 className="w-full mb-2 pb-2"
-              />
-            </div>{" "}
-            <div className="mb-3">
-              <TextField
-                label="Địa chỉ"
-                variant="outlined"
-                className="w-full mb-2 pb-2"
+                onChange={handleChangeValue}
               />
             </div>
           </div>
           <div className="ml-auto mr-auto w-full text-center">
             <Button
-              onClick={handleSaveInfoPatient}
+              onClick={handleAddInfoPatient}
               style={{ marginRight: "2px" }}
               variant="contained"
             >

@@ -4,7 +4,21 @@ import TablePatient from "./TablePatient/TablePatient";
 import PaginationClinic from "../../components/Pagination/Pagination";
 import ModalAddNewPatient from "./ModalAddNewPatient/ModalAddNewPatient";
 
+import usePatients from "../../hooks/api/usePatients";
+import { useState } from "react";
+
 function Patient() {
+  const [page, setPage] = useState(1);
+  const { data: dataPatients } = usePatients({ page: page, limit: 5 });
+  const handleChangePage = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  if (!dataPatients) return null;
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -27,10 +41,10 @@ function Patient() {
         </div>
       </div>
       <div className="mt-5">
-        <TablePatient />
+        <TablePatient data={dataPatients} />
       </div>
       <div className="flex items-center justify-center mt-5">
-        <PaginationClinic />
+        <PaginationClinic onChange={handleChangePage} count={3} page={page} />
       </div>
     </div>
   );

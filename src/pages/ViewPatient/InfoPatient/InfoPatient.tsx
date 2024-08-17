@@ -1,13 +1,15 @@
 import { Button, TextField } from "@mui/material";
 import IsInfoPatient from "./IsInfoPatient";
-
-function InfoPatient() {
-  const isInfo = true;
+import { ViewPatient } from "../../../types";
+interface Props {
+  data: ViewPatient[];
+}
+function InfoPatient({ data }: Props) {
   return (
     <div>
-      {isInfo ? (
+      {data.length !== 0 ? (
         <div className="pr-4">
-          <IsInfoPatient />
+          <IsInfoPatient data={data} />
         </div>
       ) : (
         <div className="w-full text-center mt-2 mr-2">
