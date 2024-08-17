@@ -55,7 +55,7 @@ function HomePage() {
         <h2 className="font-bold text-2xl mb-2">Tổng số bệnh nhân</h2>
         <TableStatisticsPatient />
         <div className="flex items-center justify-center mt-5">
-          <PaginationClinic />
+          <PaginationClinic count={10} page={1} />
         </div>
       </div>
       {/* Thống kê thuốc */}
@@ -63,7 +63,7 @@ function HomePage() {
         <h2 className="font-bold text-2xl mb-2">Tổng số thuốc</h2>
         <TableStatisticsMedications />
         <div className="flex items-center justify-center mt-5">
-          <PaginationClinic />
+          <PaginationClinic count={10} page={1} />
         </div>
       </div>
     </div>

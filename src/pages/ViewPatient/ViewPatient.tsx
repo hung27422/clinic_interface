@@ -10,12 +10,9 @@ import useViewPatients from "../../hooks/api/useViewPatients.tsx";
 
 function ViewPatients() {
   const { id } = useParams<{ id: string }>();
-
   const { data: dataViewPatient } = useViewPatients({
     id: id ?? "",
   });
-  console.log(dataViewPatient);
-
   if (!dataViewPatient) return null;
   return (
     <div>

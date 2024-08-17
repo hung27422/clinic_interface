@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 interface Props {
   count: number; // Tổng số trang
   page: number; // Trang hiện tại
-  onChange: (event: React.ChangeEvent<unknown>, value: number) => void; // Hàm xử lý thay đổi trang
+  onChange?: (event: React.ChangeEvent<unknown>, value: number) => void; // Hàm xử lý thay đổi trang
 }
 export default function PaginationClinic({ count, page, onChange }: Props) {
   return (

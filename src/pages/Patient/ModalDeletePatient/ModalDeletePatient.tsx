@@ -2,7 +2,8 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-
+import { Patient } from "../../../types";
+import { mutate } from "swr";
 const style = {
   position: "absolute",
   top: "50%",
@@ -15,12 +16,36 @@ const style = {
   p: 4,
   borderRadius: 5,
 };
+interface Props {
+  data: Patient;
+}
 
-export default function ModalDeletePatient() {
+export default function ModalDeletePatient({ data }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const totalPages = 3;
+  const limit = 5;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
+  const handleDeletePatient = async () => {
+    fetch(`${apiUrl}patients/${data.id}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res) {
+          setOpen(false);
+          for (let page = 1; page <= totalPages; page++) {
+            mutate(`${apiUrl}patients?_page=${page}&_limit=${limit}`);
+          }
+        }
+      });
+  };
   return (
     <div>
       <Button onClick={handleOpen} variant="contained" color="error">
@@ -35,11 +60,14 @@ export default function ModalDeletePatient() {
           <div className="text-center">
             <h2 className="text-3xl">
               Bạn chắc chắc muốn xóa bệnh nhân có tên
-              <span className="text-red-600"> Phi Nguyễn</span>
+              <span className="text-red-600"> {data.name}</span>
             </h2>
-
             <div className="mt-4">
-              <Button variant="contained" style={{ marginRight: "12px" }}>
+              <Button
+                onClick={handleDeletePatient}
+                variant="contained"
+                style={{ marginRight: "12px" }}
+              >
                 Đồng ý
               </Button>
               <Button onClick={handleClose} variant="contained" color="error">

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
-import useHandleSaveInfoPatient from "./hook/useHandleSaveInfoPatient";
+import useHandleAddPatient from "./hook/useHandleAddPatient";
 
 const style = {
   position: "absolute",
@@ -17,12 +17,14 @@ const style = {
   p: 4,
   borderRadius: 5,
 };
-
-export default function ModalAddNewPatient() {
+interface Props {
+  mutate: () => void;
+}
+export default function ModalAddNewPatient({ mutate: mutate }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { handleSaveInfoPatient } = useHandleSaveInfoPatient();
+  const { handleSaveInfoPatient } = useHandleAddPatient({ mutate: mutate });
   const [patientInfo, setPatientInfo] = React.useState({
     name: "",
     age: "" as number | "",

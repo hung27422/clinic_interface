@@ -5,8 +5,6 @@ interface Props {
   data: ViewPatient[];
 }
 function IsInfoPatients({ data }: Props) {
-  console.log(data);
-
   return (
     <div className="flex flex-col">
       {data.map((item) => {

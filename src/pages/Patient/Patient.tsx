@@ -9,7 +9,8 @@ import { useState } from "react";
 
 function Patient() {
   const [page, setPage] = useState(1);
-  const { data: dataPatients } = usePatients({ page: page, limit: 5 });
+  const { data: dataPatients, mutate } = usePatients({ page, limit: 5 });
+
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
     value: number
@@ -27,7 +28,7 @@ function Patient() {
           Danh Sách Bệnh Nhân
         </h2>
         <div className="w-60 text-right">
-          <ModalAddNewPatient />
+          <ModalAddNewPatient mutate={mutate} />
         </div>
       </div>
       <div>

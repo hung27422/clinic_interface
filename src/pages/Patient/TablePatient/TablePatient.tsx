@@ -42,10 +42,7 @@ export default function TablePatient({ data }: Props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell width={"5%"} align="left">
-              ID
-            </StyledTableCell>
-            <StyledTableCell width={"10%"} align="center">
+            <StyledTableCell width={"15%"} align="center">
               Tên
             </StyledTableCell>
             <StyledTableCell width={"10%"} align="center">
@@ -63,19 +60,17 @@ export default function TablePatient({ data }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
+          {data?.map((item) => (
             <StyledTableRow key={item.id}>
               <StyledTableCell
-                width={"5%"}
-                align="left"
+                width={"15%"}
+                align="center"
                 component="th"
                 scope="row"
               >
-                {item.id}
-              </StyledTableCell>
-              <StyledTableCell width={"10%"} align="center">
                 {item.name}
               </StyledTableCell>
+
               <StyledTableCell width={"10%"} align="center">
                 {item.age}
               </StyledTableCell>
@@ -93,10 +88,10 @@ export default function TablePatient({ data }: Props) {
                     </Link>
                   </div>
                   <div className="mr-2">
-                    <ModalDeletePatient />
+                    <ModalDeletePatient data={item} />
                   </div>
                   <div>
-                    <ModalUpdatePatient />
+                    <ModalUpdatePatient data={item} />
                   </div>
                 </div>
               </StyledTableCell>
