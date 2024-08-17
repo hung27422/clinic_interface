@@ -30,7 +30,7 @@ function Medication() {
         <TableMedication />
       </div>
       <div className="flex items-center justify-center mt-5">
-        <PaginationClinic />
+        <PaginationClinic count={10} page={1} />
       </div>
     </div>
   );
