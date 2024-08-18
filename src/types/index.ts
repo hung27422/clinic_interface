@@ -12,3 +12,11 @@ export interface ViewPatient {
   diagnosis: string;
   summary: string;
 }
+export interface Medication {
+  id: string;
+  name: string;
+  company: string;
+  price: number;
+  quantity: number;
+  status: string;
+}

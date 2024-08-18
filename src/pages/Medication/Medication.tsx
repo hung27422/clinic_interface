@@ -3,8 +3,22 @@ import ModalAddNewMedication from "./ModalAddNewMedication/ModalAddNewMedication
 import PaginationClinic from "../../components/Pagination/Pagination";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import TableMedication from "./TableMedication/TableMedication";
+import useMedications from "../../hooks/api/useMedications";
+import { useState } from "react";
 
 function Medication() {
+  const [page, setPage] = useState(1);
+  const { data: dataMedications, mutate } = useMedications({
+    page: page,
+    limit: 5,
+  });
+  const handleChangePage = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+  if (!dataMedications) return null;
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -13,7 +27,7 @@ function Medication() {
           Quản Lý Thuốc
         </h2>
         <div className="w-60 text-right">
-          <ModalAddNewMedication />
+          <ModalAddNewMedication mutate={mutate} />
         </div>
       </div>
       <div>
@@ -27,10 +41,10 @@ function Medication() {
         </div>
       </div>
       <div className="mt-5">
-        <TableMedication />
+        <TableMedication data={dataMedications} mutate={mutate} />
       </div>
       <div className="flex items-center justify-center mt-5">
-        <PaginationClinic count={10} page={1} />
+        <PaginationClinic onChange={handleChangePage} count={3} page={page} />
       </div>
     </div>
   );

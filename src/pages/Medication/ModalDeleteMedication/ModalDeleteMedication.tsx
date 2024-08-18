@@ -2,6 +2,8 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import { Medication } from "../../../types";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -15,12 +17,24 @@ const style = {
   p: 4,
   borderRadius: 5,
 };
-
-export default function ModalDeleteMedication() {
+interface Props {
+  data: Medication;
+  mutate: () => void;
+}
+export default function ModalDeleteMedication({ data, mutate }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const handleDeleteMedication = async () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    try {
+      await axios.delete(`${apiUrl}medications/${data.id}`);
+      mutate();
+      handleClose();
+    } catch (err) {
+      console.log("Lỗi", err);
+    }
+  };
   return (
     <div>
       <Button onClick={handleOpen} variant="contained" color="error">
@@ -35,11 +49,15 @@ export default function ModalDeleteMedication() {
           <div className="text-center">
             <h2 className="text-3xl">
               Bạn chắc chắc muốn xóa thuốc có tên
-              <span className="text-red-600"> Socola kẹo mút</span>
+              <span className="text-red-600"> {data.name}</span>
             </h2>
 
             <div className="mt-4">
-              <Button variant="contained" style={{ marginRight: "12px" }}>
+              <Button
+                onClick={handleDeleteMedication}
+                variant="contained"
+                style={{ marginRight: "12px" }}
+              >
                 Đồng ý
               </Button>
               <Button onClick={handleClose} variant="contained" color="error">

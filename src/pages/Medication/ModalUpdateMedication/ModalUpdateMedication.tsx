@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
-import { useNavigate } from "react-router";
-import config from "../../../configs/configs";
+import { Medication } from "../../../types";
+import useHandleUpdateMedication from "../hook/useHandleUpdateMedication";
 
 const style = {
   position: "absolute",
@@ -18,15 +18,48 @@ const style = {
   p: 4,
   borderRadius: 5,
 };
-
-export default function ModalUpdateMedication() {
+interface Props {
+  data: Medication;
+  mutate: () => void;
+}
+export default function ModalUpdateMedication({ data, mutate }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const navigate = useNavigate();
-  const handleSaveInfoPatient = () => {
-    navigate(`${config.router.viewpatient}123`);
+
+  const { handleUpdateInfoPatient } = useHandleUpdateMedication({
+    id: data.id,
+    handleClose: handleClose,
+    mutate: mutate,
+  });
+  const [value, setValue] = React.useState({
+    name: "",
+    company: "",
+    price: "" as number | "",
+    quantity: "" as number | "",
+    status: "",
+  });
+  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValue((prev) => ({ ...prev, [name]: value }));
   };
+  const handleUpdateMedication = () => {
+    const price = Number(value.price);
+    const quantity = Number(value.quantity);
+    handleUpdateInfoPatient({
+      id: data.id,
+      name: value.name,
+      company: value.company,
+      price: price,
+      quantity: quantity,
+      status: value.status,
+    });
+  };
+  React.useEffect(() => {
+    if (data) {
+      setValue(data);
+    }
+  }, [data]);
   return (
     <div>
       <Button variant="contained" onClick={handleOpen}>
@@ -46,48 +79,56 @@ export default function ModalUpdateMedication() {
               <TextField
                 label="Tên"
                 variant="outlined"
+                name="name"
                 className="w-full mb-2 pb-2"
+                value={value.name}
+                onChange={handleChangeValue}
               />
             </div>
             <div className="mb-3">
               <TextField
                 label="Công ty"
                 variant="outlined"
+                name="company"
                 className="w-full mb-2 pb-2"
+                value={value.company}
+                onChange={handleChangeValue}
               />
             </div>
             <div className="mb-3">
               <TextField
                 label="Số lượng"
                 variant="outlined"
+                name="quantity"
                 className="w-full mb-2 pb-2"
+                value={value.quantity}
+                onChange={handleChangeValue}
               />
             </div>{" "}
             <div className="mb-3">
               <TextField
                 label="Giá"
                 variant="outlined"
+                name="price"
                 className="w-full mb-2 pb-2"
+                value={value.price}
+                onChange={handleChangeValue}
               />
             </div>
             <div className="mb-3">
               <TextField
-                label="Thành phần"
+                label="Tình trạng"
                 variant="outlined"
+                name="status"
                 className="w-full mb-2 pb-2"
-              />
-            </div>
-            <div className="mb-3">
-              <TextField
-                label="Trạng thái"
-                variant="outlined"
-                className="w-full mb-2 pb-2"
+                value={value.status}
+                onChange={handleChangeValue}
               />
             </div>
           </div>
           <div className="ml-auto mr-auto w-full text-center">
             <Button
-              onClick={handleSaveInfoPatient}
+              onClick={handleUpdateMedication}
               style={{ marginRight: "2px" }}
               variant="contained"
             >

@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ModalDeleteMedication from "../ModalDeleteMedication/ModalDeleteMedication";
 import ModalUpdateMedication from "../ModalUpdateMedication/ModalUpdateMedication";
+import { Medication } from "../../../types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,58 +30,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const infoMedications = [
-  {
-    id: 1,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 2,
-    name: "Kẹo bạc hà",
-    company: "Candy",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 3,
-    name: "Kẹo dâu",
-    company: "Candy",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 4,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 5,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 6,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-];
-
-export default function TableMedication() {
+interface Props {
+  data: Medication[];
+  mutate: () => void;
+}
+export default function TableMedication({ data, mutate }: Props) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -110,7 +64,7 @@ export default function TableMedication() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {infoMedications.map((item) => (
+          {data.map((item) => (
             <StyledTableRow key={item.name}>
               <StyledTableCell
                 width={"5%"}
@@ -138,10 +92,10 @@ export default function TableMedication() {
               <StyledTableCell width={"15%"} align="right">
                 <div className="flex justify-center">
                   <div className="mr-3">
-                    <ModalDeleteMedication />
+                    <ModalDeleteMedication data={item} mutate={mutate} />
                   </div>
                   <div className="">
-                    <ModalUpdateMedication />
+                    <ModalUpdateMedication data={item} mutate={mutate} />
                   </div>
                 </div>
               </StyledTableCell>
