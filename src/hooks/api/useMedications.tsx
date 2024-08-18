@@ -18,6 +18,7 @@ function useMedications({ page, limit }: Props) {
       revalidateOnReconnect: false,
     }
   );
+
   return { data, isLoading, mutate };
 }
 

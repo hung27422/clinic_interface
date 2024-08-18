@@ -28,7 +28,7 @@ function Patient() {
           Danh Sách Bệnh Nhân
         </h2>
         <div className="w-60 text-right">
-          <ModalAddNewPatient mutate={mutate} />
+          <ModalAddNewPatient />
         </div>
       </div>
       <div>
@@ -42,7 +42,7 @@ function Patient() {
         </div>
       </div>
       <div className="mt-5">
-        <TablePatient data={dataPatients} />
+        <TablePatient data={dataPatients} mutate={mutate} />
       </div>
       <div className="flex items-center justify-center mt-5">
         <PaginationClinic onChange={handleChangePage} count={3} page={page} />

@@ -4,10 +4,10 @@ import axios from "axios";
 import { Patient } from "../../../../types";
 import { v4 as uuidv4 } from "uuid";
 import { mutate } from "swr";
-interface Props {
-  mutate: () => void;
-}
-function useHandleAddPatient({ mutate: onAdd }: Props) {
+// interface Props {
+//   mutate: () => void;
+// }
+function useHandleAddPatient() {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
   const totalPages = 3;
@@ -25,9 +25,8 @@ function useHandleAddPatient({ mutate: onAdd }: Props) {
         },
       });
       for (let page = 1; page <= totalPages; page++) {
-        mutate(`${apiUrl}patients?_page=${page}&_limit=${limit}`);
+        await mutate(`${apiUrl}patients?_page=${page}&_limit=${limit}`);
       }
-      onAdd();
       navigate(`${config.router.viewpatient}123`);
     } catch (error) {
       console.error("Failed to add patient:", error);

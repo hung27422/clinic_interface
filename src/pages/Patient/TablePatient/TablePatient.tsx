@@ -35,8 +35,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 interface Props {
   data: Patient[];
+  mutate: () => void;
 }
-export default function TablePatient({ data }: Props) {
+export default function TablePatient({ data, mutate }: Props) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -88,7 +89,7 @@ export default function TablePatient({ data }: Props) {
                     </Link>
                   </div>
                   <div className="mr-2">
-                    <ModalDeletePatient data={item} />
+                    <ModalDeletePatient data={item} mutate={mutate} />
                   </div>
                   <div>
                     <ModalUpdatePatient data={item} />

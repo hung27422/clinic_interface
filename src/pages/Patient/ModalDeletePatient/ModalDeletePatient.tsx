@@ -3,7 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Patient } from "../../../types";
-import { mutate } from "swr";
+// import { mutate } from "swr";
+import axios from "axios";
 const style = {
   position: "absolute",
   top: "50%",
@@ -18,33 +19,23 @@ const style = {
 };
 interface Props {
   data: Patient;
+  mutate: () => void;
 }
 
-export default function ModalDeletePatient({ data }: Props) {
+export default function ModalDeletePatient({ data, mutate }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const totalPages = 3;
-  const limit = 5;
-  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleDeletePatient = async () => {
-    fetch(`${apiUrl}patients/${data.id}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res) {
-          setOpen(false);
-          for (let page = 1; page <= totalPages; page++) {
-            mutate(`${apiUrl}patients?_page=${page}&_limit=${limit}`);
-          }
-        }
-      });
+    const apiUrl = import.meta.env.VITE_API_URL;
+    try {
+      await axios.delete(`${apiUrl}patients/${data.id}`);
+      mutate();
+      handleClose();
+    } catch (err) {
+      console.log("Lỗi", err);
+    }
   };
   return (
     <div>

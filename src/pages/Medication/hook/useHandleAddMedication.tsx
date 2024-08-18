@@ -1,14 +1,12 @@
 import axios from "axios";
 import { Medication } from "../../../types";
-import { mutate } from "swr";
 interface Props {
   mutate: () => void;
   handleClose: () => void;
 }
-function useHandleAddMedication({ handleClose }: Props) {
+
+function useHandleAddMedication({ handleClose, mutate: mutateAddNew }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const totalPages = 3;
-  const limit = 5;
   const handleSaveInfoMedication = async (
     newMedication: Omit<Medication, "id">
   ) => {
@@ -19,9 +17,7 @@ function useHandleAddMedication({ handleClose }: Props) {
           "Content-Type": "application/json",
         },
       });
-      for (let page = 1; page <= totalPages; page++) {
-        mutate(`${apiUrl}patients?_page=${page}&_limit=${limit}`);
-      }
+      mutateAddNew();
       handleClose();
     } catch (error) {
       console.error("Failed to add medications:", error);

@@ -17,14 +17,14 @@ const style = {
   p: 4,
   borderRadius: 5,
 };
-interface Props {
-  mutate: () => void;
-}
-export default function ModalAddNewPatient({ mutate: mutate }: Props) {
+// interface Props {
+//   mutate: () => void;
+// }
+export default function ModalAddNewPatient() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { handleSaveInfoPatient } = useHandleAddPatient({ mutate: mutate });
+  const { handleSaveInfoPatient } = useHandleAddPatient();
   const [patientInfo, setPatientInfo] = React.useState({
     name: "",
     age: "" as number | "",
