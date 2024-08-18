@@ -5,10 +5,12 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import TableMedication from "./TableMedication/TableMedication";
 import useMedications from "../../hooks/api/useMedications";
 import { useState } from "react";
-
+import useSWRInfinite from "swr/infinite";
+import axios from "axios";
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Medication() {
   const [page, setPage] = useState(1);
-  const { data: dataMedications, mutate } = useMedications({
+  const { data: dataMedications } = useMedications({
     page: page,
     limit: 5,
   });
@@ -18,6 +20,10 @@ function Medication() {
   ) => {
     setPage(value);
   };
+  const { mutate } = useSWRInfinite(
+    () => `https://tsv6vm-8080.csb.app/medications?_page=${page}&_limit=5`,
+    fetcher
+  );
   if (!dataMedications) return null;
   return (
     <div>

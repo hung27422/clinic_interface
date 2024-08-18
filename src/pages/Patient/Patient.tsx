@@ -6,10 +6,12 @@ import ModalAddNewPatient from "./ModalAddNewPatient/ModalAddNewPatient";
 
 import usePatients from "../../hooks/api/usePatients";
 import { useState } from "react";
-
+import axios from "axios";
+import useSWRInfinite from "swr/infinite";
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Patient() {
   const [page, setPage] = useState(1);
-  const { data: dataPatients, mutate } = usePatients({ page, limit: 5 });
+  const { data: dataPatients } = usePatients({ page, limit: 5 });
 
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -17,6 +19,11 @@ function Patient() {
   ) => {
     setPage(value);
   };
+
+  const { mutate } = useSWRInfinite(
+    () => `https://tsv6vm-8080.csb.app/patients?_page=${page}&_limit=5`,
+    fetcher
+  );
 
   if (!dataPatients) return null;
 
@@ -28,7 +35,7 @@ function Patient() {
           Danh Sách Bệnh Nhân
         </h2>
         <div className="w-60 text-right">
-          <ModalAddNewPatient />
+          <ModalAddNewPatient mutate={mutate} />
         </div>
       </div>
       <div>

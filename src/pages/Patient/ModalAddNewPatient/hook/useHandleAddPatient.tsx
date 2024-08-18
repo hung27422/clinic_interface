@@ -3,15 +3,13 @@ import config from "../../../../configs/configs";
 import axios from "axios";
 import { Patient } from "../../../../types";
 import { v4 as uuidv4 } from "uuid";
-import { mutate } from "swr";
-// interface Props {
-//   mutate: () => void;
-// }
-function useHandleAddPatient() {
+interface Props {
+  mutate: () => void;
+}
+function useHandleAddPatient({ mutate }: Props) {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
-  const totalPages = 3;
-  const limit = 5;
+
   const handleSaveInfoPatient = async (newPatient: Omit<Patient, "id">) => {
     try {
       const newPatientWithId = {
@@ -24,9 +22,7 @@ function useHandleAddPatient() {
           "Content-Type": "application/json",
         },
       });
-      for (let page = 1; page <= totalPages; page++) {
-        await mutate(`${apiUrl}patients?_page=${page}&_limit=${limit}`);
-      }
+      mutate();
       navigate(`${config.router.viewpatient}123`);
     } catch (error) {
       console.error("Failed to add patient:", error);
