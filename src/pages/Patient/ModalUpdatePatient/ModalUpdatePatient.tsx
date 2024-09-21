@@ -25,9 +25,9 @@ export default function ModalUpdatePatient({ data }: Props) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState({
     name: "",
-    age: "" as number | "",
     address: "",
-    phone: "",
+    phoneNumber: "",
+    dob: "",
   });
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -46,13 +46,12 @@ export default function ModalUpdatePatient({ data }: Props) {
     setValue((prev) => ({ ...prev, [name]: value }));
   };
   const handleUpdatePatient = () => {
-    const age = Number(value.age);
     handleUpdateInfoPatient({
       id: data.id,
-      name: value.name,
-      age: age,
+      patientName: value.name,
       address: value.address,
-      phone: value.phone,
+      phoneNumber: value.phoneNumber,
+      dob: "27-04-2002",
     });
   };
   return (
@@ -80,22 +79,13 @@ export default function ModalUpdatePatient({ data }: Props) {
                 onChange={handleChangeValuePatient}
               />
             </div>
-            <div className="mb-3">
-              <TextField
-                label="Tuổi"
-                variant="outlined"
-                name="age"
-                value={value.age}
-                className="w-full mb-2 pb-2"
-                onChange={handleChangeValuePatient}
-              />
-            </div>
+
             <div className="mb-3">
               <TextField
                 label="Số điện thoại"
                 variant="outlined"
                 name="phone"
-                value={value.phone}
+                value={value.phoneNumber}
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValuePatient}
               />

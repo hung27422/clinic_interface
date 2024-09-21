@@ -11,7 +11,7 @@ import config from "../../../configs/configs";
 import { Button } from "@mui/material";
 import ModalDeletePatient from "../ModalDeletePatient/ModalDeletePatient";
 import ModalUpdatePatient from "../ModalUpdatePatient/ModalUpdatePatient";
-import { Patient } from "../../../types";
+import { Patient, PatientData } from "../../../types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,10 +34,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 interface Props {
-  data: Patient[];
+  data: PatientData;
   mutate: () => void;
 }
 export default function TablePatient({ data, mutate }: Props) {
+  if (!data) return null;
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -61,7 +62,7 @@ export default function TablePatient({ data, mutate }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map((item) => (
+          {data.patient?.map((item: Patient) => (
             <StyledTableRow key={item.id}>
               <StyledTableCell
                 width={"15%"}
@@ -76,7 +77,7 @@ export default function TablePatient({ data, mutate }: Props) {
                 {item.age}
               </StyledTableCell>
               <StyledTableCell width={"15%"} align="center">
-                {item.phone}
+                {item.phoneNumber}
               </StyledTableCell>
               <StyledTableCell width={"25%"} align="center">
                 {item.address}

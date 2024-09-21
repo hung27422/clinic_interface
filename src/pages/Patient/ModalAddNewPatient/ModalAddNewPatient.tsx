@@ -24,12 +24,15 @@ export default function ModalAddNewPatient({ mutate }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { handleSaveInfoPatient } = useHandleAddPatient({ mutate: mutate });
+  const { handleSaveInfoPatient } = useHandleAddPatient({
+    mutate: mutate,
+    handleClose: handleClose,
+  });
   const [patientInfo, setPatientInfo] = React.useState({
     name: "",
-    age: "" as number | "",
     address: "",
     phone: "",
+    dob: "",
   });
 
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,12 +40,11 @@ export default function ModalAddNewPatient({ mutate }: Props) {
     setPatientInfo((prev) => ({ ...prev, [name]: value }));
   };
   const handleAddInfoPatient = () => {
-    const age = Number(patientInfo.age);
     handleSaveInfoPatient({
       name: patientInfo.name,
-      age: age,
       address: patientInfo.address,
-      phone: patientInfo.phone,
+      phoneNumber: patientInfo.phone,
+      dob: "27-04-2002",
     });
   };
   return (
@@ -69,15 +71,7 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 onChange={handleChangeValue}
               />
             </div>
-            <div className="mb-3">
-              <TextField
-                label="Tuổi"
-                variant="outlined"
-                className="w-full mb-2 pb-2"
-                name="age"
-                onChange={handleChangeValue}
-              />
-            </div>
+
             <div className="mb-3">
               <TextField
                 label="Địa chỉ"

@@ -1,9 +1,13 @@
 export interface Patient {
   id: string;
   name: string;
-  age: number;
+  age?: number;
+  dob: string;
   address: string;
-  phone: string;
+  phoneNumber: string;
+}
+export interface PatientData {
+  patient: Patient[];
 }
 export interface ViewPatient {
   patientId: Patient["id"];

@@ -11,7 +11,7 @@ function useHandleUpdatePatient({ id, handleClose }: Props) {
   const limit = 5;
   const handleUpdateInfoPatient = async (newPatient: Patient) => {
     try {
-      await axios.put(`${apiUrl}patients/${id}`, newPatient, {
+      await axios.put(`${apiUrl}/Patient/${id}`, newPatient, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

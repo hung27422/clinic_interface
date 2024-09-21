@@ -47,11 +47,6 @@ export default function ModalPrescriptionPatients() {
   const addFields = () => {
     const newId = medicinal.length + 1;
     setMedicinal([...medicinal, { id: newId, label: "Tên thuốc" }]);
-    setDoses([
-      ...doses,
-      { id: newId, morning: "1", afternoon: "1", night: "1" },
-    ]);
-    setTimes([...times, { id: newId, time: "Trước khi ăn" }]);
   };
 
   return (
