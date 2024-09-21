@@ -48,7 +48,7 @@ export default function ModalUpdatePatient({ data }: Props) {
   const handleUpdatePatient = () => {
     handleUpdateInfoPatient({
       id: data.id,
-      patientName: value.name,
+      name: value.name, //BE fix
       address: value.address,
       phoneNumber: value.phoneNumber,
       dob: "27-04-2002",
