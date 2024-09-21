@@ -23,4 +23,8 @@ export interface Medication {
   price: number;
   quantity: number;
   status: string;
+  type: string;
+}
+export interface MedicationData {
+  medicines: Medication[];
 }

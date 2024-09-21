@@ -27,7 +27,7 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const { handleUpdateInfoPatient } = useHandleUpdateMedication({
+  const { handleUpdateInfoMedication } = useHandleUpdateMedication({
     id: data.id,
     handleClose: handleClose,
     mutate: mutate,
@@ -35,24 +35,26 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
   const [value, setValue] = React.useState({
     name: "",
     company: "",
-    price: "" as number | "",
     quantity: "" as number | "",
+    price: "" as number | "",
     status: "",
+    type: "",
   });
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValue((prev) => ({ ...prev, [name]: value }));
   };
   const handleUpdateMedication = () => {
-    const price = Number(value.price);
-    const quantity = Number(value.quantity);
-    handleUpdateInfoPatient({
+    const quantity = value.quantity ? Number(value.quantity) : 0;
+    const price = value.price ? Number(value.price) : 0;
+    handleUpdateInfoMedication({
       id: data.id,
       name: value.name,
       company: value.company,
-      price: price,
       quantity: quantity,
+      price: price,
       status: value.status,
+      type: value.type,
     });
   };
   React.useEffect(() => {
@@ -122,6 +124,16 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
                 name="status"
                 className="w-full mb-2 pb-2"
                 value={value.status}
+                onChange={handleChangeValue}
+              />
+            </div>
+            <div className="mb-3">
+              <TextField
+                label="Loại"
+                variant="outlined"
+                name="type"
+                className="w-full mb-2 pb-2"
+                value={value.type}
                 onChange={handleChangeValue}
               />
             </div>

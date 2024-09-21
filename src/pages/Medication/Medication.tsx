@@ -12,7 +12,7 @@ function Medication() {
   const [page, setPage] = useState(1);
   const { data: dataMedications } = useMedications({
     page: page,
-    limit: 5,
+    limit: 3,
   });
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -21,7 +21,7 @@ function Medication() {
     setPage(value);
   };
   const { mutate } = useSWRInfinite(
-    () => `https://tsv6vm-8080.csb.app/medications?_page=${page}&_limit=5`,
+    () => `https://localhost:7143/api/Medicine?page=1&limit=10`,
     fetcher
   );
   if (!dataMedications) return null;

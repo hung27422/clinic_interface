@@ -11,7 +11,7 @@ function useHandleAddMedication({ handleClose, mutate: mutateAddNew }: Props) {
     newMedication: Omit<Medication, "id">
   ) => {
     try {
-      await axios.post(`${apiUrl}medications`, newMedication, {
+      await axios.post(`${apiUrl}/Medicine`, newMedication, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

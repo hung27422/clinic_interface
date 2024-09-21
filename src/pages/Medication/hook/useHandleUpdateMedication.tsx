@@ -9,7 +9,7 @@ function useHandleUpdateMedication({ id, handleClose, mutate }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const handleUpdateInfoMedication = async (medicate: Medication) => {
     try {
-      await axios.put(`${apiUrl}medications/${id}`, medicate, {
+      await axios.put(`${apiUrl}/Medicine/${id}`, medicate, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -23,6 +23,6 @@ function useHandleUpdateMedication({ id, handleClose, mutate }: Props) {
     }
   };
 
-  return { handleUpdateInfoPatient: handleUpdateInfoMedication };
+  return { handleUpdateInfoMedication };
 }
 export default useHandleUpdateMedication;

@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ModalDeleteMedication from "../ModalDeleteMedication/ModalDeleteMedication";
 import ModalUpdateMedication from "../ModalUpdateMedication/ModalUpdateMedication";
-import { Medication } from "../../../types";
+import { Medication, MedicationData } from "../../../types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,7 +31,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 interface Props {
-  data: Medication[];
+  data: MedicationData;
   mutate: () => void;
 }
 export default function TableMedication({ data, mutate }: Props) {
@@ -40,9 +40,6 @@ export default function TableMedication({ data, mutate }: Props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell width={"5%"} align="left">
-              ID
-            </StyledTableCell>
             <StyledTableCell width={"20%"} align="center">
               Tên
             </StyledTableCell>
@@ -64,16 +61,8 @@ export default function TableMedication({ data, mutate }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
+          {data.medicines?.map((item: Medication) => (
             <StyledTableRow key={item.name}>
-              <StyledTableCell
-                width={"5%"}
-                align="left"
-                component="th"
-                scope="row"
-              >
-                {item.id}
-              </StyledTableCell>
               <StyledTableCell width={"20%"} align="center">
                 {item.name}
               </StyledTableCell>
@@ -89,7 +78,7 @@ export default function TableMedication({ data, mutate }: Props) {
               <StyledTableCell width={"15%"} align="center">
                 {item.status}
               </StyledTableCell>
-              <StyledTableCell width={"15%"} align="right">
+              <StyledTableCell width={"20%"} align="right">
                 <div className="flex justify-center">
                   <div className="mr-3">
                     <ModalDeleteMedication data={item} mutate={mutate} />
