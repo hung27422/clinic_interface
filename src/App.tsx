@@ -10,6 +10,7 @@ import DefaultLayout from "./Layout/DefaultLayout/DefaultLayout";
 import { useContext } from "react";
 import { ClinicContext } from "./Context/ContextClinic";
 import config from "./configs/configs";
+import { ToastContainer } from "react-toastify";
 function App() {
   const { isAuthenticated } = useContext(ClinicContext);
 
@@ -42,6 +43,7 @@ function App() {
                 element={
                   isAuthenticated || router.path === config.router.login ? (
                     <Layout>
+                      <ToastContainer />
                       <Page />
                     </Layout>
                   ) : (

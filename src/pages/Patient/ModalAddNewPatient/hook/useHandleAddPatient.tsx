@@ -3,6 +3,7 @@
 // import config from "../../../../configs/configs";
 import axios from "axios";
 import { Patient } from "../../../../types";
+import useToastify from "../../../../hooks/components/Toastify/useToastify";
 interface Props {
   mutate: () => void;
   handleClose: () => void;
@@ -10,7 +11,14 @@ interface Props {
 function useHandleAddPatient({ mutate, handleClose }: Props) {
   // const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
-
+  const { notify: notifySuccess } = useToastify({
+    title: "Thêm bệnh nhân thành công",
+    type: "success",
+  });
+  const { notify: notifyErr } = useToastify({
+    title: "Bệnh nhân này đã được thêm rồi !!!",
+    type: "error",
+  });
   const handleSaveInfoPatient = async (newPatient: Omit<Patient, "id">) => {
     try {
       const newPatientWithId = {
@@ -22,12 +30,17 @@ function useHandleAddPatient({ mutate, handleClose }: Props) {
           "Content-Type": "application/json",
         },
       });
-
+      notifySuccess();
       mutate();
       handleClose();
       // navigate(`${config.router.viewpatient}123`);
     } catch (error: any) {
-      console.error("Error data:", error.response.data);
+      // console.error("Error data:", error.response.data);
+      if (error.response.data.description === "Patient name already exist") {
+        notifyErr();
+      } else {
+        console.error("Failed to add patient:", error);
+      }
     }
   };
 

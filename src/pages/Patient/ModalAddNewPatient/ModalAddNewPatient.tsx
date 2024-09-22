@@ -34,17 +34,18 @@ export default function ModalAddNewPatient({ mutate }: Props) {
     phone: "",
     dob: "",
   });
-
+  // Hàm lấy dữ liệu input
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPatientInfo((prev) => ({ ...prev, [name]: value }));
   };
+  // Hàm thêm bệnh nhân
   const handleAddInfoPatient = () => {
     handleSaveInfoPatient({
       name: patientInfo.name,
       address: patientInfo.address,
       phoneNumber: patientInfo.phone,
-      dob: "27-04-2002",
+      dob: patientInfo.dob,
     });
   };
   return (
@@ -86,6 +87,15 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 label="Số điện thoại"
                 variant="outlined"
                 name="phone"
+                className="w-full mb-2 pb-2"
+                onChange={handleChangeValue}
+              />
+            </div>
+            <div className="mb-3">
+              <TextField
+                label="Ngày sinh"
+                variant="outlined"
+                name="dob"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
               />
