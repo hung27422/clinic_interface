@@ -17,8 +17,8 @@ function useHandleAddMedication({ handleClose, mutate: mutateAddNew }: Props) {
           "Content-Type": "application/json",
         },
       });
-      mutateAddNew();
       handleClose();
+      mutateAddNew();
     } catch (error) {
       console.error("Failed to add medications:", error);
       alert("Failed to add medications.");

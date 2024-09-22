@@ -12,7 +12,7 @@ function Medication() {
   const [page, setPage] = useState(1);
   const { data: dataMedications } = useMedications({
     page: page,
-    limit: 3,
+    limit: 5,
   });
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -21,10 +21,11 @@ function Medication() {
     setPage(value);
   };
   const { mutate } = useSWRInfinite(
-    () => `https://localhost:7143/api/Medicine?page=1&limit=10`,
+    () => `https://localhost:7143/api/Medicine?page=${page}&limit=5`,
     fetcher
   );
   if (!dataMedications) return null;
+
   return (
     <div>
       <div className="flex items-center justify-between">

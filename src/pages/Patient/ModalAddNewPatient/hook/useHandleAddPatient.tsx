@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import { useNavigate } from "react-router";
 // import config from "../../../../configs/configs";
 import axios from "axios";
@@ -21,12 +22,12 @@ function useHandleAddPatient({ mutate, handleClose }: Props) {
           "Content-Type": "application/json",
         },
       });
+
       mutate();
       handleClose();
       // navigate(`${config.router.viewpatient}123`);
-    } catch (error) {
-      console.error("Failed to add patient:", error);
-      alert("Failed to add patient.");
+    } catch (error: any) {
+      console.error("Error data:", error.response.data);
     }
   };
 

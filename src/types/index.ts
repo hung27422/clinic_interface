@@ -6,14 +6,7 @@ export interface Patient {
   address: string;
   phoneNumber: string;
 }
-export interface PatientSecond {
-  id: string;
-  patientName: string;
-  age?: number;
-  dob: string;
-  address: string;
-  phoneNumber: string;
-}
+
 export interface PatientData {
   patient: Patient[];
 }

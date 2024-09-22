@@ -3,33 +3,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TablePatient from "./TablePatient/TablePatient";
 import PaginationClinic from "../../components/Pagination/Pagination";
 import ModalAddNewPatient from "./ModalAddNewPatient/ModalAddNewPatient";
-
 import usePatients from "../../hooks/api/usePatients";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Patient() {
   const [page, setPage] = useState(1);
-  const { data: dataPatients } = usePatients({ page: 1, limit: 100 });
-  useEffect(() => {
-    if (dataPatients) {
-      console.log(dataPatients);
-    }
-  }, [dataPatients]);
-
+  const { data: dataPatients } = usePatients({ page: page, limit: 5 });
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
   };
-
   const { mutate } = useSWRInfinite(
-    () => `https://localhost:7143/api/Patient`,
+    () => `https://localhost:7143/api/Patient?Number=${page}&Size=5`,
     fetcher
   );
-
   if (!dataPatients) return null;
 
   return (
