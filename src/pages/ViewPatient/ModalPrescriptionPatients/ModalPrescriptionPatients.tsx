@@ -18,17 +18,17 @@ const style = {
   p: 4,
   borderRadius: 6,
 };
-interface Dose {
-  id: number;
-  morning: string;
-  afternoon: string;
-  night: string;
-}
+// interface Dose {
+//   id: number;
+//   morning: string;
+//   afternoon: string;
+//   night: string;
+// }
 
-interface Time {
-  id: number;
-  time: string;
-}
+// interface Time {
+//   id: number;
+//   time: string;
+// }
 export default function ModalPrescriptionPatients() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -37,12 +37,12 @@ export default function ModalPrescriptionPatients() {
   const [medicinal, setMedicinal] = React.useState([
     { id: 1, label: "Tên thuốc" },
   ]);
-  const [doses, setDoses] = React.useState<Dose[]>([
-    { id: 1, morning: "1", afternoon: "1", night: "1" },
-  ]);
-  const [times, setTimes] = React.useState<Time[]>([
-    { id: 1, time: "Trước khi ăn" },
-  ]);
+  // const [doses, setDoses] = React.useState<Dose[]>([
+  //   { id: 1, morning: "1", afternoon: "1", night: "1" },
+  // ]);
+  // const [times, setTimes] = React.useState<Time[]>([
+  //   { id: 1, time: "Trước khi ăn" },
+  // ]);
 
   const addFields = () => {
     const newId = medicinal.length + 1;

@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import config from "../../configs/configs";
 import InfoPatient from "./InfoPatient/InfoPatient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,9 +9,9 @@ import ModalPrint from "./ModalPrint/ModalPrint.tsx";
 import useViewPatients from "../../hooks/api/useViewPatients.tsx";
 
 function ViewPatients() {
-  const { id } = useParams<{ id: string }>();
+  // const { id } = useParams<{ id: string }>();
   const { data: dataViewPatient } = useViewPatients({
-    id: id ?? "",
+    id: "1" ?? "",
   });
   if (!dataViewPatient) return null;
   return (

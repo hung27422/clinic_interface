@@ -13,9 +13,9 @@ interface Props {
   id: string;
 }
 function useViewPatients({ id }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  // const apiUrl = import.meta.env.VITE_API_URL;
   const { data, isLoading } = useSWR<ViewPatient[]>(
-    `${apiUrl}` + `medicalRecords?patientId=${id}`,
+    `https://tsv6vm-8080.csb.app/medicalRecords?patientId=${id}`,
     fetcher,
     {
       revalidateIfStale: false,
