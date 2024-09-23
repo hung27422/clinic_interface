@@ -19,7 +19,7 @@ interface Props {
 function usePatients({ page, limit }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const { data, isLoading, mutate } = useSWR<PatientData>(
-    `${apiUrl}/Patient?Number=${page}&Size=${limit}`,
+    `${apiUrl}/Patient?page=${page}&limit=${limit}`,
     fetcher,
     {
       revalidateIfStale: false,

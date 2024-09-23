@@ -93,7 +93,7 @@ export default function TablePatient({ data, mutate }: Props) {
                     <ModalDeletePatient data={item} mutate={mutate} />
                   </div>
                   <div>
-                    <ModalUpdatePatient data={item} />
+                    <ModalUpdatePatient data={item} mutate={mutate} />
                   </div>
                 </div>
               </StyledTableCell>

@@ -17,7 +17,7 @@ function useToastify({ title, type }: Props) {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: "colored",
           transition: Bounce,
         });
         break;

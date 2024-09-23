@@ -20,8 +20,9 @@ const style = {
 };
 interface Props {
   data: Patient;
+  mutate: () => void;
 }
-export default function ModalUpdatePatient({ data }: Props) {
+export default function ModalUpdatePatient({ data, mutate }: Props) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState({
     name: "",
@@ -34,6 +35,7 @@ export default function ModalUpdatePatient({ data }: Props) {
   const { handleUpdateInfoPatient } = useHandleUpdatePatient({
     id: data.id,
     handleClose: handleClose,
+    mutate: mutate,
   });
   React.useEffect(() => {
     if (data) {

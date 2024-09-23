@@ -1,14 +1,17 @@
 import axios from "axios";
 import { Patient } from "../../../../types";
-import { mutate } from "swr";
+import useToastify from "../../../../hooks/components/Toastify/useToastify";
 interface Props {
   id: string;
   handleClose: () => void;
+  mutate: () => void;
 }
-function useHandleUpdatePatient({ id, handleClose }: Props) {
+function useHandleUpdatePatient({ id, handleClose, mutate }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const totalPages = 3;
-  const limit = 5;
+  const { notify } = useToastify({
+    title: "Sửa thông tin bệnh nhân thành công.",
+    type: "success",
+  });
   const handleUpdateInfoPatient = async (newPatient: Patient) => {
     try {
       await axios.put(`${apiUrl}/Patient/${id}`, newPatient, {
@@ -17,10 +20,9 @@ function useHandleUpdatePatient({ id, handleClose }: Props) {
           "Content-Type": "application/json",
         },
       });
-      for (let page = 1; page <= totalPages; page++) {
-        mutate(`${apiUrl}patients?_page=${page}&_limit=${limit}`);
-      }
+      mutate();
       handleClose();
+      notify();
     } catch (error) {
       console.error("Failed to update patient:", error);
       alert("Failed to update patient.");

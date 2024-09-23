@@ -10,6 +10,7 @@ import useSWRInfinite from "swr/infinite";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Patient() {
   const [page, setPage] = useState(1);
+  // const limitPage = 5;
   const { data: dataPatients } = usePatients({ page: page, limit: 5 });
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -18,7 +19,7 @@ function Patient() {
     setPage(value);
   };
   const { mutate } = useSWRInfinite(
-    () => `https://localhost:7143/api/Patient?Number=${page}&Size=5`,
+    () => `https://localhost:7143/api/Patient?page=${page}&limit=5`,
     fetcher
   );
   if (!dataPatients) return null;

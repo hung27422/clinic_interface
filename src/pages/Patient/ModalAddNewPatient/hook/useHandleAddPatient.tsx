@@ -35,8 +35,10 @@ function useHandleAddPatient({ mutate, handleClose }: Props) {
       handleClose();
       // navigate(`${config.router.viewpatient}123`);
     } catch (error: any) {
-      // console.error("Error data:", error.response.data);
-      if (error.response.data.description === "Patient name already exist") {
+      if (
+        error.response.data.description ===
+        "Phone number: 0989827175 has already been used by another patient"
+      ) {
         notifyErr();
       } else {
         console.error("Failed to add patient:", error);
