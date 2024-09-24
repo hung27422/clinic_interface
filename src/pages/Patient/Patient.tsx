@@ -7,11 +7,15 @@ import usePatients from "../../hooks/api/usePatients";
 import { useState } from "react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
+import useSearchPatient from "../../hooks/api/useSearchPatient";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Patient() {
   const [page, setPage] = useState(1);
-  // const limitPage = 5;
+  const [valueSearch, setValueSearch] = useState("");
+
   const { data: dataPatients } = usePatients({ page: page, limit: 5 });
+  const { data: dataSearch } = useSearchPatient({ phone: valueSearch });
+
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
     value: number
@@ -23,7 +27,12 @@ function Patient() {
     fetcher
   );
   if (!dataPatients) return null;
-
+  // Hàm lấy value search
+  const handleSearchPatient = (value: string) => {
+    setValueSearch(value);
+  };
+  const data = dataSearch ? dataSearch : dataPatients;
+  const countPage = dataPatients.pagination.totalPages;
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -42,15 +51,28 @@ function Patient() {
             className="w-[90%] bg-gray-300 text-black outline-none"
             type="text"
             placeholder="Tìm kiếm bệnh nhân...."
+            value={valueSearch}
+            onChange={(e) => handleSearchPatient(e.target.value)}
           />
         </div>
+        {valueSearch && !dataSearch && (
+          <span className="flex items-center justify-center mt-2 text-xl text-red-600 font-medium">
+            Không tìm thấy bệnh nhân
+          </span>
+        )}
       </div>
       <div className="mt-5">
-        <TablePatient data={dataPatients} mutate={mutate} />
+        <TablePatient data={data} mutate={mutate} />
       </div>
-      <div className="flex items-center justify-center mt-5">
-        <PaginationClinic onChange={handleChangePage} count={3} page={page} />
-      </div>
+      {!dataSearch && (
+        <div className="flex items-center justify-center mt-5">
+          <PaginationClinic
+            onChange={handleChangePage}
+            count={countPage}
+            page={page}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -7,13 +7,24 @@ import useMedications from "../../hooks/api/useMedications";
 import { useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import axios from "axios";
+import useSearchMedication from "../../hooks/api/useSearchMedication";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Medication() {
   const [page, setPage] = useState(1);
+  const [valueSearch, setValueSearch] = useState("");
+  // Lấy data
   const { data: dataMedications } = useMedications({
     page: page,
     limit: 5,
   });
+  const { data: dataSearch } = useSearchMedication({
+    name: valueSearch,
+    limit: 5,
+    page: page,
+  });
+  console.log(dataSearch);
+
+  // --------------------------------------------------
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
     value: number
@@ -25,7 +36,17 @@ function Medication() {
     fetcher
   );
   if (!dataMedications) return null;
-
+  // Hàm lấy value search
+  const handleSearchMedical = (value: string) => {
+    setValueSearch(value);
+  };
+  const data =
+    dataSearch && dataSearch?.medicines.length !== 0
+      ? dataSearch
+      : dataMedications;
+  const countPage = dataSearch
+    ? dataSearch.pagination.totalPages
+    : dataMedications.pagination.totalPages;
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -44,15 +65,28 @@ function Medication() {
             className="w-[90%] bg-gray-300 text-black outline-none"
             type="text"
             placeholder="Tìm kiếm thuốc...."
+            value={valueSearch}
+            onChange={(e) => handleSearchMedical(e.target.value)}
           />
         </div>
+        {valueSearch && dataSearch?.medicines.length === 0 && (
+          <span className="flex items-center justify-center mt-2 text-xl text-red-600 font-medium">
+            Không tìm thấy thuốc
+          </span>
+        )}
       </div>
       <div className="mt-5">
-        <TableMedication data={dataMedications} mutate={mutate} />
+        <TableMedication data={data} mutate={mutate} />
       </div>
-      <div className="flex items-center justify-center mt-5">
-        <PaginationClinic onChange={handleChangePage} count={3} page={page} />
-      </div>
+      {valueSearch && dataSearch?.medicines.length === 0 && (
+        <div className="flex items-center justify-center mt-5">
+          <PaginationClinic
+            onChange={handleChangePage}
+            count={countPage}
+            page={page}
+          />
+        </div>
+      )}
     </div>
   );
 }

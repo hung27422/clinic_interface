@@ -6,9 +6,9 @@ export interface Patient {
   address: string;
   phoneNumber: string;
 }
-
 export interface PatientData {
   patient: Patient[];
+  pagination: PaginationData;
 }
 export interface ViewPatient {
   patientId: Patient["id"];
@@ -28,4 +28,11 @@ export interface Medication {
 }
 export interface MedicationData {
   medicines: Medication[];
+  pagination: PaginationData;
+}
+export interface PaginationData {
+  totalItems: number;
+  totalItemsPerPage: number;
+  currentPage: number;
+  totalPages: number;
 }
