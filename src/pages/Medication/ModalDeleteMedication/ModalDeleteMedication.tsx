@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Medication } from "../../../types";
 import axios from "axios";
+import useToastify from "../../../hooks/components/Toastify/useToastify";
 
 const style = {
   position: "absolute",
@@ -25,12 +26,17 @@ export default function ModalDeleteMedication({ data, mutate }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { notify } = useToastify({
+    title: `Xóa thuốc ${data.name} thành công`,
+    type: "success",
+  });
   const handleDeleteMedication = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     try {
-      await axios.delete(`${apiUrl}medications/${data.id}`);
+      await axios.delete(`${apiUrl}/Medicine/${data.id}`);
       mutate();
       handleClose();
+      notify();
     } catch (err) {
       console.log("Lỗi", err);
     }

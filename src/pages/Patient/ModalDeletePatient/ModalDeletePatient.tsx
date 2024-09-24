@@ -28,7 +28,7 @@ export default function ModalDeletePatient({ data, mutate }: Props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { notify } = useToastify({
-    title: "Xóa bệnh nhân thành công",
+    title: `Xóa bệnh nhân ${data.name} thành công`,
     type: "success",
   });
   const handleDeletePatient = async () => {
