@@ -22,7 +22,6 @@ function Medication() {
     limit: 5,
     page: page,
   });
-  console.log(dataSearch);
 
   // --------------------------------------------------
   const handleChangePage = (
@@ -78,7 +77,7 @@ function Medication() {
       <div className="mt-5">
         <TableMedication data={data} mutate={mutate} />
       </div>
-      {valueSearch && dataSearch?.medicines.length === 0 && (
+      {!valueSearch && (
         <div className="flex items-center justify-center mt-5">
           <PaginationClinic
             onChange={handleChangePage}

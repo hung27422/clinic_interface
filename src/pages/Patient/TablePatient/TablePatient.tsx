@@ -39,68 +39,79 @@ interface Props {
 }
 export default function TablePatient({ data, mutate }: Props) {
   if (!data) return null;
+  const dataExit = data.patient && data.patient.length > 0;
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell width={"15%"} align="center">
-              Tên
-            </StyledTableCell>
-            <StyledTableCell width={"10%"} align="center">
-              Tuổi
-            </StyledTableCell>
-            <StyledTableCell width={"15%"} align="center">
-              Số điện thoại
-            </StyledTableCell>
-            <StyledTableCell width={"25%"} align="center">
-              Địa chỉ
-            </StyledTableCell>
-            <StyledTableCell width={"25%"} align="center">
-              Xem thông tin
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.patient?.map((item: Patient) => (
-            <StyledTableRow key={item.id}>
-              <StyledTableCell
-                width={"15%"}
-                align="center"
-                component="th"
-                scope="row"
-              >
-                {item.name}
-              </StyledTableCell>
+    <>
+      {dataExit ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell width={"15%"} align="center">
+                  Tên
+                </StyledTableCell>
+                <StyledTableCell width={"10%"} align="center">
+                  Tuổi
+                </StyledTableCell>
+                <StyledTableCell width={"15%"} align="center">
+                  Số điện thoại
+                </StyledTableCell>
+                <StyledTableCell width={"25%"} align="center">
+                  Địa chỉ
+                </StyledTableCell>
+                <StyledTableCell width={"25%"} align="center">
+                  Xem thông tin
+                </StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.patient?.map((item: Patient) => (
+                <StyledTableRow key={item.id}>
+                  <StyledTableCell
+                    width={"15%"}
+                    align="center"
+                    component="th"
+                    scope="row"
+                  >
+                    {item.name}
+                  </StyledTableCell>
 
-              <StyledTableCell width={"10%"} align="center">
-                {item.age}
-              </StyledTableCell>
-              <StyledTableCell width={"15%"} align="center">
-                {item.phoneNumber}
-              </StyledTableCell>
-              <StyledTableCell width={"25%"} align="center">
-                {item.address}
-              </StyledTableCell>
-              <StyledTableCell width={"25%"} align="center">
-                <div className="flex justify-center">
-                  <div className="mr-2">
-                    <Link to={`${config.router.viewpatient}${item.id}`}>
-                      <Button variant="contained">Thông tin</Button>
-                    </Link>
-                  </div>
-                  <div className="mr-2">
-                    <ModalDeletePatient data={item} mutate={mutate} />
-                  </div>
-                  <div>
-                    <ModalUpdatePatient data={item} mutate={mutate} />
-                  </div>
-                </div>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                  <StyledTableCell width={"10%"} align="center">
+                    {item.age}
+                  </StyledTableCell>
+                  <StyledTableCell width={"15%"} align="center">
+                    {item.phoneNumber}
+                  </StyledTableCell>
+                  <StyledTableCell width={"25%"} align="center">
+                    {item.address}
+                  </StyledTableCell>
+                  <StyledTableCell width={"25%"} align="center">
+                    <div className="flex justify-center">
+                      <div className="mr-2">
+                        <Link to={`${config.router.viewpatient}${item.id}`}>
+                          <Button variant="contained">Thông tin</Button>
+                        </Link>
+                      </div>
+                      <div className="mr-2">
+                        <ModalDeletePatient data={item} mutate={mutate} />
+                      </div>
+                      <div>
+                        <ModalUpdatePatient data={item} mutate={mutate} />
+                      </div>
+                    </div>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <div className="mt-10 flex items-center justify-center">
+          <span className="text-4xl text-red-500">
+            Hiện tại danh sách bệnh nhân đang trống. Vui lòng thêm bệnh nhân
+          </span>
+        </div>
+      )}
+    </>
   );
 }

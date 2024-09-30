@@ -5,6 +5,7 @@ export interface Patient {
   dob: string;
   address: string;
   phoneNumber: string;
+  checkStatus: string;
 }
 export interface PatientData {
   patient: Patient[];
@@ -29,6 +30,18 @@ export interface Medication {
 export interface MedicationData {
   medicines: Medication[];
   pagination: PaginationData;
+}
+export interface FollowUp {
+  patientId: string;
+  checkUp: string;
+  history: string;
+  diagnosis: string;
+  createdAt: string;
+  modifiedAt: string;
+  id: string;
+}
+export interface FollowUpData {
+  followUps: FollowUp[];
 }
 export interface PaginationData {
   totalItems: number;

@@ -48,7 +48,7 @@ export default function ModalAddNewMedication({ mutate }: Props) {
       company: value.company,
       quantity: quantity,
       price: price,
-      status: value.status,
+      status: "inventory",
       type: value.type,
     });
   };
@@ -101,7 +101,7 @@ export default function ModalAddNewMedication({ mutate }: Props) {
                 onChange={handleChangeValue}
               />
             </div>
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <TextField
                 label="Tình trạng"
                 variant="outlined"
@@ -109,7 +109,7 @@ export default function ModalAddNewMedication({ mutate }: Props) {
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
               />
-            </div>
+            </div> */}
             <div className="mb-3">
               <TextField
                 label="Type"

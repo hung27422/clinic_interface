@@ -14,7 +14,7 @@ function Patient() {
   const [valueSearch, setValueSearch] = useState("");
 
   const { data: dataPatients } = usePatients({ page: page, limit: 5 });
-  const { data: dataSearch } = useSearchPatient({ phone: valueSearch });
+  const { data: dataSearch } = useSearchPatient({ phone: valueSearch ?? "" });
 
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -64,7 +64,7 @@ function Patient() {
       <div className="mt-5">
         <TablePatient data={data} mutate={mutate} />
       </div>
-      {!dataSearch && (
+      {!valueSearch && (
         <div className="flex items-center justify-center mt-5">
           <PaginationClinic
             onChange={handleChangePage}

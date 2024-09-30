@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import config from "../../configs/configs";
 import InfoPatient from "./InfoPatient/InfoPatient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,14 +6,17 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import TableInfoPrescription from "./InfoPatient/TableInfoPrescription";
 import ModalUpdatePrescription from "./ModalUpdatePrescription/ModalUpdatePrescription.tsx";
 import ModalPrint from "./ModalPrint/ModalPrint.tsx";
-import useViewPatients from "../../hooks/api/useViewPatients.tsx";
+import useFollowUp from "../../hooks/api/useFollowUp.tsx";
 
 function ViewPatients() {
-  // const { id } = useParams<{ id: string }>();
-  const { data: dataViewPatient } = useViewPatients({
-    id: "1" ?? "",
-  });
+  const { id } = useParams<{ id: string }>();
+
+  const { data: dataViewPatient } = useFollowUp({ patientID: id ?? "" });
+
+  // const dataTestExit = dataTest && dataTest.length > 0;
   if (!dataViewPatient) return null;
+  const followUpsExist =
+    dataViewPatient.followUps && dataViewPatient.followUps.length > 0;
   return (
     <div>
       <div className="grid grid-cols-3 items-center">
@@ -32,7 +35,7 @@ function ViewPatients() {
         <div className="col-span-1">
           <InfoPatient data={dataViewPatient} />
         </div>
-        {dataViewPatient.length !== 0 ? (
+        {followUpsExist ? (
           <div className="col-span-1">
             <h2 className="text-center text-3xl font-semibold mb-3">
               Thông tin thuốc kê toa

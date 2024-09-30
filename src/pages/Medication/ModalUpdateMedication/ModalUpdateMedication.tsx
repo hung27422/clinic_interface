@@ -53,7 +53,7 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
       company: value.company,
       quantity: quantity,
       price: price,
-      status: value.status,
+      status: "inventory",
       type: value.type,
     });
   };
@@ -117,7 +117,7 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
                 onChange={handleChangeValue}
               />
             </div>
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <TextField
                 label="Tình trạng"
                 variant="outlined"
@@ -126,7 +126,7 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
                 value={value.status}
                 onChange={handleChangeValue}
               />
-            </div>
+            </div> */}
             <div className="mb-3">
               <TextField
                 label="Loại"

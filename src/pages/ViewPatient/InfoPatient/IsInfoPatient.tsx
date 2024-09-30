@@ -1,23 +1,23 @@
-import { ViewPatient } from "../../../types";
+import { FollowUpData } from "../../../types";
 import ModalPrescriptionPatients from "../ModalPrescriptionPatients/ModalPrescriptionPatients";
 import ModalReExaminationPatient from "../ModalReExaminationPatient/ModalReExaminationPatient";
 interface Props {
-  data: ViewPatient[];
+  data: FollowUpData;
 }
 function IsInfoPatients({ data }: Props) {
   return (
     <div className="flex flex-col">
-      {data.map((item) => {
+      {data.followUps.map((item) => {
         return (
           <div key={item.patientId} className="flex flex-col">
             <span className="text-2xl">
-              <span className="font-bold">Lý do khám:</span> {item.reason}
+              <span className="font-bold">Lý do khám:</span> {item.checkUp}
             </span>
             <span className="text-2xl">
-              <span className="font-bold">Tiền căn:</span> {item.medicalHistory}
+              <span className="font-bold">Tiền căn:</span> {item.history}
             </span>
             <span className="text-2xl">
-              <span className="font-bold">Tổng quát:</span> {item.summary}
+              <span className="font-bold">Tổng quát:</span> {item.diagnosis}
             </span>
             <span className="text-2xl">
               <span className="font-bold">Chuẩn đoán:</span> {item.diagnosis}

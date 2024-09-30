@@ -1,13 +1,16 @@
 import { Button, TextField } from "@mui/material";
 import IsInfoPatient from "./IsInfoPatient";
-import { ViewPatient } from "../../../types";
+import { FollowUpData } from "../../../types";
 interface Props {
-  data: ViewPatient[];
+  data: FollowUpData;
 }
 function InfoPatient({ data }: Props) {
+  const dataExits = data.followUps && data.followUps.length > 0;
+  console.log(data);
+
   return (
     <div>
-      {data.length !== 0 ? (
+      {data ? (
         <div className="pr-4">
           <IsInfoPatient data={data} />
         </div>

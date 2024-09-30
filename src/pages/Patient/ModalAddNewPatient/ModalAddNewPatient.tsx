@@ -66,6 +66,7 @@ export default function ModalAddNewPatient({ mutate }: Props) {
             <div className="mb-3">
               <TextField
                 label="Họ và tên"
+                placeholder="Nguyễn Văn A"
                 variant="outlined"
                 className="w-full mb-2 pb-2"
                 name="name"
@@ -76,6 +77,7 @@ export default function ModalAddNewPatient({ mutate }: Props) {
             <div className="mb-3">
               <TextField
                 label="Địa chỉ"
+                placeholder="Thủ Đức - TP.HCM"
                 variant="outlined"
                 className="w-full mb-2 pb-2"
                 name="address"
@@ -85,6 +87,7 @@ export default function ModalAddNewPatient({ mutate }: Props) {
             <div className="mb-3">
               <TextField
                 label="Số điện thoại"
+                placeholder="0987654321"
                 variant="outlined"
                 name="phone"
                 className="w-full mb-2 pb-2"
@@ -96,6 +99,7 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 label="Ngày sinh"
                 variant="outlined"
                 name="dob"
+                placeholder="01-01-2001"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
               />

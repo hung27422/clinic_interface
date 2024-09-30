@@ -35,63 +35,74 @@ interface Props {
   mutate: () => void;
 }
 export default function TableMedication({ data, mutate }: Props) {
+  const dataExit = data.medicines && data.medicines.length > 0;
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell width={"20%"} align="center">
-              Tên
-            </StyledTableCell>
-            <StyledTableCell width={"20%"} align="center">
-              Tên công ty
-            </StyledTableCell>
-            <StyledTableCell width={"10%"} align="center">
-              Số lượng
-            </StyledTableCell>
-            <StyledTableCell width={"15%"} align="center">
-              Giá
-            </StyledTableCell>
-            <StyledTableCell width={"15%"} align="center">
-              Tình trạng
-            </StyledTableCell>
-            <StyledTableCell width={"15%"} align="center">
-              Hành động
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.medicines?.map((item: Medication) => (
-            <StyledTableRow key={item.name}>
-              <StyledTableCell width={"20%"} align="center">
-                {item.name}
-              </StyledTableCell>
-              <StyledTableCell width={"20%"} align="center">
-                {item.company}
-              </StyledTableCell>
-              <StyledTableCell width={"15%"} align="center">
-                {item.price}
-              </StyledTableCell>
-              <StyledTableCell width={"10%"} align="center">
-                {item.quantity}
-              </StyledTableCell>
-              <StyledTableCell width={"15%"} align="center">
-                {item.status}
-              </StyledTableCell>
-              <StyledTableCell width={"20%"} align="right">
-                <div className="flex justify-center">
-                  <div className="mr-3">
-                    <ModalDeleteMedication data={item} mutate={mutate} />
-                  </div>
-                  <div className="">
-                    <ModalUpdateMedication data={item} mutate={mutate} />
-                  </div>
-                </div>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {dataExit ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell width={"20%"} align="center">
+                  Tên
+                </StyledTableCell>
+                <StyledTableCell width={"20%"} align="center">
+                  Tên công ty
+                </StyledTableCell>
+                <StyledTableCell width={"10%"} align="center">
+                  Giá
+                </StyledTableCell>
+                <StyledTableCell width={"15%"} align="center">
+                  Số lượng
+                </StyledTableCell>
+                <StyledTableCell width={"15%"} align="center">
+                  Loại
+                </StyledTableCell>
+                <StyledTableCell width={"15%"} align="center">
+                  Hành động
+                </StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.medicines?.map((item: Medication) => (
+                <StyledTableRow key={item.name}>
+                  <StyledTableCell width={"20%"} align="center">
+                    {item.name}
+                  </StyledTableCell>
+                  <StyledTableCell width={"20%"} align="center">
+                    {item.company}
+                  </StyledTableCell>
+                  <StyledTableCell width={"15%"} align="center">
+                    {item.price}
+                  </StyledTableCell>
+                  <StyledTableCell width={"10%"} align="center">
+                    {item.quantity}
+                  </StyledTableCell>
+                  <StyledTableCell width={"15%"} align="center">
+                    {item.type}
+                  </StyledTableCell>
+                  <StyledTableCell width={"20%"} align="right">
+                    <div className="flex justify-center">
+                      <div className="mr-3">
+                        <ModalDeleteMedication data={item} mutate={mutate} />
+                      </div>
+                      <div className="">
+                        <ModalUpdateMedication data={item} mutate={mutate} />
+                      </div>
+                    </div>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <div className="mt-10 flex items-center justify-center">
+          <span className="text-4xl text-red-500">
+            Hiện tại danh sách thuốc đang trống. Vui lòng thêm thuốc
+          </span>
+        </div>
+      )}
+    </>
   );
 }
