@@ -1,4 +1,4 @@
-import useFollowUp from "../../../api/useFollowUp";
+import useFollowUp from "../../../api/hooks/useFollowUp";
 import { FollowUp, Patient } from "../../../types";
 import ModalPrescriptionPatients from "../ModalPrescriptionPatients/ModalPrescriptionPatients";
 import ModalReExaminationPatient from "../ModalReExaminationPatient/ModalReExaminationPatient";

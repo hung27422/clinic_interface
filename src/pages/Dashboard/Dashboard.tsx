@@ -2,8 +2,8 @@ import { DatePicker } from "@mui/x-date-pickers";
 import "../../App.css";
 import TableStatisticsPatient from "./TableStatisticsPatient/TableStatisticsPatient";
 import TableStatisticsMedications from "./TableStatisticsMedications/TableStatisticsMedications";
-import PaginationClinic from "../../components/Pagination/Pagination";
 import TableStatisticsTop10Medications from "./TableStatisticsTop10Medications/TableStatisticsTop10Medications";
+import PaginationClinic from "../../components/Pagination";
 const statistical = [
   {
     title: "Tổng số bệnh nhân",

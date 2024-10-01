@@ -1,13 +1,13 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TablePatient from "./TablePatient/TablePatient";
-import PaginationClinic from "../../components/Pagination/Pagination";
 import ModalAddNewPatient from "./ModalAddNewPatient/ModalAddNewPatient";
 import usePatients from "../../api/hooks/usePatients";
 import { useState } from "react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import useSearchPatient from "../../api/hooks/useSearchPatient";
+import PaginationClinic from "../../components/Pagination";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Patient() {
   const [page, setPage] = useState(1);

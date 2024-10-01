@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { FollowUpData } from "../types";
+import { FollowUpData } from "../../types";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
