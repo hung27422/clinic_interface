@@ -47,7 +47,7 @@ function Medication() {
     ? dataSearch.pagination.totalPages
     : dataMedications.pagination.totalPages;
   return (
-    <div>
+    <div className="relative min-h-screen">
       <div className="flex items-center justify-between">
         <div className="w-60"></div>
         <h2 className=" text-5xl font-bold tracking-widest text-center">
@@ -77,8 +77,8 @@ function Medication() {
       <div className="mt-5">
         <TableMedication data={data} mutate={mutate} />
       </div>
-      {!valueSearch && (
-        <div className="flex items-center justify-center mt-5">
+      {!valueSearch && countPage > 1 && (
+        <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
           <PaginationClinic
             onChange={handleChangePage}
             count={countPage}
