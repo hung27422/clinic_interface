@@ -24,8 +24,8 @@ function useHandleUpdateFollowUp({ id, mutate, handleClose }: Props) {
       if (handleClose) handleClose();
       notify();
     } catch (error) {
-      console.error("Failed to update patient:", error);
-      alert("Failed to update patient.");
+      console.error("Failed to update follow up:", error);
+      alert("Failed to update follow up.");
     }
   };
   return { handleUpdateFollowUp };

@@ -5,8 +5,14 @@ interface Props {
   id: string;
   handleClose?: () => void;
   mutate?: () => void;
+  notifyShow?: boolean;
 }
-function useHandleUpdatePatient({ id, handleClose, mutate }: Props) {
+function useHandleUpdatePatient({
+  id,
+  handleClose,
+  mutate,
+  notifyShow,
+}: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify } = useToastify({
     title: "Sửa thông tin bệnh nhân thành công.",
@@ -22,7 +28,7 @@ function useHandleUpdatePatient({ id, handleClose, mutate }: Props) {
       });
       if (mutate) mutate();
       if (handleClose) handleClose();
-      notify();
+      if (notifyShow) notify();
     } catch (error) {
       console.error("Failed to update patient:", error);
       alert("Failed to update patient.");

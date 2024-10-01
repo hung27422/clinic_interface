@@ -6,14 +6,19 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ModalPrescriptionPatients from "./ModalPrescriptionPatients/ModalPrescriptionPatients.tsx";
 import useGetPatientById from "../../api/hooks/useGetPatientById.tsx";
 import IsInfoPatients from "./InfoPatient/IsInfoPatient.tsx";
+import DeleteInfoExamination from "./ModalDeleteInfoExamination/ModalDeleteInfoExamination.tsx";
+import useFollowUp from "../../api/hooks/useFollowUp.tsx";
 
 function ViewPatients() {
   const { id } = useParams<{ id: string }>();
   const { data: dataPatient, mutate } = useGetPatientById({ id: id ?? "" });
-
+  const { data: dataFollowUp, mutate: mutateFollowUp } = useFollowUp({
+    patientID: id ?? "",
+  });
+  if (!dataFollowUp && !dataFollowUp) return null;
   return (
     <div>
-      <div className="grid grid-cols-3 items-center">
+      <div className="grid grid-cols-3 items-center relative">
         <div className="col-span-1">
           <Link to={config.router.patients}>
             <FontAwesomeIcon className="text-2xl" icon={faArrowLeft} />
@@ -35,10 +40,13 @@ function ViewPatients() {
             />
           )}
           {dataPatient?.patient.checkStatus === "examined" && (
-            <IsInfoPatients id={id} dataPatient={dataPatient.patient} />
+            <IsInfoPatients
+              dataPatient={dataPatient.patient}
+              mutateFollowUp={mutateFollowUp}
+              dataFollowUp={dataFollowUp}
+            />
           )}
         </div>
-
         <div className="col-span-1">
           <h2 className="text-3xl font-semibold text-center ">
             Thông tin toa thuốc
@@ -51,6 +59,15 @@ function ViewPatients() {
           </div>
         </div>
       </div>
+      {dataPatient?.patient.checkStatus === "examined" && (
+        <div className="absolute bottom-6">
+          <DeleteInfoExamination
+            dataPatient={dataPatient?.patient}
+            dataFollowUp={dataFollowUp}
+            mutate={mutate}
+          />
+        </div>
+      )}
     </div>
   );
 }

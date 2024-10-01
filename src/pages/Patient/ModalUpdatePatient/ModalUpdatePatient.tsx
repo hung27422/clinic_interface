@@ -37,6 +37,7 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
     id: data.id,
     handleClose: handleClose,
     mutate: mutate,
+    notifyShow: true,
   });
   React.useEffect(() => {
     if (data) {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FollowUp } from "../../../types";
 import useHandleUpdatePatient from "../../Patient/ModalUpdatePatient/hook/useHandleUpdatePatient";
+import useToastify from "../../../hooks/Toastify/useToastify";
 
 interface Props {
   idPatient: string;
@@ -21,9 +22,14 @@ function useHandleAddFollowUp({
   mutate,
 }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
+
   const { handleUpdateInfoPatient } = useHandleUpdatePatient({
     id: idPatient,
     mutate: mutate,
+  });
+  const { notify: notifySuccess } = useToastify({
+    title: "Lưu thông tin bệnh nhân thành công",
+    type: "success",
   });
   //   Update bệnh nhân
   const handleUpdatePatient = () => {
@@ -36,6 +42,7 @@ function useHandleAddFollowUp({
       checkStatus: checkStatus,
     });
   };
+
   const handleSaveFollowUp = async (newFollowUp: Omit<FollowUp, "id">) => {
     try {
       const newFollowUpWithId = {
@@ -48,10 +55,7 @@ function useHandleAddFollowUp({
         },
       });
       handleUpdatePatient();
-      //   notifySuccess();
-      //   mutate();
-
-      // navigate(`${config.router.viewpatient}123`);
+      notifySuccess();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response.data.code === "Patient.ExistPhoneNumber") {

@@ -1,18 +1,16 @@
-import useFollowUp from "../../../api/hooks/useFollowUp";
-import { FollowUp, Patient } from "../../../types";
+import { FollowUp, FollowUpData, Patient } from "../../../types";
 import ModalPrescriptionPatients from "../ModalPrescriptionPatients/ModalPrescriptionPatients";
 import ModalReExaminationPatient from "../ModalReExaminationPatient/ModalReExaminationPatient";
 
 interface Props {
-  id?: string;
   dataPatient: Patient;
+  dataFollowUp?: FollowUpData;
+  mutateFollowUp: () => void;
 }
-function IsInfoPatients({ id, dataPatient }: Props) {
-  const { data, mutate } = useFollowUp({ patientID: id ?? "" });
-
+function IsInfoPatients({ dataPatient, dataFollowUp, mutateFollowUp }: Props) {
   return (
     <div className="flex flex-col">
-      {data?.followUp?.map((item: FollowUp, index) => {
+      {dataFollowUp?.followUp?.map((item: FollowUp, index) => {
         return (
           <div key={index} className="flex flex-col">
             <div className="mb-4">
@@ -41,7 +39,7 @@ function IsInfoPatients({ id, dataPatient }: Props) {
               </div>
               <div>
                 <ModalReExaminationPatient
-                  mutate={mutate}
+                  mutate={mutateFollowUp}
                   idFollowUp={item.id}
                   data={item}
                 />
