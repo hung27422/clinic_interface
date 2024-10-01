@@ -1,8 +1,5 @@
 import useSWR from "swr";
 import { PatientData } from "../../types";
-// import axios from "axios";
-
-// const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 const fetcher = async (url: string) => {
   const res = await fetch(url);
   if (!res.ok) {

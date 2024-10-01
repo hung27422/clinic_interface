@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
+import useHandleUpdateFollowUp from "../hooks/useHandleUpdateFollowUp";
+import { FollowUp } from "../../../types";
 
 const style = {
   position: "absolute",
@@ -16,12 +18,49 @@ const style = {
   p: 4,
   borderRadius: 5,
 };
-
-export default function ModalReExaminationPatient() {
+interface Props {
+  idFollowUp?: string;
+  data?: FollowUp;
+  mutate: () => void;
+}
+export default function ModalReExaminationPatient({
+  idFollowUp,
+  data,
+  mutate,
+}: Props) {
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState({
+    patientId: "",
+    reason: "",
+    history: "",
+    diagnosis: "",
+    summary: "",
+  });
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const { handleUpdateFollowUp } = useHandleUpdateFollowUp({
+    id: idFollowUp ?? "",
+    mutate: mutate,
+    handleClose: handleClose,
+  });
+  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValue((prev) => ({ ...prev, [name]: value }));
+  };
+  React.useEffect(() => {
+    if (data) {
+      setValue(data);
+    }
+  }, [data]);
+  const handleSaveFollowUp = () => {
+    handleUpdateFollowUp({
+      patientId: value.patientId,
+      reason: value.reason,
+      diagnosis: value.diagnosis,
+      summary: value.summary,
+      history: value.history,
+    });
+  };
   return (
     <div>
       <Button onClick={handleOpen} variant="contained">
@@ -39,33 +78,49 @@ export default function ModalReExaminationPatient() {
               <TextField
                 label="Lý do khám"
                 variant="outlined"
+                value={value?.reason}
+                name="reason"
                 className="w-full mb-2 pb-2"
+                onChange={handleChangeValue}
               />
             </div>
             <div className="mb-3">
               <TextField
                 label="Tiền căn"
                 variant="outlined"
+                value={value?.history}
+                name="history"
                 className="w-full mb-2 pb-2"
+                onChange={handleChangeValue}
+              />
+            </div>
+            <div className="mb-3">
+              <TextField
+                label="Chuẩn đoán"
+                value={value?.diagnosis}
+                name="diagnosis"
+                variant="outlined"
+                className="w-full mb-2 pb-2"
+                onChange={handleChangeValue}
               />
             </div>
             <div className="mb-3">
               <TextField
                 label="Tổng quát"
                 variant="outlined"
+                value={value?.summary}
+                name="summary"
                 className="w-full mb-2 pb-2"
+                onChange={handleChangeValue}
               />
             </div>{" "}
-            <div className="mb-3">
-              <TextField
-                label="Chuẩn đoán"
-                variant="outlined"
-                className="w-full mb-2 pb-2"
-              />
-            </div>
           </div>
           <div className="ml-auto mr-auto w-full text-center">
-            <Button style={{ marginRight: "2px" }} variant="contained">
+            <Button
+              onClick={handleSaveFollowUp}
+              style={{ marginRight: "2px" }}
+              variant="contained"
+            >
               Lưu
             </Button>
             <Button

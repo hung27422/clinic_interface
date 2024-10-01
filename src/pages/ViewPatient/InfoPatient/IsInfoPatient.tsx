@@ -8,7 +8,7 @@ interface Props {
   dataPatient: Patient;
 }
 function IsInfoPatients({ id, dataPatient }: Props) {
-  const { data } = useFollowUp({ patientID: id ?? "" });
+  const { data, mutate } = useFollowUp({ patientID: id ?? "" });
 
   return (
     <div className="flex flex-col">
@@ -40,7 +40,11 @@ function IsInfoPatients({ id, dataPatient }: Props) {
                 <ModalPrescriptionPatients />
               </div>
               <div>
-                <ModalReExaminationPatient />
+                <ModalReExaminationPatient
+                  mutate={mutate}
+                  idFollowUp={item.id}
+                  data={item}
+                />
               </div>
             </div>
           </div>
