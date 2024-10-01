@@ -8,6 +8,7 @@ import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import useSearchPatient from "../../api/hooks/useSearchPatient";
 import PaginationClinic from "../../components/Pagination";
+import Spinner from "../../hooks/Spinner/Spinner";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Patient() {
   const [page, setPage] = useState(1);
@@ -15,7 +16,7 @@ function Patient() {
 
   const { data: dataPatients } = usePatients({ page: page, limit: 5 });
   const { data: dataSearch } = useSearchPatient({ phone: valueSearch ?? "" });
-
+  
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
     value: number
@@ -63,10 +64,10 @@ function Patient() {
           )}
         </div>
         <div className="mt-5">
-          <TablePatient data={data} mutate={mutate} />
+          {data ? <TablePatient data={data} mutate={mutate} /> : <Spinner />}
         </div>
       </div>
-      {!valueSearch && countPage > 1 && (
+      {!valueSearch && countPage > 1 && data && (
         <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
           <PaginationClinic
             onChange={handleChangePage}

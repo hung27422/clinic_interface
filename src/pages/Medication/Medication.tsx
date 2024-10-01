@@ -8,6 +8,7 @@ import useSWRInfinite from "swr/infinite";
 import axios from "axios";
 import useSearchMedication from "../../api/hooks/useSearchMedication";
 import PaginationClinic from "../../components/Pagination";
+import Spinner from "../../hooks/Spinner/Spinner";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Medication() {
   const [page, setPage] = useState(1);
@@ -43,6 +44,7 @@ function Medication() {
     dataSearch && dataSearch?.medicines.length !== 0
       ? dataSearch
       : dataMedications;
+
   const countPage = dataSearch
     ? dataSearch.pagination.totalPages
     : dataMedications.pagination.totalPages;
@@ -75,7 +77,7 @@ function Medication() {
         )}
       </div>
       <div className="mt-5">
-        <TableMedication data={data} mutate={mutate} />
+        {data ? <TableMedication data={data} mutate={mutate} /> : <Spinner />}
       </div>
       {!valueSearch && countPage > 1 && (
         <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
