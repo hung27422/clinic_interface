@@ -3,8 +3,8 @@ import { Patient } from "../../../../types";
 import useToastify from "../../../../hooks/components/Toastify/useToastify";
 interface Props {
   id: string;
-  handleClose: () => void;
-  mutate: () => void;
+  handleClose?: () => void;
+  mutate?: () => void;
 }
 function useHandleUpdatePatient({ id, handleClose, mutate }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -20,8 +20,8 @@ function useHandleUpdatePatient({ id, handleClose, mutate }: Props) {
           "Content-Type": "application/json",
         },
       });
-      mutate();
-      handleClose();
+      if (mutate) mutate();
+      if (handleClose) handleClose();
       notify();
     } catch (error) {
       console.error("Failed to update patient:", error);

@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
-import SelectTextFieldNumber from "./SelectTextFieldNumber";
-import SelectTextFieldTime from "./SelectTextFieldTime";
 
 const style = {
   position: "absolute",
@@ -18,35 +16,54 @@ const style = {
   p: 4,
   borderRadius: 6,
 };
-// interface Dose {
-//   id: number;
-//   morning: string;
-//   afternoon: string;
-//   night: string;
-// }
 
-// interface Time {
-//   id: number;
-//   time: string;
-// }
 export default function ModalPrescriptionPatients() {
   const [open, setOpen] = React.useState(false);
+  const [medicinal, setMedicinal] = React.useState([
+    {
+      id: 1,
+      name: "",
+      morning: "",
+      afternoon: "",
+      night: "",
+      time: "Trước khi ăn",
+    },
+  ]);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [medicinal, setMedicinal] = React.useState([
-    { id: 1, label: "Tên thuốc" },
-  ]);
-  // const [doses, setDoses] = React.useState<Dose[]>([
-  //   { id: 1, morning: "1", afternoon: "1", night: "1" },
-  // ]);
-  // const [times, setTimes] = React.useState<Time[]>([
-  //   { id: 1, time: "Trước khi ăn" },
-  // ]);
-
   const addFields = () => {
     const newId = medicinal.length + 1;
-    setMedicinal([...medicinal, { id: newId, label: "Tên thuốc" }]);
+    setMedicinal([
+      ...medicinal,
+      {
+        id: newId,
+        name: "",
+        morning: "",
+        afternoon: "",
+        night: "",
+        time: "Trước khi ăn",
+      },
+    ]);
+  };
+
+  const handleChangeValue = (
+    id: number,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setMedicinal((prev) =>
+      prev.map((field) =>
+        field.id === id ? { ...field, [name]: value } : field
+      )
+    );
+  };
+
+  const handleSavePrescription = () => {
+    console.log("Danh sách toa thuốc:", medicinal);
   };
 
   return (
@@ -90,20 +107,55 @@ export default function ModalPrescriptionPatients() {
             </span>
           </div>
           <div className="h-[400px] overflow-hidden overflow-y-auto hidden-scrollbar">
-            {medicinal.map((field) => (
-              <div className="w-full grid grid-cols-4 py-2 " key={field.id}>
+            {medicinal.map((field, index) => (
+              <div className="w-full grid grid-cols-5 py-2 " key={index}>
                 <div className="col-span-1 py-1">
                   <TextField
-                    label={field.label}
+                    label="Tên thuốc"
                     variant="outlined"
-                    className="w-full mb-2"
+                    className="w-full"
+                    name="name"
+                    value={field.name}
+                    onChange={(e) => handleChangeValue(field.id, e)}
                   />
                 </div>
-                <div className="col-span-2 py-1">
-                  <SelectTextFieldNumber />
+                <div className="col-span-3 grid grid-cols-3 gap-1 py-1 px-2">
+                  <TextField
+                    label="Sáng"
+                    variant="outlined"
+                    name="morning"
+                    className="w-full col-span-1"
+                    value={field.morning}
+                    onChange={(e) => handleChangeValue(field.id, e)}
+                  />
+                  <TextField
+                    label="Trưa"
+                    variant="outlined"
+                    name="afternoon"
+                    className="w-full col-span-1"
+                    value={field.afternoon}
+                    onChange={(e) => handleChangeValue(field.id, e)}
+                  />
+                  <TextField
+                    label="Chiều"
+                    variant="outlined"
+                    name="night"
+                    className="w-full col-span-1"
+                    value={field.night}
+                    onChange={(e) => handleChangeValue(field.id, e)}
+                  />
                 </div>
-                <div className="col-span-1 py-1">
-                  <SelectTextFieldTime />
+                <div className="flex justify-center items-center col-span-1 py-1 mt-1 border-2 rounded-md h-14">
+                  <select
+                    name="time"
+                    className="text-xl outline-none"
+                    id="time"
+                    value={field.time}
+                    onChange={(e) => handleChangeValue(field.id, e)}
+                  >
+                    <option value="Trước khi ăn">Trước khi ăn</option>
+                    <option value="Sau khi ăn">Sau khi ăn</option>
+                  </select>
                 </div>
               </div>
             ))}
@@ -118,7 +170,11 @@ export default function ModalPrescriptionPatients() {
               >
                 Thêm hàng
               </Button>
-              <Button style={{ height: "40px" }} variant="contained">
+              <Button
+                onClick={handleSavePrescription}
+                style={{ height: "40px" }}
+                variant="contained"
+              >
                 Lưu
               </Button>
             </div>

@@ -5,11 +5,14 @@ export interface Patient {
   dob: string;
   address: string;
   phoneNumber: string;
-  checkStatus: string;
+  checkStatus?: string;
 }
 export interface PatientData {
   patient: Patient[];
   pagination: PaginationData;
+}
+export interface PatientDataObj {
+  patient: Patient;
 }
 export interface ViewPatient {
   patientId: Patient["id"];
@@ -33,15 +36,16 @@ export interface MedicationData {
 }
 export interface FollowUp {
   patientId: string;
-  checkUp: string;
+  reason: string;
   history: string;
   diagnosis: string;
-  createdAt: string;
-  modifiedAt: string;
-  id: string;
+  summary: string;
+  createdAt?: string;
+  modifiedAt?: string;
+  id?: string;
 }
 export interface FollowUpData {
-  followUps: FollowUp[];
+  followUp: FollowUp[];
 }
 export interface PaginationData {
   totalItems: number;

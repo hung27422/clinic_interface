@@ -29,7 +29,7 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
     dob: "",
     address: "",
     phoneNumber: "",
-    checkStatus: "",
+    checkStatus: "not_examined",
   });
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -40,7 +40,13 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
   });
   React.useEffect(() => {
     if (data) {
-      setValue(data);
+      setValue({
+        name: data.name || "",
+        dob: data.dob || "",
+        address: data.address || "",
+        phoneNumber: data.phoneNumber || "",
+        checkStatus: data.checkStatus || "not_examined",
+      });
     }
   }, [data]);
 
@@ -55,7 +61,7 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
       address: value.address,
       phoneNumber: value.phoneNumber,
       dob: value.dob,
-      checkStatus: "not_examined",
+      checkStatus: data.checkStatus || "not_examined",
     });
   };
   return (
