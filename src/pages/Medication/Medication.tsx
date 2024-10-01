@@ -3,11 +3,11 @@ import ModalAddNewMedication from "./ModalAddNewMedication/ModalAddNewMedication
 import PaginationClinic from "../../components/Pagination/Pagination";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import TableMedication from "./TableMedication/TableMedication";
-import useMedications from "../../hooks/api/useMedications";
+import useMedications from "../../api/hooks/useMedications";
 import { useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import axios from "axios";
-import useSearchMedication from "../../hooks/api/useSearchMedication";
+import useSearchMedication from "../../api/hooks/useSearchMedication";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Medication() {
   const [page, setPage] = useState(1);

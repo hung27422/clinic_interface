@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Medication } from "../../../types";
-import useToastify from "../../../hooks/components/Toastify/useToastify";
+import useToastify from "../../../hooks/Toastify/useToastify";
 interface Props {
   mutate: () => void;
   handleClose: () => void;

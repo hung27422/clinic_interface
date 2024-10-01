@@ -4,7 +4,7 @@ import InfoPatient from "./InfoPatient/InfoPatient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ModalPrescriptionPatients from "./ModalPrescriptionPatients/ModalPrescriptionPatients.tsx";
-import useGetPatientById from "../../hooks/api/useGetPatientById.tsx";
+import useGetPatientById from "../../api/hooks/useGetPatientById.tsx";
 import IsInfoPatients from "./InfoPatient/IsInfoPatient.tsx";
 
 function ViewPatients() {

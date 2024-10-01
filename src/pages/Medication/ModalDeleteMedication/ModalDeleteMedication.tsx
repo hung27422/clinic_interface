@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Medication } from "../../../types";
 import axios from "axios";
-import useToastify from "../../../hooks/components/Toastify/useToastify";
+import useToastify from "../../../hooks/Toastify/useToastify";
 
 const style = {
   position: "absolute",

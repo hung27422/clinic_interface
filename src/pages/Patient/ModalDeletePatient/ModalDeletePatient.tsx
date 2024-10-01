@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import { Patient } from "../../../types";
 // import { mutate } from "swr";
 import axios from "axios";
-import useToastify from "../../../hooks/components/Toastify/useToastify";
+import useToastify from "../../../hooks/Toastify/useToastify";
 const style = {
   position: "absolute",
   top: "50%",
