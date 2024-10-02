@@ -15,8 +15,8 @@ function Patient() {
   const [valueSearch, setValueSearch] = useState("");
 
   const { data: dataPatients } = usePatients({ page: page, limit: 5 });
-  const { data: dataSearch } = useSearchPatient({ phone: valueSearch ?? "" });
-  
+  const { data: dataSearch } = useSearchPatient({ phone: valueSearch || null });
+
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
     value: number
@@ -27,13 +27,13 @@ function Patient() {
     () => `https://localhost:7143/api/Patient?page=${page}&limit=5`,
     fetcher
   );
-  if (!dataPatients) return null;
   // Hàm lấy value search
   const handleSearchPatient = (value: string) => {
     setValueSearch(value);
   };
-  const data = dataSearch ? dataSearch : dataPatients;
-  const countPage = dataPatients.pagination.totalPages;
+  const data = valueSearch ? dataSearch : dataPatients;
+  const countPage = dataPatients?.pagination?.totalPages || 1;
+  if (!data) return null;
   return (
     <div className="flex min-h-screen flex-col p-2 relative">
       <div>
@@ -67,7 +67,7 @@ function Patient() {
           {data ? <TablePatient data={data} mutate={mutate} /> : <Spinner />}
         </div>
       </div>
-      {!valueSearch && countPage > 1 && data && (
+      {countPage > 1 && data && (
         <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
           <PaginationClinic
             onChange={handleChangePage}

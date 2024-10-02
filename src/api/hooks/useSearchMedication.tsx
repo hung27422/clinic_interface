@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import { MedicationData } from "../../types";
 const fetcher = async (url: string) => {
+  if (!url) return null; // Tránh gọi fetch nếu URL là null
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -15,8 +16,11 @@ interface Props {
 }
 function useSearchMedication({ name, page, limit }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
+  const shouldFetch = name
+    ? `${apiUrl}/Medicine/Name/${name}?page=${page}&limit=${limit}`
+    : null;
   const { data, isLoading, mutate } = useSWR<MedicationData>(
-    `${apiUrl}/Medicine/Name/${name}?page=${page}&limit=${limit}`,
+    shouldFetch,
     fetcher,
     {
       revalidateIfStale: false,
