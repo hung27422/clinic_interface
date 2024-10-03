@@ -56,12 +56,13 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
     setValue((prev) => ({ ...prev, [name]: value }));
   };
   const handleUpdatePatient = () => {
+    const formattedDate = value.dob.split("-").reverse().join("-");
     handleUpdateInfoPatient({
       id: data.id,
       name: value.name,
       address: value.address,
       phoneNumber: value.phoneNumber,
-      dob: value.dob,
+      dob: formattedDate,
       checkStatus: data.checkStatus || "not_examined",
     });
   };

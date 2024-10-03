@@ -47,12 +47,14 @@ export default function DeleteInfoExamination({
     }) ?? [];
   //Sau khi xóa update lại checkstatus của bệnh nhân lại bệnh nhân
   const handleUpdateCheckStatusPatient = () => {
+    //Định dạng lại ngày dd/mm/yyyy
+    const formattedDate = dataPatient?.dob.split("-").reverse().join("-");
     handleUpdateInfoPatient({
       id: dataPatient?.id || "",
       name: dataPatient?.name || "",
       address: dataPatient?.address || "",
       phoneNumber: dataPatient?.phoneNumber || "",
-      dob: "27-04-2002",
+      dob: formattedDate || "",
       checkStatus: "not_examined",
     });
   };

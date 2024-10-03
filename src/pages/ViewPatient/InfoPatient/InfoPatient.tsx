@@ -8,11 +8,13 @@ interface Props {
   mutate: () => void;
 }
 function InfoPatient({ idPatient, dataPatient, mutate }: Props) {
+  //Định dạng lại ngày dd/mm/yyyy
+  const formattedDate = dataPatient.dob.split("-").reverse().join("-");
   const { handleSaveFollowUp } = useHandleAddFollowUp({
     idPatient: dataPatient.id,
     addressPatient: dataPatient.address,
     checkStatus: "examined",
-    dobPatient: "27-04-2002",
+    dobPatient: formattedDate,
     namePatient: dataPatient.name,
     phonePatient: dataPatient.phoneNumber,
     mutate: mutate,
