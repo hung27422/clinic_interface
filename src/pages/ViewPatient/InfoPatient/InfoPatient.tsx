@@ -5,9 +5,15 @@ import { Patient } from "../../../types";
 interface Props {
   idPatient?: string;
   dataPatient: Patient;
-  mutate: () => void;
+  mutate: () => void; //Muate bệnh nhân
+  mutateFollowUp: () => void;
 }
-function InfoPatient({ idPatient, dataPatient, mutate }: Props) {
+function InfoPatient({
+  idPatient,
+  dataPatient,
+  mutate,
+  mutateFollowUp,
+}: Props) {
   //Định dạng lại ngày dd/mm/yyyy
   const formattedDate = dataPatient.dob.split("-").reverse().join("-");
   const { handleSaveFollowUp } = useHandleAddFollowUp({
@@ -18,6 +24,7 @@ function InfoPatient({ idPatient, dataPatient, mutate }: Props) {
     namePatient: dataPatient.name,
     phonePatient: dataPatient.phoneNumber,
     mutate: mutate,
+    mutateFollowUp: mutateFollowUp,
   });
   const [value, setValue] = useState({
     patientId: "",

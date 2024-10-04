@@ -15,7 +15,7 @@ function ViewPatients() {
   const { data: dataFollowUp, mutate: mutateFollowUp } = useFollowUp({
     patientID: id ?? "",
   });
-  if (!dataFollowUp && !dataFollowUp) return null;
+  // if (!dataFollowUp && !dataFollowUp) return null;
   return (
     <div>
       <div className="grid grid-cols-3 items-center relative">
@@ -37,6 +37,7 @@ function ViewPatients() {
               idPatient={id}
               dataPatient={dataPatient.patient}
               mutate={mutate}
+              mutateFollowUp={mutateFollowUp}
             />
           )}
           {dataPatient?.patient.checkStatus === "examined" && (
@@ -65,6 +66,7 @@ function ViewPatients() {
             dataPatient={dataPatient?.patient}
             dataFollowUp={dataFollowUp}
             mutate={mutate}
+            mutateFollowUp={mutateFollowUp}
           />
         </div>
       )}

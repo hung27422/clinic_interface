@@ -22,11 +22,13 @@ interface Props {
   dataPatient?: Patient;
   dataFollowUp?: FollowUpData;
   mutate: () => void;
+  mutateFollowUp: () => void;
 }
 export default function DeleteInfoExamination({
   dataPatient,
   dataFollowUp,
   mutate,
+  mutateFollowUp,
 }: Props) {
   const [open, setOpen] = React.useState(false);
   const { handleUpdateInfoPatient } = useHandleUpdatePatient({
@@ -58,7 +60,6 @@ export default function DeleteInfoExamination({
       checkStatus: "not_examined",
     });
   };
-
   // Hàm xóa fl up
   const handleDeleteInfoExamination = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -66,7 +67,7 @@ export default function DeleteInfoExamination({
       await axios.delete(`${apiUrl}/FollowUp/${idFollowUp[0]}`);
       //Sau khi xóa update lại checkstatus của bệnh nhân lại bệnh nhân
       handleUpdateCheckStatusPatient();
-      //   mutate();
+      mutateFollowUp();
       handleClose();
       notify();
     } catch (err) {

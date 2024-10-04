@@ -20,7 +20,7 @@ const style = {
 };
 interface Props {
   data: Patient;
-  mutate: () => void;
+  mutate?: () => void;
 }
 
 export default function ModalDeletePatient({ data, mutate }: Props) {
@@ -35,7 +35,7 @@ export default function ModalDeletePatient({ data, mutate }: Props) {
     const apiUrl = import.meta.env.VITE_API_URL;
     try {
       await axios.delete(`${apiUrl}/Patient/ID?id=${data.id}`);
-      mutate();
+      if (mutate) mutate();
       handleClose();
       notify();
     } catch (err) {

@@ -11,6 +11,7 @@ interface Props {
   dobPatient: string;
   checkStatus: string;
   mutate: () => void;
+  mutateFollowUp: () => void;
 }
 function useHandleAddFollowUp({
   idPatient,
@@ -20,13 +21,15 @@ function useHandleAddFollowUp({
   dobPatient,
   checkStatus,
   mutate,
+  mutateFollowUp,
 }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
-
+  //hook update bệnh nhân
   const { handleUpdateInfoPatient } = useHandleUpdatePatient({
     id: idPatient,
     mutate: mutate,
   });
+  //Thông báo
   const { notify: notifySuccess } = useToastify({
     title: "Lưu thông tin bệnh nhân thành công",
     type: "success",
@@ -54,6 +57,8 @@ function useHandleAddFollowUp({
           "Content-Type": "application/json",
         },
       });
+      mutate();
+      mutateFollowUp();
       handleUpdatePatient();
       notifySuccess();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

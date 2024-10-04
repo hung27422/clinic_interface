@@ -138,7 +138,7 @@ export default function TableStatisticsTop10Medications() {
         </TableHead>
         <TableBody>
           {infoMedications.map((item) => (
-            <StyledTableRow key={item.name}>
+            <StyledTableRow key={item.id}>
               <StyledTableCell
                 width={"5%"}
                 align="left"

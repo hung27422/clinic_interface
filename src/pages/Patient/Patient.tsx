@@ -52,7 +52,7 @@ function Patient() {
             <input
               className="w-[90%] bg-gray-300 text-black outline-none"
               type="text"
-              placeholder="Tìm kiếm bệnh nhân...."
+              placeholder="Tìm kiếm bệnh nhân theo số điện thoại...."
               value={valueSearch}
               onChange={(e) => handleSearchPatient(e.target.value)}
             />

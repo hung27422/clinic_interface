@@ -106,7 +106,7 @@ export default function TableStatisticsMedications() {
         </TableHead>
         <TableBody>
           {infoMedications.map((item) => (
-            <StyledTableRow key={item.name}>
+            <StyledTableRow key={item.id}>
               <StyledTableCell
                 width={"5%"}
                 align="left"

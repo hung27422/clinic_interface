@@ -7,8 +7,13 @@ export interface Patient {
   phoneNumber: string;
   checkStatus?: string;
 }
+
 export interface PatientData {
   patient: Patient[];
+  pagination: PaginationData;
+}
+export interface PatientDataTemp {
+  patients: Patient[];
   pagination: PaginationData;
 }
 export interface PatientDataObj {

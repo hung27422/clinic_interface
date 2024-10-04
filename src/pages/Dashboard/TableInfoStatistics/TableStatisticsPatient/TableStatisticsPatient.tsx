@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { PatientDataTemp } from "../../../../types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -27,36 +28,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const infoPatients = [
-  {
-    id: 1,
-    name: "Phi Nguyễn",
-    age: 22,
-    address: "828 Sư Vạn Hạnh",
-    phone: "123456789",
-  },
-  { id: 3, name: "Phúc Lưu", age: 22, address: "Quận 10", phone: "123456789" },
-  { id: 4, name: "Hải Phạm", age: 22, address: "Tân Bình", phone: "123456789" },
-  {
-    id: 5,
-    name: "Thanh Sang",
-    age: 22,
-    address: "Bình Tân",
-    phone: "123456789",
-  },
-  { id: 6, name: "Tấn Hùng", age: 22, address: "Thủ Đức", phone: "123456789" },
-  { id: 7, name: "Phúc Lưu", age: 22, address: "Quận 10", phone: "123456789" },
-];
-
-export default function TableStatisticsPatient() {
+interface Props {
+  data: PatientDataTemp;
+}
+export default function TableStatisticsPatient({ data }: Props) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell width={"5%"} align="left">
-              ID
-            </StyledTableCell>
             <StyledTableCell width={"20%"} align="center">
               Tên
             </StyledTableCell>
@@ -72,24 +52,16 @@ export default function TableStatisticsPatient() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {infoPatients.map((item) => (
-            <StyledTableRow key={item.name}>
-              <StyledTableCell
-                width={"5%"}
-                align="left"
-                component="th"
-                scope="row"
-              >
-                {item.id}
-              </StyledTableCell>
-              <StyledTableCell width={"15%"} align="center">
+          {data.patients.map((item) => (
+            <StyledTableRow key={item.id}>
+              <StyledTableCell width={"20%"} align="center">
                 {item.name}
               </StyledTableCell>
               <StyledTableCell width={"20%"} align="center">
                 {item.age}
               </StyledTableCell>
               <StyledTableCell width={"20%"} align="center">
-                {item.phone}
+                {item.phoneNumber}
               </StyledTableCell>
               <StyledTableCell width={"40%"} align="center">
                 {item.address}
