@@ -39,7 +39,7 @@ interface Props {
 }
 export default function TablePatient({ data, mutate }: Props) {
   if (!data) return null;
-  const dataExit = data.patient && data.patient.length > 0;
+  const dataExit = data.patients && data.patients.length > 0;
   return (
     <>
       {dataExit ? (
@@ -65,7 +65,7 @@ export default function TablePatient({ data, mutate }: Props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.patient?.map((item: Patient) => (
+              {data.patients?.map((item: Patient) => (
                 <StyledTableRow key={item.id}>
                   <StyledTableCell
                     width={"15%"}

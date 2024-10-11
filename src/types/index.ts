@@ -9,7 +9,7 @@ export interface Patient {
 }
 
 export interface PatientData {
-  patient: Patient[];
+  patients: Patient[];
   pagination: PaginationData;
 }
 export interface PatientDataTemp {
