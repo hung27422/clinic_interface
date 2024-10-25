@@ -2,9 +2,8 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { FollowUp, FollowUpData, Patient } from "../../../types";
+import { FollowUpData, Patient } from "../../../types";
 import axios from "axios";
-import useHandleUpdatePatient from "../../Patient/ModalUpdatePatient/hook/useHandleUpdatePatient";
 import useToastify from "../../../hooks/Toastify/useToastify";
 
 const style = {
@@ -19,6 +18,7 @@ const style = {
   p: 4,
 };
 interface Props {
+  idFollowUp?: string;
   dataPatient?: Patient;
   dataFollowUp?: FollowUpData;
   mutate: () => void;
@@ -26,15 +26,12 @@ interface Props {
 }
 export default function DeleteInfoExamination({
   dataPatient,
-  dataFollowUp,
-  mutate,
+
   mutateFollowUp,
+  idFollowUp,
 }: Props) {
   const [open, setOpen] = React.useState(false);
-  const { handleUpdateInfoPatient } = useHandleUpdatePatient({
-    id: dataPatient?.id ?? "",
-    mutate: mutate,
-  });
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   //   Thông báo xóa thông tin bệnh nhân nếu thành công
@@ -42,31 +39,14 @@ export default function DeleteInfoExamination({
     title: `Xóa thông tin bệnh nhân ${dataPatient?.name} thành công`,
     type: "success",
   });
-  //   Lấy id của fl up
-  const idFollowUp =
-    dataFollowUp?.followUps.map((item: FollowUp) => {
-      return item.id;
-    }) ?? [];
-  //Sau khi xóa update lại checkstatus của bệnh nhân lại bệnh nhân
-  const handleUpdateCheckStatusPatient = () => {
-    //Định dạng lại ngày dd/mm/yyyy
-    const formattedDate = dataPatient?.dob.split("-").reverse().join("-");
-    handleUpdateInfoPatient({
-      id: dataPatient?.id || "",
-      name: dataPatient?.name || "",
-      dob: formattedDate || "",
-      address: dataPatient?.address || "",
-      phoneNumber: dataPatient?.phoneNumber || "",
-      status: "not_examined",
-    });
-  };
+
   // Hàm xóa fl up
   const handleDeleteInfoExamination = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     try {
-      await axios.delete(`${apiUrl}/FollowUp/${idFollowUp[0]}`);
+      await axios.delete(`${apiUrl}/FollowUp/${idFollowUp}`);
       //Sau khi xóa update lại checkstatus của bệnh nhân lại bệnh nhân
-      handleUpdateCheckStatusPatient();
+      // handleUpdateCheckStatusPatient();
       mutateFollowUp();
       handleClose();
       notify();
@@ -80,7 +60,7 @@ export default function DeleteInfoExamination({
         style={{ backgroundColor: "red", color: "white" }}
         onClick={handleOpen}
       >
-        Xóa thông tin khám
+        Xóa thông tin
       </Button>
       <Modal
         open={open}

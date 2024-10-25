@@ -8,7 +8,6 @@ import useFollowUp from "../../api/hooks/useFollowUp.tsx";
 import useGetPrescriptionByPhone from "../../api/hooks/useGetPrescriptionByPhone.tsx";
 import ModalPrint from "./ModalPrint/ModalPrint.tsx";
 import ModalAddInfoExamination from "./ModalAddInfoExamination/ModalAddInfoExamination.tsx";
-import DeleteInfoExamination from "./ModalDeleteInfoExamination/ModalDeleteInfoExamination.tsx";
 import Spinner from "../../hooks/Spinner/Spinner.tsx";
 import PaginationClinic from "../../components/Pagination.tsx";
 import { useState } from "react";
@@ -42,6 +41,8 @@ function ViewPatients() {
   // Lấy data đầu tiên của toa thuốc
   const dataPrescriptionFirst =
     dataPrescription?.prescriptions.map((item) => item) || [];
+  console.log(dataPrescriptionFirst[0]);
+
   const totalPages = dataPrescription?.pagination.totalPages || 0;
   const exitPrescription =
     dataPrescription &&
@@ -109,28 +110,19 @@ function ViewPatients() {
                 </div>
                 <div className="flex items-center">
                   {/* Xem và in */}
-                  <div>
-                    <ModalPrint data={dataPrescriptionFirst[0]} titleFirst />
-                  </div>
-                  {/* Xóa thông tin khám */}
-                  <div>
-                    {dataPatient?.patient.status === "examined" && (
-                      <div className="ml-3">
-                        <DeleteInfoExamination
-                          dataPatient={dataPatient?.patient}
-                          dataFollowUp={dataFollowUp}
-                          mutate={mutate}
-                          mutateFollowUp={mutateFollowUp}
-                        />
-                      </div>
-                    )}
-                  </div>
+                  {exitPrescription && (
+                    <div>
+                      <ModalPrint data={dataPrescriptionFirst[0]} titleFirst />
+                    </div>
+                  )}
                 </div>
               </div>
               <IsInfoPatients
                 dataPatient={dataPatient.patient}
                 mutateFollowUp={mutateFollowUp}
+                mutate={mutate}
                 dataFollowUp={dataFollowUp}
+                page={page}
               />
             </div>
           )}

@@ -67,7 +67,7 @@ export default function ModalReExaminationPatient({
   };
   return (
     <div>
-      <Button onClick={handleOpen} variant="contained">
+      <Button onClick={handleOpen} variant="contained" color="success">
         Tái khám
       </Button>
       <Modal

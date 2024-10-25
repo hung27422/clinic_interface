@@ -34,7 +34,7 @@ export default function ModalDeletePatient({ data, mutate }: Props) {
   const handleDeletePatient = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     try {
-      await axios.delete(`${apiUrl}/Patient/ID?id=${data.id}`);
+      await axios.delete(`${apiUrl}/Patient/${data.id}`);
       if (mutate) mutate();
       handleClose();
       notify();

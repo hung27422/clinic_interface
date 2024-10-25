@@ -1,4 +1,5 @@
 import { FollowUp, FollowUpData, Patient } from "../../../types";
+import DeleteInfoExamination from "../ModalDeleteInfoExamination/ModalDeleteInfoExamination";
 import ModalPrescriptionPatients from "../ModalPrescriptionPatients/ModalPrescriptionPatients";
 import ModalReExaminationPatient from "../ModalReExaminationPatient/ModalReExaminationPatient";
 
@@ -6,8 +7,16 @@ interface Props {
   dataPatient: Patient;
   dataFollowUp?: FollowUpData;
   mutateFollowUp: () => void;
+  mutate: () => void;
+  page: number;
 }
-function IsInfoPatients({ dataPatient, dataFollowUp, mutateFollowUp }: Props) {
+function IsInfoPatients({
+  dataPatient,
+  dataFollowUp,
+  mutateFollowUp,
+  mutate,
+  page,
+}: Props) {
   return (
     <div className="flex flex-col">
       {dataFollowUp?.followUps?.map((item: FollowUp, index) => {
@@ -42,17 +51,27 @@ function IsInfoPatients({ dataPatient, dataFollowUp, mutateFollowUp }: Props) {
               </span>
             </div>
             <div className=" col-span-1 mt-5 flex flex-col items-center justify-center">
-              <div className="mb-2 text-center">
+              <div className="text-center">
                 <ModalPrescriptionPatients
                   flUpId={item.id}
                   patientId={dataPatient.id}
+                  phonePatient={dataPatient.phoneNumber}
+                  page={page}
                 />
               </div>
-              <div>
+              <div className="my-2">
                 <ModalReExaminationPatient
                   mutate={mutateFollowUp}
                   idFollowUp={item.id}
                   data={item}
+                />
+              </div>
+              <div>
+                <DeleteInfoExamination
+                  dataPatient={dataPatient}
+                  idFollowUp={item.id}
+                  mutate={mutate}
+                  mutateFollowUp={mutateFollowUp}
                 />
               </div>
             </div>

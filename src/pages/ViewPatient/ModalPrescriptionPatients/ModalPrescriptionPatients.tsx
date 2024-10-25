@@ -9,13 +9,14 @@ import useSearchMedication from "../../../api/hooks/useSearchMedication";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import useHandleAddPrescription from "../hooks/useHandleAddPrescription";
-import usePrescription from "../../../api/hooks/usePrescription";
+import useSWRInfinite from "swr/infinite";
+import axios from "axios";
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 900,
+  width: 1000,
   bgcolor: "background.paper",
   border: "2px solid #1b9fc9",
   boxShadow: 24,
@@ -25,18 +26,28 @@ const style = {
 interface Props {
   flUpId?: string;
   patientId?: string;
+  page: number;
+  phonePatient: string;
 }
-
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 export default function ModalPrescriptionPatients({
   flUpId,
   patientId,
+  page,
+  phonePatient,
 }: Props) {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [open, setOpen] = React.useState(false);
   const [valueSearch, setValueSearch] = React.useState("");
+  const { mutate } = useSWRInfinite(
+    () => `${apiUrl}/Prescription/Phone/${phonePatient}?page=${page}&limit=5`,
+    fetcher
+  );
   const [medicinal, setMedicinal] = React.useState([
     {
       id: 1,
       name: "",
+      quantity: "",
       morning: "",
       afternoon: "",
       night: "",
@@ -44,11 +55,9 @@ export default function ModalPrescriptionPatients({
       idMedication: "",
     },
   ]);
-  console.log(flUpId, patientId);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { mutate } = usePrescription({ limit: 10, page: 1 });
   const { handleSaveInfoPatient } = useHandleAddPrescription({
     mutate: mutate,
     handleClose: handleClose,
@@ -60,6 +69,7 @@ export default function ModalPrescriptionPatients({
       {
         id: newId,
         name: "",
+        quantity: "",
         morning: "",
         afternoon: "",
         night: "",
@@ -94,7 +104,7 @@ export default function ModalPrescriptionPatients({
   const handleSavePrescription = () => {
     const products = medicinal.map((med) => ({
       medicineId: med.idMedication,
-      quantity: 6,
+      quantity: Number(med.quantity),
       instructions: {
         day: med.morning || "",
         lunch: med.afternoon || "",
@@ -208,7 +218,15 @@ export default function ModalPrescriptionPatients({
                     />
                   </Tippy>
                 </div>
-                <div className="col-span-3 grid grid-cols-3 gap-1 py-1 px-2">
+                <div className="col-span-3 grid grid-cols-4 gap-1 py-1 px-2">
+                  <TextField
+                    label="Tổng số thuốc"
+                    variant="outlined"
+                    name="quantity"
+                    className="w-full col-span-1"
+                    value={field.quantity}
+                    onChange={(e) => handleChangeValue(field.id, e)}
+                  />
                   <TextField
                     label="Sáng"
                     variant="outlined"
