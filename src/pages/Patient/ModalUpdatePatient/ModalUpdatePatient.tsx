@@ -46,7 +46,7 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
         dob: data.dob || "",
         address: data.address || "",
         phoneNumber: data.phoneNumber || "",
-        checkStatus: data.checkStatus || "not_examined",
+        checkStatus: data.status || "not_examined",
       });
     }
   }, [data]);
@@ -63,7 +63,7 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
       address: value.address,
       phoneNumber: value.phoneNumber,
       dob: formattedDate,
-      checkStatus: data.checkStatus || "not_examined",
+      status: data.status || "not_examined",
     });
   };
   return (
