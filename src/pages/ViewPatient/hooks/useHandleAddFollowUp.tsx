@@ -12,6 +12,7 @@ interface Props {
   checkStatus: string;
   mutate: () => void;
   mutateFollowUp: () => void;
+  handleClose: () => void;
 }
 function useHandleAddFollowUp({
   idPatient,
@@ -22,6 +23,7 @@ function useHandleAddFollowUp({
   checkStatus,
   mutate,
   mutateFollowUp,
+  handleClose,
 }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   //hook update bệnh nhân
@@ -42,7 +44,7 @@ function useHandleAddFollowUp({
       address: addressPatient,
       phoneNumber: phonePatient,
       dob: dobPatient,
-      checkStatus: checkStatus,
+      status: checkStatus,
     });
   };
 
@@ -61,6 +63,7 @@ function useHandleAddFollowUp({
       mutateFollowUp();
       handleUpdatePatient();
       notifySuccess();
+      handleClose();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response.data.code === "Patient.ExistPhoneNumber") {

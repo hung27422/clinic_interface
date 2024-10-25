@@ -18,16 +18,15 @@ const year = today.getFullYear();
 
 function HomePage() {
   const currentDate = `${day}-${month}-${year}`;
-  const currentDateValue = `${year}-${month}-${day}`;
   // Set ngày
   const [valueStartDate, setValueStartDate] = useState<Dayjs | null>(dayjs());
   const [valueEndDate, setValueEndDate] = useState<Dayjs | null>(dayjs());
-  const startDate = valueStartDate?.format("YYYY-MM-DD").toString();
-  const endDate = valueEndDate?.format("YYYY-MM-DD").toString();
+  const startDate = valueStartDate?.format("DD-MM-YYYY").toString();
+  const endDate = valueEndDate?.format("DD-MM-YYYY").toString();
   // Lấy dữ liệu patient theo ngày
   const { data: dataPatient } = useGetPatientByDate({
-    startDate: startDate || currentDateValue,
-    endDate: endDate || currentDateValue,
+    startDate: startDate || currentDate,
+    endDate: endDate || currentDate,
     page: 1,
     limit: 5,
   });

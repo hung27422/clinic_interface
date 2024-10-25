@@ -7,12 +7,14 @@ interface Props {
   dataPatient: Patient;
   mutate: () => void; //Muate bệnh nhân
   mutateFollowUp: () => void;
+  handleClose: () => void;
 }
 function InfoPatient({
   idPatient,
   dataPatient,
   mutate,
   mutateFollowUp,
+  handleClose,
 }: Props) {
   //Định dạng lại ngày dd/mm/yyyy
   const formattedDate = dataPatient.dob.split("-").reverse().join("-");
@@ -25,6 +27,7 @@ function InfoPatient({
     phonePatient: dataPatient.phoneNumber,
     mutate: mutate,
     mutateFollowUp: mutateFollowUp,
+    handleClose: handleClose,
   });
   const [value, setValue] = useState({
     patientId: "",
@@ -53,9 +56,11 @@ function InfoPatient({
     <div>
       <div className="w-full text-center mt-2 mr-2">
         <span className="block p-2 text-xl">
-          Chưa có thông tin bệnh của bệnh nhân{" "}
-          <span className="text-red-500 font-semibold">{dataPatient.name}</span>
-          . Vui lòng nhập thông tin!!
+          Vui lòng nhập thông tin của bệnh nhân
+          <span className="text-red-500 font-semibold">
+            {" "}
+            {dataPatient.name}
+          </span>
         </span>
         <div>
           <div className="mb-3 mt-2">
@@ -108,6 +113,7 @@ function InfoPatient({
             className="ml-2"
             variant="contained"
             color="error"
+            onClick={handleClose}
           >
             Hủy
           </Button>

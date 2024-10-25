@@ -30,7 +30,6 @@ export default function ModalReExaminationPatient({
 }: Props) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState({
-    patientId: "",
     reason: "",
     history: "",
     diagnosis: "",
@@ -49,16 +48,21 @@ export default function ModalReExaminationPatient({
   };
   React.useEffect(() => {
     if (data) {
-      setValue(data);
+      setValue({
+        reason: data.reason,
+        history: data.history,
+        diagnosis: data.diagnosis,
+        summary: data.summary,
+      });
     }
   }, [data]);
   const handleSaveFollowUp = () => {
     handleUpdateFollowUp({
-      patientId: value.patientId,
+      id: data?.id,
       reason: value.reason,
+      history: value.history,
       diagnosis: value.diagnosis,
       summary: value.summary,
-      history: value.history,
     });
   };
   return (

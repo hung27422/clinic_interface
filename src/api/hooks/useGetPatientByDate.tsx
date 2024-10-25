@@ -2,6 +2,7 @@ import useSWR from "swr";
 import { PatientDataTemp } from "../../types";
 
 const fetcher = async (url: string) => {
+  if (!url) return null; // Tránh gọi fetch nếu URL là null
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -20,7 +21,7 @@ interface Props {
 function useGetPatientByDate({ startDate, endDate, page, limit }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const { data, isLoading, mutate } = useSWR<PatientDataTemp>(
-    `${apiUrl}/Patient/Date?dateStart=${startDate}&dateEnd=${endDate}&page=${page}&limit=${limit}`,
+    `${apiUrl}/Patient/Date/Start=${startDate}&End=${endDate}?page=${page}&limit=${limit}`,
     fetcher,
     {
       revalidateIfStale: false,

@@ -5,7 +5,7 @@ export interface Patient {
   dob: string;
   address: string;
   phoneNumber: string;
-  checkStatus?: string;
+  status?: string;
 }
 
 export interface PatientData {
@@ -29,32 +29,82 @@ export interface ViewPatient {
 export interface Medication {
   id: string;
   name: string;
-  company: string;
+  stock: number;
   price: number;
-  quantity: number;
-  status: string;
   type: string;
+  company: string;
+  status?: string;
+  createdAt?: string;
 }
 export interface MedicationData {
   medicines: Medication[];
   pagination: PaginationData;
 }
 export interface FollowUp {
-  patientId: string;
+  id?: string;
   reason: string;
   history: string;
   diagnosis: string;
   summary: string;
   createdAt?: string;
-  modifiedAt?: string;
-  id?: string;
+  patientId?: string;
+  patient?: Patient;
 }
 export interface FollowUpData {
-  followUp: FollowUp[];
+  followUps: FollowUp[];
 }
 export interface PaginationData {
   totalItems: number;
   totalItemsPerPage: number;
   currentPage: number;
   totalPages: number;
+}
+export interface Prescription {
+  patientId: string;
+  followUpId: string;
+  products: {
+    medicineId: string;
+    quantity: number;
+    instructions: {
+      day: string;
+      lunch: string;
+      afternoon: string;
+      manual: string;
+    };
+  }[];
+  notes: string;
+}
+export interface Prescriptions {
+  id: string;
+  patient: {
+    id: string;
+    name: string;
+    age: number;
+    dob: string;
+    address: string;
+    phoneNumber: string;
+  };
+  summary: {
+    summary: string;
+  };
+  products: [
+    {
+      name: string;
+      quantity: number;
+      instructions: {
+        day: string;
+        lunch: string;
+        afternoon: string;
+        manual: string;
+      };
+    }
+  ];
+  notes: string;
+  totalPrice: number;
+  billDate: string;
+  createdAt: string;
+}
+export interface PrescriptionData {
+  prescriptions: Prescriptions[];
+  pagination: PaginationData;
 }

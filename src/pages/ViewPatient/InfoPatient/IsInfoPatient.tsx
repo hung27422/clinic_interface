@@ -10,32 +10,43 @@ interface Props {
 function IsInfoPatients({ dataPatient, dataFollowUp, mutateFollowUp }: Props) {
   return (
     <div className="flex flex-col">
-      {dataFollowUp?.followUp?.map((item: FollowUp, index) => {
+      {dataFollowUp?.followUps?.map((item: FollowUp, index) => {
+        // Định dạng ngày
+        const formattedDate = item.createdAt
+          ? new Date(item.createdAt).toLocaleDateString("vi-VN", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            })
+          : "Đang cập nhật";
         return (
-          <div key={index} className="flex flex-col">
-            <div className="mb-4">
+          <div
+            key={index}
+            className=" flex items-center justify-between border-2 border-primary mb-4 rounded-md px-6 py-2"
+          >
+            <div className="flex flex-col col-span-2">
               <span className="text-2xl">
-                Thông tin của bệnh nhân
-                <span className="text-red-500 font-semibold">
-                  {" " + dataPatient.name}
-                </span>
+                <span className="font-bold">Lý do khám:</span> {item.reason}
+              </span>
+              <span className="text-2xl">
+                <span className="font-bold">Tiền căn:</span> {item.history}
+              </span>
+              <span className="text-2xl">
+                <span className="font-bold">Tổng quát:</span> {item.diagnosis}
+              </span>
+              <span className="text-2xl">
+                <span className="font-bold">Chuẩn đoán:</span> {item.summary}
+              </span>
+              <span className="text-2xl">
+                <span className="font-bold">Ngày khám:</span> {formattedDate}
               </span>
             </div>
-            <span className="text-2xl">
-              <span className="font-bold">Lý do khám:</span> {item.reason}
-            </span>
-            <span className="text-2xl">
-              <span className="font-bold">Tiền căn:</span> {item.history}
-            </span>
-            <span className="text-2xl">
-              <span className="font-bold">Tổng quát:</span> {item.diagnosis}
-            </span>
-            <span className="text-2xl">
-              <span className="font-bold">Chuẩn đoán:</span> {item.summary}
-            </span>
-            <div className="mt-5 flex items-center">
-              <div className="mr-2">
-                <ModalPrescriptionPatients />
+            <div className=" col-span-1 mt-5 flex flex-col items-center justify-center">
+              <div className="mb-2 text-center">
+                <ModalPrescriptionPatients
+                  flUpId={item.id}
+                  patientId={dataPatient.id}
+                />
               </div>
               <div>
                 <ModalReExaminationPatient

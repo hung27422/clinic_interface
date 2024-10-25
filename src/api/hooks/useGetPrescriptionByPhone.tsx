@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { PatientDataObj } from "../../types";
+import { PrescriptionData } from "../../types";
 
 const fetcher = async (url: string) => {
   if (!url) return null; // Tránh gọi fetch nếu URL là null
@@ -12,13 +12,15 @@ const fetcher = async (url: string) => {
 };
 
 interface Props {
-  id: string;
+  phone: string;
+  page: number;
+  limit: number;
 }
 
-function useGetPatientById({ id }: Props) {
+function useGetPrescriptionByPhone({ phone, limit, page }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const { data, isLoading, mutate } = useSWR<PatientDataObj>(
-    `${apiUrl}/Patient/${id}`,
+  const { data, isLoading, mutate } = useSWR<PrescriptionData>(
+    `${apiUrl}/Prescription/Phone/${phone}?page=${page}&limit=${limit}`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -30,4 +32,4 @@ function useGetPatientById({ id }: Props) {
   return { data, isLoading, mutate };
 }
 
-export default useGetPatientById;
+export default useGetPrescriptionByPhone;

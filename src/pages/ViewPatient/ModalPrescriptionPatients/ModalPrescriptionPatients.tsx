@@ -3,7 +3,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
-
+import "tippy.js/dist/tippy.css";
+import Tippy from "@tippyjs/react/headless";
+import useSearchMedication from "../../../api/hooks/useSearchMedication";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import useHandleAddPrescription from "../hooks/useHandleAddPrescription";
+import usePrescription from "../../../api/hooks/usePrescription";
 const style = {
   position: "absolute",
   top: "50%",
@@ -16,9 +22,17 @@ const style = {
   p: 4,
   borderRadius: 6,
 };
+interface Props {
+  flUpId?: string;
+  patientId?: string;
+}
 
-export default function ModalPrescriptionPatients() {
+export default function ModalPrescriptionPatients({
+  flUpId,
+  patientId,
+}: Props) {
   const [open, setOpen] = React.useState(false);
+  const [valueSearch, setValueSearch] = React.useState("");
   const [medicinal, setMedicinal] = React.useState([
     {
       id: 1,
@@ -27,12 +41,18 @@ export default function ModalPrescriptionPatients() {
       afternoon: "",
       night: "",
       time: "Trước khi ăn",
+      idMedication: "",
     },
   ]);
+  console.log(flUpId, patientId);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const { mutate } = usePrescription({ limit: 10, page: 1 });
+  const { handleSaveInfoPatient } = useHandleAddPrescription({
+    mutate: mutate,
+    handleClose: handleClose,
+  });
   const addFields = () => {
     const newId = medicinal.length + 1;
     setMedicinal([
@@ -44,10 +64,16 @@ export default function ModalPrescriptionPatients() {
         afternoon: "",
         night: "",
         time: "Trước khi ăn",
+        idMedication: "",
       },
     ]);
   };
 
+  const { data } = useSearchMedication({
+    name: valueSearch,
+    limit: 5,
+    page: 1,
+  });
   const handleChangeValue = (
     id: number,
     e: React.ChangeEvent<
@@ -60,12 +86,66 @@ export default function ModalPrescriptionPatients() {
         field.id === id ? { ...field, [name]: value } : field
       )
     );
+    if (name === "name") {
+      setValueSearch(value);
+    }
   };
 
   const handleSavePrescription = () => {
-    console.log("Danh sách toa thuốc:", medicinal);
+    const products = medicinal.map((med) => ({
+      medicineId: med.idMedication,
+      quantity: 6,
+      instructions: {
+        day: med.morning || "",
+        lunch: med.afternoon || "",
+        afternoon: med.night || "",
+        manual: med.time || "",
+      },
+    }));
+    handleSaveInfoPatient({
+      followUpId: flUpId || "",
+      patientId: patientId || "",
+      notes: "Không",
+      products: products,
+    });
   };
-
+  const handleSaveDataMedication = (
+    id: number,
+    name: string,
+    idMedication: string
+  ) => {
+    setMedicinal((prev) =>
+      prev.map((field) =>
+        field.id === id ? { ...field, name, idMedication } : field
+      )
+    );
+    setValueSearch("");
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const resultSearchMedication = (id: number, attrs: any) => (
+    <div
+      className="w-[150px] p-2 bg-white shadow-lg shadow-slate-300 border-primary border-2 rounded-md "
+      {...attrs}
+    >
+      {data?.medicines.map((item) => {
+        return (
+          <div
+            onClick={() => handleSaveDataMedication(id, item.name, item.id)}
+            key={item.id}
+            className="w-full group"
+          >
+            <div className="flex items-center hover:bg-slate-200 rounded-md px-2 py-1 ">
+              <span className="w-full block text-xl">{item.name}</span>
+              <FontAwesomeIcon
+                icon={faCheck}
+                className="text-green-600 font-extrabold hidden group-hover:block"
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
   return (
     <div>
       <Button onClick={handleOpen} variant="contained">
@@ -110,14 +190,23 @@ export default function ModalPrescriptionPatients() {
             {medicinal.map((field, index) => (
               <div className="w-full grid grid-cols-5 py-2 " key={index}>
                 <div className="col-span-1 py-1">
-                  <TextField
-                    label="Tên thuốc"
-                    variant="outlined"
-                    className="w-full"
-                    name="name"
-                    value={field.name}
-                    onChange={(e) => handleChangeValue(field.id, e)}
-                  />
+                  <Tippy
+                    trigger="click"
+                    render={(attrs) =>
+                      valueSearch && resultSearchMedication(field.id, attrs)
+                    }
+                    interactive
+                    offset={[0, -115]}
+                  >
+                    <TextField
+                      label="Tên thuốc"
+                      variant="outlined"
+                      className="w-full"
+                      name="name"
+                      value={field.name}
+                      onChange={(e) => handleChangeValue(field.id, e)}
+                    />
+                  </Tippy>
                 </div>
                 <div className="col-span-3 grid grid-cols-3 gap-1 py-1 px-2">
                   <TextField

@@ -31,9 +31,8 @@ export default function ModalAddNewMedication({ mutate }: Props) {
   const [value, setValue] = React.useState({
     name: "",
     company: "",
-    quantity: "" as number | "",
+    stock: "" as number | "",
     price: "" as number | "",
-    status: "",
     type: "",
   });
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,13 +41,12 @@ export default function ModalAddNewMedication({ mutate }: Props) {
   };
   const handleSaveMedication = () => {
     const price = Number(value.price);
-    const quantity = Number(value.quantity);
+    const stock = Number(value.stock);
     handleSaveInfoMedication({
       name: value.name,
       company: value.company,
-      quantity: quantity,
+      stock: stock,
       price: price,
-      status: "inventory",
       type: value.type,
     });
   };
@@ -85,9 +83,9 @@ export default function ModalAddNewMedication({ mutate }: Props) {
             </div>
             <div className="mb-3">
               <TextField
-                label="Số lượng"
+                label="Số lượng tồn kho"
                 variant="outlined"
-                name="quantity"
+                name="stock"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
               />
@@ -101,15 +99,6 @@ export default function ModalAddNewMedication({ mutate }: Props) {
                 onChange={handleChangeValue}
               />
             </div>
-            {/* <div className="mb-3">
-              <TextField
-                label="Tình trạng"
-                variant="outlined"
-                name="status"
-                className="w-full mb-2 pb-2"
-                onChange={handleChangeValue}
-              />
-            </div> */}
             <div className="mb-3">
               <TextField
                 label="Type"

@@ -35,7 +35,7 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
   const [value, setValue] = React.useState({
     name: "",
     company: "",
-    quantity: "" as number | "",
+    stock: "" as number | "",
     price: "" as number | "",
     status: "",
     type: "",
@@ -45,13 +45,13 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
     setValue((prev) => ({ ...prev, [name]: value }));
   };
   const handleUpdateMedication = () => {
-    const quantity = value.quantity ? Number(value.quantity) : 0;
+    const quantity = value.stock ? Number(value.stock) : 0;
     const price = value.price ? Number(value.price) : 0;
     handleUpdateInfoMedication({
       id: data.id,
       name: value.name,
       company: value.company,
-      quantity: quantity,
+      stock: quantity,
       price: price,
       status: "inventory",
       type: value.type,
@@ -59,7 +59,14 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
   };
   React.useEffect(() => {
     if (data) {
-      setValue(data);
+      setValue({
+        name: data.name,
+        company: data.company,
+        stock: data.stock !== undefined ? data.stock : "",
+        price: data.price !== undefined ? data.price : "",
+        status: data.status || "",
+        type: data.type,
+      });
     }
   }, [data]);
   return (
@@ -101,9 +108,9 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
               <TextField
                 label="Số lượng"
                 variant="outlined"
-                name="quantity"
+                name="stock"
                 className="w-full mb-2 pb-2"
-                value={value.quantity}
+                value={value.stock}
                 onChange={handleChangeValue}
               />
             </div>{" "}

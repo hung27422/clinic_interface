@@ -1,33 +1,11 @@
 import { Button } from "@mui/material";
 import React from "react";
+import { Prescriptions } from "../../../types";
 
-const InfoPrescriptions = [
-  {
-    id: 1,
-    name: "Kẹo",
-    quantity: 2,
-    numberDate: 2,
-  },
-  { id: 2, name: "Kem", quantity: 2, numberDate: 2 },
-  { id: 3, name: "Bánh", quantity: 3, numberDate: 3 },
-  {
-    id: 1,
-    name: "Kẹo",
-    quantity: 2,
-    numberDate: 2,
-  },
-  { id: 2, name: "Kem", quantity: 2, numberDate: 2 },
-  { id: 3, name: "Bánh", quantity: 3, numberDate: 3 },
-  {
-    id: 1,
-    name: "Kẹo",
-    quantity: 2,
-    numberDate: 2,
-  },
-  { id: 2, name: "Kem", quantity: 2, numberDate: 2 },
-  { id: 3, name: "Bánh", quantity: 3, numberDate: 3 },
-];
-function InfoPrescription() {
+interface Props {
+  data: Prescriptions;
+}
+function InfoPrescription({ data }: Props) {
   const now = new Date();
   const date = now.getDate();
   const month = now.getMonth() + 1;
@@ -57,35 +35,71 @@ function InfoPrescription() {
           <div className="grid grid-cols-2 mx-4">
             <div className="col-span-1 flex flex-col">
               <span className="text-lg">
-                Tên: <span className="font-bold">Phi Nguyễn</span>
+                Tên: <span className="font-bold">{data.patient.name}</span>
               </span>
-              <span className="text-lg">
-                Chuẩn đoán: <span className="font-bold">Có thai</span>
+              <span className="text-lg break-words">
+                Chuẩn đoán:
+                <span className="font-bold"> {data.summary.summary}</span>
               </span>
             </div>
-            <span className="col-span-1 text-lg">
-              Địa chỉ: <span className="font-bold">Cầu Thị Nghè</span>
+            <span className="col-span-1 text-lg break-words">
+              Địa chỉ:
+              <span className="font-bold">{data.patient.address} </span>
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-3 text-center mt-3 font-semibold border-b-2 pb-2">
-          <span className="col-span-1 text-xl">Tên thuốc</span>
-          <span className="col-span-1 text-xl">Số lượng</span>
-          <span className="col-span-1 text-xl">Số ngày dùng</span>
-        </div>
-        <div className="pt-2 text-center">
-          {InfoPrescriptions.map((item, index) => {
+
+        <div className="pt-2 mx-4">
+          <h2 className="text-xl font-bold underline mb-3">
+            Chỉ định dùng thuốc
+          </h2>
+          {data.products.map((item, index) => {
             return (
-              <div key={index} className="grid grid-cols-3">
-                <span className="col-span-1 pb-1 text-xl font-medium">
-                  {item.name}
-                </span>
-                <span className="col-span-1 pb-1 text-xl font-medium">
-                  {item.quantity}
-                </span>
-                <span className="col-span-1 pb-1 text-xl font-medium">
-                  {item.numberDate}
-                </span>
+              <div key={index}>
+                <div className="flex flex-col py-2">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-lg font-normal">{index + 1} .</span>
+                      <span className="text-xl font-medium ml-2">
+                        {item.name}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-xl">
+                        Số lượng:
+                        <span className="font-semibold">
+                          {`${" " + item.quantity}`} Viên
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="">
+                    <span className="text-lg mx-4">
+                      Sáng:
+                      <span className="font-medium">
+                        {`${" " + item.instructions.day}`} Viên
+                      </span>
+                    </span>
+                    <span className="text-lg mx-4">
+                      Trưa:
+                      <span className="font-medium">
+                        {`${" " + item.instructions.lunch}`} Viên
+                      </span>
+                    </span>
+                    <span className="text-lg mx-4">
+                      Chiều:
+                      <span className="font-medium">
+                        {`${" " + item.instructions.afternoon}`} Viên
+                      </span>
+                    </span>
+                    <span className="text-lg mx-4">
+                      Uống:
+                      <span className="font-medium">
+                        {`${" " + item.instructions.manual}`}
+                      </span>
+                    </span>
+                  </div>
+                </div>
               </div>
             );
           })}
@@ -93,6 +107,12 @@ function InfoPrescription() {
         <div className="flex flex-col ml-4 text-xl mx-4">
           <span className="mt-3">Lời dặn:</span>
           <div className="flex flex-col items-end justify-center mt-4">
+            <div className="my-2">
+              <span className="text-xl ">
+                Thành tiền:{" "}
+                <span className="font-medium">{data.totalPrice} VNĐ</span>
+              </span>
+            </div>
             <div className="flex flex-col items-center">
               <span>
                 Ngày {date} tháng {month} năm {year}

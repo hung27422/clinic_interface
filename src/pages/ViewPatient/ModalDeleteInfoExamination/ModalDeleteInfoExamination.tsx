@@ -44,7 +44,7 @@ export default function DeleteInfoExamination({
   });
   //   Lấy id của fl up
   const idFollowUp =
-    dataFollowUp?.followUp.map((item: FollowUp) => {
+    dataFollowUp?.followUps.map((item: FollowUp) => {
       return item.id;
     }) ?? [];
   //Sau khi xóa update lại checkstatus của bệnh nhân lại bệnh nhân
@@ -54,10 +54,10 @@ export default function DeleteInfoExamination({
     handleUpdateInfoPatient({
       id: dataPatient?.id || "",
       name: dataPatient?.name || "",
+      dob: formattedDate || "",
       address: dataPatient?.address || "",
       phoneNumber: dataPatient?.phoneNumber || "",
-      dob: formattedDate || "",
-      checkStatus: "not_examined",
+      status: "not_examined",
     });
   };
   // Hàm xóa fl up
@@ -77,7 +77,7 @@ export default function DeleteInfoExamination({
   return (
     <div>
       <Button
-        style={{ backgroundColor: "red", color: "white", height: "44px" }}
+        style={{ backgroundColor: "red", color: "white" }}
         onClick={handleOpen}
       >
         Xóa thông tin khám

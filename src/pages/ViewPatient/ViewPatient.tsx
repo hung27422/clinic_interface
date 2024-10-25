@@ -1,24 +1,59 @@
 import { Link, useParams } from "react-router-dom";
 import config from "../../configs/configs";
-import InfoPatient from "./InfoPatient/InfoPatient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import ModalPrescriptionPatients from "./ModalPrescriptionPatients/ModalPrescriptionPatients.tsx";
 import useGetPatientById from "../../api/hooks/useGetPatientById.tsx";
 import IsInfoPatients from "./InfoPatient/IsInfoPatient.tsx";
-import DeleteInfoExamination from "./ModalDeleteInfoExamination/ModalDeleteInfoExamination.tsx";
 import useFollowUp from "../../api/hooks/useFollowUp.tsx";
+import useGetPrescriptionByPhone from "../../api/hooks/useGetPrescriptionByPhone.tsx";
+import ModalPrint from "./ModalPrint/ModalPrint.tsx";
+import ModalAddInfoExamination from "./ModalAddInfoExamination/ModalAddInfoExamination.tsx";
+import DeleteInfoExamination from "./ModalDeleteInfoExamination/ModalDeleteInfoExamination.tsx";
+import Spinner from "../../hooks/Spinner/Spinner.tsx";
+import PaginationClinic from "../../components/Pagination.tsx";
+import { useState } from "react";
 
 function ViewPatients() {
+  const [page, setPage] = useState(1);
+  // Lấy id của patient
   const { id } = useParams<{ id: string }>();
   const { data: dataPatient, mutate } = useGetPatientById({ id: id ?? "" });
+  // Lấy data followUp theo id của patient
   const { data: dataFollowUp, mutate: mutateFollowUp } = useFollowUp({
     patientID: id ?? "",
   });
-  // if (!dataFollowUp && !dataFollowUp) return null;
+  // Lấy data của toa thuốc
+  const { data: dataPrescription } = useGetPrescriptionByPhone({
+    phone: dataPatient?.patient.phoneNumber || "",
+    limit: 5,
+    page: page,
+  });
+
+  // Chuyển trang
+  const handleChangePage = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+  if (!dataPrescription && !dataPatient) {
+    return <Spinner />;
+  }
+  // Lấy data đầu tiên của toa thuốc
+  const dataPrescriptionFirst =
+    dataPrescription?.prescriptions.map((item) => item) || [];
+  const totalPages = dataPrescription?.pagination.totalPages || 0;
+  const exitPrescription =
+    dataPrescription &&
+    dataPrescription.prescriptions &&
+    dataPrescription.prescriptions.length > 0;
+  const exitPagination =
+    dataPrescription &&
+    dataPrescription.prescriptions &&
+    dataPrescription.pagination.totalPages > 1;
   return (
     <div>
-      <div className="grid grid-cols-3 items-center relative">
+      <div className="grid grid-cols-3 items-center">
         <div className="col-span-1">
           <Link to={config.router.patients}>
             <FontAwesomeIcon className="text-2xl" icon={faArrowLeft} />
@@ -27,49 +62,137 @@ function ViewPatients() {
         <h2 className="col-span-1 text-5xl text-center font-bold">
           Thông Tin Khám Bệnh
         </h2>
-        <div className="col-span-1"></div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 mt-10">
-        <div className="col-span-1">
-          {dataPatient?.patient.checkStatus === "not_examined" && (
-            <InfoPatient
+        <div className="col-span-1 text-right">
+          {dataPatient && (
+            <ModalAddInfoExamination
               idPatient={id}
               dataPatient={dataPatient.patient}
               mutate={mutate}
               mutateFollowUp={mutateFollowUp}
             />
           )}
-          {dataPatient?.patient.checkStatus === "examined" && (
-            <IsInfoPatients
-              dataPatient={dataPatient.patient}
-              mutateFollowUp={mutateFollowUp}
-              dataFollowUp={dataFollowUp}
-            />
-          )}
-        </div>
-        <div className="col-span-1">
-          <h2 className="text-3xl font-semibold text-center ">
-            Thông tin toa thuốc
-          </h2>
-          <h2 className="text-3xl text-gray-500 text-center">
-            Chưa có toa thuốc nào!!!
-          </h2>
-          <div className="mt-3 text-center">
-            <ModalPrescriptionPatients />
-          </div>
         </div>
       </div>
-      {dataPatient?.patient.checkStatus === "examined" && (
-        <div className="absolute bottom-6">
-          <DeleteInfoExamination
-            dataPatient={dataPatient?.patient}
-            dataFollowUp={dataFollowUp}
-            mutate={mutate}
-            mutateFollowUp={mutateFollowUp}
-          />
+
+      <div className="mt-10">
+        <div className="">
+          {/* Bệnh nhân chưa có thông tin khám */}
+          {dataPatient?.patient.status === "not_examined" && (
+            <div className="text-2xl text-center">
+              Hãy thêm bệnh mới cho bệnh nhân{" "}
+              <span className="text-red-500 font-semibold">
+                {" " + dataPatient.patient.name}
+              </span>{" "}
+              <div>
+                {dataPatient && (
+                  <ModalAddInfoExamination
+                    idPatient={id}
+                    dataPatient={dataPatient.patient}
+                    mutate={mutate}
+                    mutateFollowUp={mutateFollowUp}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+          {/* Bệnh nhân đã có thông tin khám */}
+          {dataPatient?.patient.status === "examined" && (
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="">
+                  <span className="text-3xl">
+                    Thông tin của bệnh nhân
+                    <span className="text-red-500 font-semibold">
+                      {" " + dataPatient.patient.name}
+                    </span>
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  {/* Xem và in */}
+                  <div>
+                    <ModalPrint data={dataPrescriptionFirst[0]} titleFirst />
+                  </div>
+                  {/* Xóa thông tin khám */}
+                  <div>
+                    {dataPatient?.patient.status === "examined" && (
+                      <div className="ml-3">
+                        <DeleteInfoExamination
+                          dataPatient={dataPatient?.patient}
+                          dataFollowUp={dataFollowUp}
+                          mutate={mutate}
+                          mutateFollowUp={mutateFollowUp}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <IsInfoPatients
+                dataPatient={dataPatient.patient}
+                mutateFollowUp={mutateFollowUp}
+                dataFollowUp={dataFollowUp}
+              />
+            </div>
+          )}
         </div>
-      )}
+        <div>
+          {/* Kiểm tra nếu có toa thuốc thì sẽ hiển thị */}
+          {exitPrescription && (
+            <div>
+              <h2 className="text-3xl font-semibold text-center ">
+                Thông tin toa thuốc
+              </h2>
+              <div className="bg-black/10 px-2 py-4 mt-2 rounded-md h-fit">
+                {dataPrescription.prescriptions.map((item) => {
+                  return (
+                    <div
+                      key={item.id}
+                      className="grid grid-cols-3 items-center px-2 py-1 mt-2 justify-center border-primary border-2 rounded-md"
+                    >
+                      <div className="col-span-1">
+                        <div className="truncate">
+                          <span className="text-xl font-medium">
+                            Chuẩn đoán:
+                          </span>
+                          <span className="text-xl">
+                            {item.summary.summary}
+                          </span>
+                        </div>
+                        <div className="truncate ">
+                          <span className="text-xl font-medium">Ghi chú: </span>
+                          <span className="text-xl  overflow-hidden whitespace-nowrap">
+                            {item.notes}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="col-span-1 text-center">
+                        <div>
+                          <span className="text-xl font-medium">
+                            Ngày khám:{" "}
+                          </span>
+                          <span className="text-xl">20-10-2024</span>
+                        </div>
+                      </div>
+                      <div className="col-span-1 flex items-end justify-end">
+                        <ModalPrint data={item} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="mt-4 flex items-center justify-center">
+                {exitPagination && (
+                  <PaginationClinic
+                    count={totalPages}
+                    page={page}
+                    onChange={handleChangePage}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

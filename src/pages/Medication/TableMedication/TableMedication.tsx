@@ -53,7 +53,7 @@ export default function TableMedication({ data, mutate }: Props) {
                   Giá
                 </StyledTableCell>
                 <StyledTableCell width={"15%"} align="center">
-                  Số lượng
+                  Số lượng tồn kho
                 </StyledTableCell>
                 <StyledTableCell width={"15%"} align="center">
                   Loại
@@ -76,7 +76,7 @@ export default function TableMedication({ data, mutate }: Props) {
                     {item.price}
                   </StyledTableCell>
                   <StyledTableCell width={"10%"} align="center">
-                    {item.quantity}
+                    {item.stock}
                   </StyledTableCell>
                   <StyledTableCell width={"15%"} align="center">
                     {item.type}
