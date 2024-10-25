@@ -57,10 +57,7 @@ function InfoPatient({
       <div className="w-full text-center mt-2 mr-2">
         <span className="block p-2 text-xl">
           Vui lòng nhập thông tin của bệnh nhân
-          <span className="text-red-500 font-semibold">
-            {" "}
-            {dataPatient.name}
-          </span>
+          <span className="text-red-500 font-semibold">{dataPatient.name}</span>
         </span>
         <div>
           <div className="mb-3 mt-2">

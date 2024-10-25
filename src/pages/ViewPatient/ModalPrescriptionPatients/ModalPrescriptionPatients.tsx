@@ -134,7 +134,7 @@ export default function ModalPrescriptionPatients({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resultSearchMedication = (id: number, attrs: any) => (
     <div
-      className="w-[150px] p-2 bg-white shadow-lg shadow-slate-300 border-primary border-2 rounded-md "
+      className="w-[150px]  p-2 bg-white shadow-lg shadow-slate-300 border-primary border-2 rounded-md overflow-hidden"
       {...attrs}
     >
       {data?.medicines.map((item) => {
@@ -145,7 +145,7 @@ export default function ModalPrescriptionPatients({
             className="w-full group"
           >
             <div className="flex items-center hover:bg-slate-200 rounded-md px-2 py-1 ">
-              <span className="w-full block text-xl">{item.name}</span>
+              <span className="w-full block text-xl truncate">{item.name}</span>
               <FontAwesomeIcon
                 icon={faCheck}
                 className="text-green-600 font-extrabold hidden group-hover:block"
@@ -201,12 +201,13 @@ export default function ModalPrescriptionPatients({
               <div className="w-full grid grid-cols-5 py-2 " key={index}>
                 <div className="col-span-1 py-1">
                   <Tippy
-                    trigger="click"
+                    // trigger="click"
                     render={(attrs) =>
                       valueSearch && resultSearchMedication(field.id, attrs)
                     }
                     interactive
-                    offset={[0, -115]}
+                    offset={[50, 10]}
+                    placement="bottom"
                   >
                     <TextField
                       label="Tên thuốc"
