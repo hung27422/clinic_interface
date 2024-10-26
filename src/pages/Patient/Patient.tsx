@@ -11,6 +11,8 @@ import PaginationClinic from "../../components/Pagination";
 import Spinner from "../../hooks/Spinner/Spinner";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Patient() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [page, setPage] = useState(1);
   const [valueSearch, setValueSearch] = useState("");
 
@@ -24,7 +26,7 @@ function Patient() {
     setPage(value);
   };
   const { mutate } = useSWRInfinite(
-    () => `https://localhost:7143/api/Patient?page=${page}&limit=5`,
+    () => `${apiUrl}/Patient?page=${page}&limit=5`,
     fetcher
   );
   // Hàm lấy value search

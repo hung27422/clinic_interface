@@ -7,7 +7,7 @@ import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react/headless";
 import useSearchMedication from "../../../api/hooks/useSearchMedication";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useHandleAddPrescription from "../hooks/useHandleAddPrescription";
 import useSWRInfinite from "swr/infinite";
 import axios from "axios";
@@ -16,7 +16,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1000,
+  width: 1100,
   bgcolor: "background.paper",
   border: "2px solid #1b9fc9",
   boxShadow: 24,
@@ -78,7 +78,9 @@ export default function ModalPrescriptionPatients({
       },
     ]);
   };
-
+  const removeField = (id: number) => {
+    setMedicinal((prev) => prev.filter((field) => field.id !== id));
+  };
   const { data } = useSearchMedication({
     name: valueSearch,
     limit: 5,
@@ -192,78 +194,89 @@ export default function ModalPrescriptionPatients({
             <span className="col-span-2 text-center font-bold text-xl">
               Cách uống thuốc
             </span>
-            <span className="col-span-1 text-center font-bold text-xl">
+            <span className="col-span-1 text-left font-bold text-xl ml-8">
               Thời gian uống thuốc
             </span>
           </div>
           <div className="h-[400px] overflow-hidden overflow-y-auto hidden-scrollbar">
             {medicinal.map((field, index) => (
-              <div className="w-full grid grid-cols-5 py-2 " key={index}>
-                <div className="col-span-1 py-1">
-                  <Tippy
-                    // trigger="click"
-                    render={(attrs) =>
-                      valueSearch && resultSearchMedication(field.id, attrs)
-                    }
-                    interactive
-                    offset={[50, 10]}
-                    placement="bottom"
-                  >
+              <div className="flex">
+                <div className="w-full grid grid-cols-5 py-2 " key={index}>
+                  <div className="col-span-1 py-1">
+                    <Tippy
+                      // trigger="click"
+                      render={(attrs) =>
+                        valueSearch && resultSearchMedication(field.id, attrs)
+                      }
+                      interactive
+                      offset={[50, 10]}
+                      placement="bottom"
+                    >
+                      <TextField
+                        label="Tên thuốc"
+                        variant="outlined"
+                        className="w-full"
+                        name="name"
+                        value={field.name}
+                        onChange={(e) => handleChangeValue(field.id, e)}
+                      />
+                    </Tippy>
+                  </div>
+                  <div className="col-span-3 grid grid-cols-4 gap-1 py-1 px-2">
                     <TextField
-                      label="Tên thuốc"
+                      label="Tổng số thuốc"
                       variant="outlined"
-                      className="w-full"
-                      name="name"
-                      value={field.name}
+                      name="quantity"
+                      className="w-full col-span-1"
+                      value={field.quantity}
                       onChange={(e) => handleChangeValue(field.id, e)}
                     />
-                  </Tippy>
+                    <TextField
+                      label="Sáng"
+                      variant="outlined"
+                      name="morning"
+                      className="w-full col-span-1"
+                      value={field.morning}
+                      onChange={(e) => handleChangeValue(field.id, e)}
+                    />
+                    <TextField
+                      label="Trưa"
+                      variant="outlined"
+                      name="afternoon"
+                      className="w-full col-span-1"
+                      value={field.afternoon}
+                      onChange={(e) => handleChangeValue(field.id, e)}
+                    />
+                    <TextField
+                      label="Chiều"
+                      variant="outlined"
+                      name="night"
+                      className="w-full col-span-1"
+                      value={field.night}
+                      onChange={(e) => handleChangeValue(field.id, e)}
+                    />
+                  </div>
+                  <div className="flex justify-center items-center col-span-1 py-1 mt-1 border-2 rounded-md h-14">
+                    <select
+                      name="time"
+                      className="text-xl outline-none"
+                      id="time"
+                      value={field.time}
+                      onChange={(e) => handleChangeValue(field.id, e)}
+                    >
+                      <option value="Trước khi ăn">Trước khi ăn</option>
+                      <option value="Sau khi ăn">Sau khi ăn</option>
+                    </select>
+                  </div>
                 </div>
-                <div className="col-span-3 grid grid-cols-4 gap-1 py-1 px-2">
-                  <TextField
-                    label="Tổng số thuốc"
-                    variant="outlined"
-                    name="quantity"
-                    className="w-full col-span-1"
-                    value={field.quantity}
-                    onChange={(e) => handleChangeValue(field.id, e)}
-                  />
-                  <TextField
-                    label="Sáng"
-                    variant="outlined"
-                    name="morning"
-                    className="w-full col-span-1"
-                    value={field.morning}
-                    onChange={(e) => handleChangeValue(field.id, e)}
-                  />
-                  <TextField
-                    label="Trưa"
-                    variant="outlined"
-                    name="afternoon"
-                    className="w-full col-span-1"
-                    value={field.afternoon}
-                    onChange={(e) => handleChangeValue(field.id, e)}
-                  />
-                  <TextField
-                    label="Chiều"
-                    variant="outlined"
-                    name="night"
-                    className="w-full col-span-1"
-                    value={field.night}
-                    onChange={(e) => handleChangeValue(field.id, e)}
-                  />
-                </div>
-                <div className="flex justify-center items-center col-span-1 py-1 mt-1 border-2 rounded-md h-14">
-                  <select
-                    name="time"
-                    className="text-xl outline-none"
-                    id="time"
-                    value={field.time}
-                    onChange={(e) => handleChangeValue(field.id, e)}
+                <div className="flex items-center justify-center">
+                  <button
+                    color="error"
+                    className="flex items-center justify-center border-2 border-red-500 w-8 h-8 rounded-full text-red-600 font-bold ml-4"
+                    onClick={() => removeField(field.id)}
                   >
-                    <option value="Trước khi ăn">Trước khi ăn</option>
-                    <option value="Sau khi ăn">Sau khi ăn</option>
-                  </select>
+                    <FontAwesomeIcon icon={faXmark} />
+                  </button>
                 </div>
               </div>
             ))}
