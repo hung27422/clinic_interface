@@ -11,12 +11,22 @@ import ModalAddInfoExamination from "./ModalAddInfoExamination/ModalAddInfoExami
 import Spinner from "../../hooks/Spinner/Spinner.tsx";
 import PaginationClinic from "../../components/Pagination.tsx";
 import { useState } from "react";
-
+import ModalDeletePrescription from "./ModalDeletePrescription/ModalDeletePrescription.tsx";
+import useSWRInfinite from "swr/infinite";
+import axios from "axios";
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function ViewPatients() {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [page, setPage] = useState(1);
   // Lấy id của patient
   const { id } = useParams<{ id: string }>();
   const { data: dataPatient, mutate } = useGetPatientById({ id: id ?? "" });
+  //Làm mới data khi delete kê toa
+  const { mutate: mutatePrescription } = useSWRInfinite(
+    () =>
+      `${apiUrl}/Prescription/Phone/${dataPatient?.patient.phoneNumber}?page=${page}&limit=5`,
+    fetcher
+  );
   // Lấy data followUp theo id của patient
   const { data: dataFollowUp, mutate: mutateFollowUp } = useFollowUp({
     patientID: id ?? "",
@@ -41,7 +51,6 @@ function ViewPatients() {
   // Lấy data đầu tiên của toa thuốc
   const dataPrescriptionFirst =
     dataPrescription?.prescriptions.map((item) => item) || [];
-  console.log(dataPrescriptionFirst[0]);
 
   const totalPages = dataPrescription?.pagination.totalPages || 0;
   const exitPrescription =
@@ -122,7 +131,7 @@ function ViewPatients() {
                 mutateFollowUp={mutateFollowUp}
                 mutate={mutate}
                 dataFollowUp={dataFollowUp}
-                page={page}
+                mutatePrescription={mutatePrescription}
               />
             </div>
           )}
@@ -167,6 +176,14 @@ function ViewPatients() {
                       </div>
                       <div className="col-span-1 flex items-end justify-end">
                         <ModalPrint data={item} />
+                        <div className=" flex items-center justify-center w-9 h-9 ml-4 border-red-400 border-2 rounded-full cursor-pointer">
+                          <ModalDeletePrescription
+                            idPrescription={item.id}
+                            summary={item.summary.summary}
+                            dataPatient={dataPatient?.patient}
+                            mutatePrescription={mutatePrescription}
+                          />
+                        </div>
                       </div>
                     </div>
                   );

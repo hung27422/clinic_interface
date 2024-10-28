@@ -9,18 +9,20 @@ import axios from "axios";
 import useSearchMedication from "../../api/hooks/useSearchMedication";
 import PaginationClinic from "../../components/Pagination";
 import Spinner from "../../hooks/Spinner/Spinner";
+import useDebounce from "../../hooks/components/useDebounce";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Medication() {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [page, setPage] = useState(1);
   const [valueSearch, setValueSearch] = useState("");
+  const debouncedSearchValue = useDebounce(valueSearch, 1000);
   // Lấy data
   const { data: dataMedications } = useMedications({
     page: page,
     limit: 5,
   });
   const { data: dataSearch } = useSearchMedication({
-    name: valueSearch,
+    name: debouncedSearchValue,
     limit: 5,
     page: page,
   });

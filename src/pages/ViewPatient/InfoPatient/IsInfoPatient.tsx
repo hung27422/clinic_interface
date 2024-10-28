@@ -8,14 +8,14 @@ interface Props {
   dataFollowUp?: FollowUpData;
   mutateFollowUp: () => void;
   mutate: () => void;
-  page: number;
+  mutatePrescription: () => void;
 }
 function IsInfoPatients({
   dataPatient,
   dataFollowUp,
   mutateFollowUp,
   mutate,
-  page,
+  mutatePrescription,
 }: Props) {
   return (
     <div className="flex flex-col">
@@ -55,8 +55,7 @@ function IsInfoPatients({
                 <ModalPrescriptionPatients
                   flUpId={item.id}
                   patientId={dataPatient.id}
-                  phonePatient={dataPatient.phoneNumber}
-                  page={page}
+                  mutatePrescription={mutatePrescription}
                 />
               </div>
               <div className="my-2">

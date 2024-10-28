@@ -7,10 +7,13 @@ import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react/headless";
 import useSearchMedication from "../../../api/hooks/useSearchMedication";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faRotateRight,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import useHandleAddPrescription from "../hooks/useHandleAddPrescription";
-import useSWRInfinite from "swr/infinite";
-import axios from "axios";
+import Spinner from "../../../hooks/Spinner/Spinner";
 const style = {
   position: "absolute",
   top: "50%",
@@ -26,23 +29,21 @@ const style = {
 interface Props {
   flUpId?: string;
   patientId?: string;
-  page: number;
-  phonePatient: string;
+  mutatePrescription: () => void;
 }
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 export default function ModalPrescriptionPatients({
   flUpId,
   patientId,
-  page,
-  phonePatient,
+  mutatePrescription,
 }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
   const [open, setOpen] = React.useState(false);
+  const [activeRow, setActiveRow] = React.useState<number | null>(null);
   const [valueSearch, setValueSearch] = React.useState("");
-  const { mutate } = useSWRInfinite(
-    () => `${apiUrl}/Prescription/Phone/${phonePatient}?page=${page}&limit=5`,
-    fetcher
-  );
+  const { data, isLoading } = useSearchMedication({
+    name: valueSearch,
+    limit: 5,
+    page: 1,
+  });
   const [medicinal, setMedicinal] = React.useState([
     {
       id: 1,
@@ -59,7 +60,7 @@ export default function ModalPrescriptionPatients({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { handleSaveInfoPatient } = useHandleAddPrescription({
-    mutate: mutate,
+    mutate: mutatePrescription,
     handleClose: handleClose,
   });
   const addFields = () => {
@@ -81,11 +82,20 @@ export default function ModalPrescriptionPatients({
   const removeField = (id: number) => {
     setMedicinal((prev) => prev.filter((field) => field.id !== id));
   };
-  const { data } = useSearchMedication({
-    name: valueSearch,
-    limit: 5,
-    page: 1,
-  });
+  const handleReloadField = () => {
+    setMedicinal([
+      {
+        id: 1,
+        name: "",
+        quantity: "",
+        morning: "",
+        afternoon: "",
+        night: "",
+        time: "",
+        idMedication: "",
+      },
+    ]);
+  };
   const handleChangeValue = (
     id: number,
     e: React.ChangeEvent<
@@ -100,6 +110,7 @@ export default function ModalPrescriptionPatients({
     );
     if (name === "name") {
       setValueSearch(value);
+      setActiveRow(id);
     }
   };
 
@@ -141,18 +152,26 @@ export default function ModalPrescriptionPatients({
     >
       {data?.medicines.map((item) => {
         return (
-          <div
-            onClick={() => handleSaveDataMedication(id, item.name, item.id)}
-            key={item.id}
-            className="w-full group"
-          >
-            <div className="flex items-center hover:bg-slate-200 rounded-md px-2 py-1 ">
-              <span className="w-full block text-xl truncate">{item.name}</span>
-              <FontAwesomeIcon
-                icon={faCheck}
-                className="text-green-600 font-extrabold hidden group-hover:block"
-              />
-            </div>
+          <div>
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <div
+                onClick={() => handleSaveDataMedication(id, item.name, item.id)}
+                key={item.id}
+                className="w-full group"
+              >
+                <div className="flex items-center hover:bg-slate-200 rounded-md px-2 py-1 cursor-pointer">
+                  <span className="w-full block text-xl truncate">
+                    {item.name}
+                  </span>
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    className="text-green-600 font-extrabold hidden group-hover:block"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         );
       })}
@@ -200,13 +219,18 @@ export default function ModalPrescriptionPatients({
           </div>
           <div className="h-[400px] overflow-hidden overflow-y-auto hidden-scrollbar">
             {medicinal.map((field, index) => (
-              <div className="flex">
-                <div className="w-full grid grid-cols-5 py-2 " key={index}>
+              <div key={index} className="flex">
+                <div className="w-full grid grid-cols-5 py-2 ">
                   <div className="col-span-1 py-1">
                     <Tippy
-                      // trigger="click"
+                      trigger="click"
+                      visible={
+                        !!valueSearch && !!data && activeRow === field.id
+                      }
                       render={(attrs) =>
-                        valueSearch && resultSearchMedication(field.id, attrs)
+                        valueSearch.length > 0 &&
+                        data &&
+                        resultSearchMedication(field.id, attrs)
                       }
                       interactive
                       offset={[50, 10]}
@@ -216,6 +240,7 @@ export default function ModalPrescriptionPatients({
                         label="Tên thuốc"
                         variant="outlined"
                         className="w-full"
+                        autoComplete="off"
                         name="name"
                         value={field.name}
                         onChange={(e) => handleChangeValue(field.id, e)}
@@ -299,9 +324,24 @@ export default function ModalPrescriptionPatients({
                 Lưu
               </Button>
             </div>
-            <span className="text-xl">
-              Cập nhật: {new Date().toLocaleDateString()}
-            </span>
+            <div className="flex items-center">
+              <Button
+                onClick={handleReloadField}
+                style={{
+                  height: "40px",
+                  marginRight: "12px",
+                  borderColor: "black",
+                  borderWidth: "10px",
+                }}
+                variant="contained"
+                color="success"
+              >
+                <FontAwesomeIcon icon={faRotateRight} />
+              </Button>
+              <span className="text-2xl">
+                Cập nhật: {new Date().toLocaleDateString()}
+              </span>
+            </div>
           </div>
         </Box>
       </Modal>

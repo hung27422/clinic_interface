@@ -9,15 +9,18 @@ import useSWRInfinite from "swr/infinite";
 import useSearchPatient from "../../api/hooks/useSearchPatient";
 import PaginationClinic from "../../components/Pagination";
 import Spinner from "../../hooks/Spinner/Spinner";
+import useDebounce from "../../hooks/components/useDebounce";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function Patient() {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const [page, setPage] = useState(1);
   const [valueSearch, setValueSearch] = useState("");
-
+  const debouncedSearchValue = useDebounce(valueSearch, 2000);
   const { data: dataPatients } = usePatients({ page: page, limit: 5 });
-  const { data: dataSearch } = useSearchPatient({ phone: valueSearch || null });
+  const { data: dataSearch } = useSearchPatient({
+    phone: debouncedSearchValue || null,
+  });
 
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -33,7 +36,8 @@ function Patient() {
   const handleSearchPatient = (value: string) => {
     setValueSearch(value);
   };
-  const data = valueSearch ? dataSearch : dataPatients;
+  const data =
+    dataSearch && dataSearch?.patients.length > 0 ? dataSearch : dataPatients;
   const countPage = dataPatients?.pagination?.totalPages || 1;
   if (!data) return null;
   return (
