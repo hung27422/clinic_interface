@@ -4,6 +4,10 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import useHandleAddPatient from "./hook/useHandleAddPatient";
+import useValidation, {
+  ValidationErrorsPatient,
+} from "../../../hooks/components/useValidation";
+import { ValidationError } from "yup";
 
 const style = {
   position: "absolute",
@@ -20,14 +24,17 @@ const style = {
 interface Props {
   mutate: () => void;
 }
+
 export default function ModalAddNewPatient({ mutate }: Props) {
-  const [open, setOpen] = React.useState(false);
+  const [errors, setErrors] = React.useState<ValidationErrorsPatient>({});
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [open, setOpen] = React.useState(false);
   const { handleSaveInfoPatient } = useHandleAddPatient({
     mutate: mutate,
     handleClose: handleClose,
   });
+  const { patientSchema } = useValidation();
   const [patientInfo, setPatientInfo] = React.useState({
     name: "",
     address: "",
@@ -40,14 +47,30 @@ export default function ModalAddNewPatient({ mutate }: Props) {
     setPatientInfo((prev) => ({ ...prev, [name]: value }));
   };
   // Hàm thêm bệnh nhân
-  const handleAddInfoPatient = () => {
-    handleSaveInfoPatient({
-      name: patientInfo.name,
-      address: patientInfo.address,
-      phoneNumber: patientInfo.phone,
-      dob: patientInfo.dob,
-    });
+  const handleAddInfoPatient = async () => {
+    try {
+      await patientSchema.validate(patientInfo, { abortEarly: false }); // Xác thực thông tin
+      handleSaveInfoPatient({
+        name: patientInfo.name,
+        address: patientInfo.address,
+        phoneNumber: patientInfo.phone,
+        dob: patientInfo.dob,
+      });
+      setErrors({}); // Reset lỗi nếu thêm thành công
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        err.inner.forEach((error) => {
+          // Kiểm tra xem error.path có tồn tại không
+          if (error.path) {
+            validationErrors[error.path] = error.message;
+          }
+        });
+        setErrors(validationErrors); // Cập nhật lỗi vào trạng thái
+      }
+    }
   };
+
   return (
     <div>
       <Button variant="contained" onClick={handleOpen}>
@@ -71,6 +94,11 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 className="w-full mb-2 pb-2"
                 name="name"
                 onChange={handleChangeValue}
+                error={!!errors.name}
+                helperText={errors.name}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
               />
             </div>
 
@@ -82,6 +110,11 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 className="w-full mb-2 pb-2"
                 name="address"
                 onChange={handleChangeValue}
+                error={!!errors.address}
+                helperText={errors.address}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
               />
             </div>
             <div className="mb-3">
@@ -92,6 +125,11 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 name="phone"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.phone}
+                helperText={errors.phone}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
               />
             </div>
             <div className="mb-3">
@@ -102,6 +140,11 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 placeholder="01-01-2001"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.dob}
+                helperText={errors.dob}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
               />
             </div>
           </div>

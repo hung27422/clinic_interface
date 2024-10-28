@@ -11,7 +11,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -70,9 +70,9 @@ export default function DeleteInfoExamination({
       >
         <Box sx={style}>
           <div>
-            <span className="text-2xl">
+            <span className="text-2xl text-center block">
               Bạn có chắn chắn muốn xóa thông tin của bệnh nhân
-              <span className="text-red-500 font-semibold">
+              <span className="text-red-500 font-semibold ">
                 {" " + dataPatient?.name}
               </span>
             </span>

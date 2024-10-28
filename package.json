@@ -31,7 +31,8 @@
     "styled-components": "^6.1.12",
     "swr": "^2.2.5",
     "tippy.js": "^6.3.7",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^22.4.0",

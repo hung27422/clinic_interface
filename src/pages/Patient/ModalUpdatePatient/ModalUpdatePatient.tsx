@@ -5,6 +5,10 @@ import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import { Patient } from "../../../types";
 import useHandleUpdatePatient from "./hook/useHandleUpdatePatient";
+import useValidation, {
+  ValidationErrorsPatient,
+} from "../../../hooks/components/useValidation";
+import { ValidationError } from "yup";
 
 const style = {
   position: "absolute",
@@ -22,8 +26,11 @@ interface Props {
   data: Patient;
   mutate: () => void;
 }
+const dobPattern = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
 export default function ModalUpdatePatient({ data, mutate }: Props) {
   const [open, setOpen] = React.useState(false);
+  const [errors, setErrors] = React.useState<ValidationErrorsPatient>({});
+
   const [value, setValue] = React.useState({
     name: "",
     dob: "",
@@ -39,6 +46,7 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
     mutate: mutate,
     notifyShow: true,
   });
+  const { patientSchema } = useValidation();
   React.useEffect(() => {
     if (data) {
       setValue({
@@ -55,16 +63,34 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
     const { name, value } = e.target;
     setValue((prev) => ({ ...prev, [name]: value }));
   };
-  const handleUpdatePatient = () => {
-    const formattedDate = value.dob.split("-").reverse().join("-");
-    handleUpdateInfoPatient({
-      id: data.id,
-      name: value.name,
-      address: value.address,
-      phoneNumber: value.phoneNumber,
-      dob: formattedDate,
-      status: data.status || "not_examined",
-    });
+  const handleUpdatePatient = async () => {
+    const formattedDate = dobPattern.test(value.dob)
+      ? value.dob
+      : value.dob.split("-").reverse().join("-");
+
+    try {
+      await patientSchema.validate(value, { abortEarly: false }); // Xác thực thông tin
+      handleUpdateInfoPatient({
+        id: data.id,
+        name: value.name,
+        address: value.address,
+        phoneNumber: value.phoneNumber,
+        dob: formattedDate,
+        status: data.status || "not_examined",
+      });
+      setErrors({});
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        err.inner.forEach((error) => {
+          // Kiểm tra xem error.path có tồn tại không
+          if (error.path) {
+            validationErrors[error.path] = error.message;
+          }
+        });
+        setErrors(validationErrors); // Cập nhật lỗi vào trạng thái
+      }
+    }
   };
   return (
     <div>
@@ -89,6 +115,11 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
                 value={value.name}
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValuePatient}
+                error={!!errors.name}
+                helperText={errors.name}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
               />
             </div>
 
@@ -100,6 +131,11 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
                 value={value.phoneNumber}
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValuePatient}
+                error={!!errors.phone}
+                helperText={errors.phone}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
               />
             </div>
             <div className="mb-3">
@@ -110,6 +146,11 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
                 value={value.address}
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValuePatient}
+                error={!!errors.address}
+                helperText={errors.address}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
               />
             </div>
             <div className="mb-3">
@@ -120,6 +161,11 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
                 value={value.dob}
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValuePatient}
+                error={!!errors.dob}
+                helperText={errors.dob}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
               />
             </div>
           </div>

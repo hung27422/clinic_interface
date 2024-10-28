@@ -75,7 +75,7 @@ function InfoPrescription({ data }: Props) {
                       <span className="text-xl">
                         Số lượng:
                         <span className="font-semibold">
-                          {`${" " + item.quantity}`} Viên
+                          {`${" " + item.quantity + " Viên"}`}
                         </span>
                       </span>
                     </div>
@@ -84,19 +84,31 @@ function InfoPrescription({ data }: Props) {
                     <span className="text-lg mx-4">
                       Sáng:
                       <span className="font-medium">
-                        {`${" " + item.instructions.day}`} Viên
+                        {`${
+                          item.instructions.day
+                            ? " " + item.instructions.day + " Viên"
+                            : " Không"
+                        }`}
                       </span>
                     </span>
                     <span className="text-lg mx-4">
                       Trưa:
                       <span className="font-medium">
-                        {`${" " + item.instructions.lunch}`} Viên
+                        {`${
+                          item.instructions.lunch
+                            ? " " + item.instructions.lunch + " Viên"
+                            : " Không"
+                        }`}
                       </span>
                     </span>
                     <span className="text-lg mx-4">
                       Chiều:
                       <span className="font-medium">
-                        {`${" " + item.instructions.afternoon}`} Viên
+                        {`${
+                          item.instructions.afternoon
+                            ? " " + item.instructions.afternoon + " Viên"
+                            : " Không"
+                        }`}
                       </span>
                     </span>
                     <span className="text-lg mx-4">

@@ -4,6 +4,10 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import useHandleAddMedication from "../hook/useHandleAddMedication";
+import useValidation, {
+  ValidationErrorsMedicines,
+} from "../../../hooks/components/useValidation";
+import { ValidationError } from "yup";
 
 const style = {
   position: "absolute",
@@ -21,9 +25,12 @@ interface Props {
   mutate: () => void;
 }
 export default function ModalAddNewMedication({ mutate }: Props) {
+  const [errors, setErrors] = React.useState<ValidationErrorsMedicines>({});
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { medicineSchema } = useValidation();
+
   const { handleSaveInfoMedication } = useHandleAddMedication({
     mutate: mutate,
     handleClose: handleClose,
@@ -39,16 +46,31 @@ export default function ModalAddNewMedication({ mutate }: Props) {
     const { name, value } = e.target;
     setValue((prev) => ({ ...prev, [name]: value }));
   };
-  const handleSaveMedication = () => {
+  const handleSaveMedication = async () => {
     const price = Number(value.price);
     const stock = Number(value.stock);
-    handleSaveInfoMedication({
-      name: value.name,
-      company: value.company,
-      stock: stock,
-      price: price,
-      type: value.type,
-    });
+    try {
+      await medicineSchema.validate(value, { abortEarly: false });
+      handleSaveInfoMedication({
+        name: value.name,
+        company: value.company,
+        stock: stock,
+        price: price,
+        type: value.type,
+      });
+      setErrors({});
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        err.inner.forEach((error) => {
+          // Kiểm tra xem error.path có tồn tại không
+          if (error.path) {
+            validationErrors[error.path] = error.message;
+          }
+        });
+        setErrors(validationErrors); // Cập nhật lỗi vào trạng thái
+      }
+    }
   };
   return (
     <div>
@@ -70,6 +92,14 @@ export default function ModalAddNewMedication({ mutate }: Props) {
                 name="name"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.name}
+                helperText={errors.name}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, name: undefined }))
+                }
               />
             </div>
             <div className="mb-3">
@@ -79,6 +109,14 @@ export default function ModalAddNewMedication({ mutate }: Props) {
                 name="company"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.company}
+                helperText={errors.company}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, company: undefined }))
+                }
               />
             </div>
             <div className="mb-3">
@@ -88,6 +126,14 @@ export default function ModalAddNewMedication({ mutate }: Props) {
                 name="stock"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.stock}
+                helperText={errors.stock}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, stock: undefined }))
+                }
               />
             </div>{" "}
             <div className="mb-3">
@@ -97,6 +143,14 @@ export default function ModalAddNewMedication({ mutate }: Props) {
                 name="price"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.price}
+                helperText={errors.price}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, price: undefined }))
+                }
               />
             </div>
             <div className="mb-3">
@@ -106,6 +160,14 @@ export default function ModalAddNewMedication({ mutate }: Props) {
                 name="type"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.type}
+                helperText={errors.name}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, type: undefined }))
+                }
               />
             </div>
           </div>
