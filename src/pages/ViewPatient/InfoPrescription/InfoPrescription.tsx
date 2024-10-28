@@ -35,7 +35,7 @@ function InfoPrescription({ data }: Props) {
           <div className="grid grid-cols-2 mx-4">
             <div className="col-span-1 flex flex-col">
               <span className="text-lg">
-                Tên:{" "}
+                Tên:
                 <span className="font-bold">{" " + data.patient.name}</span>
               </span>
               <span className="text-lg break-words">
@@ -112,11 +112,13 @@ function InfoPrescription({ data }: Props) {
           })}
         </div>
         <div className="flex flex-col ml-4 text-xl mx-4">
-          <span className="mt-3">Lời dặn:</span>
+          <span className="mt-3">
+            Lời dặn: <span className="font-medium">{data.notes}</span>
+          </span>
           <div className="flex flex-col items-end justify-center mt-4">
             <div className="my-2">
               <span className="text-xl ">
-                Thành tiền:{" "}
+                Thành tiền:
                 <span className="font-medium">{data.totalPrice} VNĐ</span>
               </span>
             </div>

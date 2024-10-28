@@ -39,6 +39,7 @@ export default function ModalPrescriptionPatients({
   const [open, setOpen] = React.useState(false);
   const [activeRow, setActiveRow] = React.useState<number | null>(null);
   const [valueSearch, setValueSearch] = React.useState("");
+  const [note, setNote] = React.useState("");
   const { data, isLoading } = useSearchMedication({
     name: valueSearch,
     limit: 5,
@@ -113,6 +114,9 @@ export default function ModalPrescriptionPatients({
       setActiveRow(id);
     }
   };
+  const handleNotePrescriptions = (value: string) => {
+    setNote(value);
+  };
 
   const handleSavePrescription = () => {
     const products = medicinal.map((med) => ({
@@ -128,7 +132,7 @@ export default function ModalPrescriptionPatients({
     handleSaveInfoPatient({
       followUpId: flUpId || "",
       patientId: patientId || "",
-      notes: "Không",
+      notes: note ? note : "Không",
       products: products,
     });
   };
@@ -152,7 +156,7 @@ export default function ModalPrescriptionPatients({
     >
       {data?.medicines.map((item) => {
         return (
-          <div>
+          <div key={item.id}>
             {isLoading ? (
               <Spinner />
             ) : (
@@ -306,41 +310,55 @@ export default function ModalPrescriptionPatients({
               </div>
             ))}
           </div>
-          <div className="flex justify-between items-center pt-3">
-            <div>
-              <Button
-                style={{ height: "40px", marginRight: "12px" }}
-                variant="contained"
-                color="warning"
-                onClick={addFields}
-              >
-                Thêm hàng
-              </Button>
-              <Button
-                onClick={handleSavePrescription}
-                style={{ height: "40px" }}
-                variant="contained"
-              >
-                Lưu
-              </Button>
+          <div>
+            <div className="flex items-center mb-2">
+              <label className="text-xl font-bold text-black mr-3">
+                Lời dặn:
+              </label>
+              <TextField
+                onChange={(e) => handleNotePrescriptions(e.target.value)}
+                placeholder="Nhập lời dặn của bác sĩ..."
+                size="small"
+                value={note}
+                className="w-[90%] ml-3"
+              />
             </div>
-            <div className="flex items-center">
-              <Button
-                onClick={handleReloadField}
-                style={{
-                  height: "40px",
-                  marginRight: "12px",
-                  borderColor: "black",
-                  borderWidth: "10px",
-                }}
-                variant="contained"
-                color="success"
-              >
-                <FontAwesomeIcon icon={faRotateRight} />
-              </Button>
-              <span className="text-2xl">
-                Cập nhật: {new Date().toLocaleDateString()}
-              </span>
+            <div className="flex justify-between items-center pt-3">
+              <div>
+                <Button
+                  style={{ height: "40px", marginRight: "12px" }}
+                  variant="contained"
+                  color="warning"
+                  onClick={addFields}
+                >
+                  Thêm hàng
+                </Button>
+                <Button
+                  onClick={handleSavePrescription}
+                  style={{ height: "40px" }}
+                  variant="contained"
+                >
+                  Lưu
+                </Button>
+              </div>
+              <div className="flex items-center">
+                <Button
+                  onClick={handleReloadField}
+                  style={{
+                    height: "40px",
+                    marginRight: "12px",
+                    borderColor: "black",
+                    borderWidth: "10px",
+                  }}
+                  variant="contained"
+                  color="success"
+                >
+                  <FontAwesomeIcon icon={faRotateRight} />
+                </Button>
+                <span className="text-2xl">
+                  Cập nhật: {new Date().toLocaleDateString()}
+                </span>
+              </div>
             </div>
           </div>
         </Box>
