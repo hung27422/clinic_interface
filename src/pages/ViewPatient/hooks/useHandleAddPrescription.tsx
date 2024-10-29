@@ -12,10 +12,11 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
     title: "Kê toa thuốc thành công",
     type: "success",
   });
-  // const { notify: notifyErr } = useToastify({
-  //   title: "Bệnh nhân này đã được thêm rồi !!!",
-  //   type: "error",
-  // });
+  const { notify: notifyErr } = useToastify({
+    title:
+      "Bạn phải nhập hướng dẫn cách uống thuốc ít nhất là: 'Sáng' hoặc 'Trưa' hoặc 'Chiều ",
+    type: "error",
+  });
   const handleSaveInfoPatient = async (
     newPrescription: Omit<Prescription, "id">
   ) => {
@@ -34,12 +35,14 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
       handleClose();
     } catch (error: any) {
       console.error("Failed to add patient:", error);
-
-      // if (error.response.data.code === "Patient.ExistPhoneNumber") {
-      //   notifyErr();
-      // } else {
-      //   console.error("Failed to add patient:", error);
-      // }
+      if (
+        error.response.data.description ===
+        "At least one of Day, Lunch, or Afternoon must be a number."
+      ) {
+        notifyErr();
+      } else {
+        console.error("Failed to add patient:", error);
+      }
     }
   };
 

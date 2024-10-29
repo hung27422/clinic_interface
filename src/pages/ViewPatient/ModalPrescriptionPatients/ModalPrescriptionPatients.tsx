@@ -7,6 +7,7 @@ import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react/headless";
 import useSearchMedication from "../../../api/hooks/useSearchMedication";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   faCheck,
   faRotateRight,
@@ -31,6 +32,23 @@ interface Props {
   patientId?: string;
   mutatePrescription: () => void;
 }
+
+import useValidation, {
+  ValidationErrorsPrescriptions,
+} from "../../../hooks/components/useValidation";
+import { ValidationError } from "yup";
+
+// const medicinalSchema = Yup.object({
+//   name: Yup.string().required("Tên thuốc không được để trống"),
+//   quantity: Yup.number()
+//     .required("Số lượng không được để trống")
+//     .min(1, "Số lượng phải lớn hơn 0"),
+//   morning: Yup.string(),
+//   afternoon: Yup.string(),
+//   night: Yup.string(),
+//   time: Yup.string().required("Thời gian uống thuốc không được để trống"),
+//   idMedication: Yup.string().required("ID thuốc không được để trống"),
+// });
 export default function ModalPrescriptionPatients({
   flUpId,
   patientId,
@@ -40,6 +58,9 @@ export default function ModalPrescriptionPatients({
   const [activeRow, setActiveRow] = React.useState<number | null>(null);
   const [valueSearch, setValueSearch] = React.useState("");
   const [note, setNote] = React.useState("");
+  const [errors, setErrors] = React.useState<ValidationErrorsPrescriptions>({});
+  const { prescriptionSchema } = useValidation();
+
   const { data, isLoading } = useSearchMedication({
     name: valueSearch,
     limit: 5,
@@ -118,24 +139,38 @@ export default function ModalPrescriptionPatients({
     setNote(value);
   };
 
-  const handleSavePrescription = () => {
-    const products = medicinal.map((med) => ({
-      medicineId: med.idMedication,
-      quantity: Number(med.quantity),
-      instructions: {
-        day: med.morning || "",
-        lunch: med.afternoon || "",
-        afternoon: med.night || "",
-        manual: med.time || "",
-      },
-    }));
-    handleSaveInfoPatient({
-      followUpId: flUpId || "",
-      patientId: patientId || "",
-      notes: note ? note : "Không",
-      products: products,
-    });
+  const handleSavePrescription = async () => {
+    try {
+      for (const med of medicinal) {
+        await prescriptionSchema.validate(med, { abortEarly: false });
+      }
+      handleSaveInfoPatient({
+        followUpId: flUpId || "",
+        patientId: patientId || "",
+        notes: note ? note : "Không",
+        products: medicinal.map((med) => ({
+          medicineId: med.idMedication,
+          quantity: Number(med.quantity),
+          instructions: {
+            day: med.morning || "",
+            lunch: med.afternoon || "",
+            afternoon: med.night || "",
+            manual: med.time || "",
+          },
+        })),
+      });
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        const validationErrors: ValidationErrorsPrescriptions = {};
+        error.inner.forEach((err) => {
+          validationErrors[err.path as keyof ValidationErrorsPrescriptions] =
+            err.message;
+        });
+        setErrors(validationErrors);
+      }
+    }
   };
+
   const handleSaveDataMedication = (
     id: number,
     name: string,
@@ -248,6 +283,11 @@ export default function ModalPrescriptionPatients({
                         name="name"
                         value={field.name}
                         onChange={(e) => handleChangeValue(field.id, e)}
+                        error={!!errors.name} // Kiểm tra nếu có lỗi
+                        helperText={errors.name}
+                        onFocus={() =>
+                          setErrors((prev) => ({ ...prev, name: undefined }))
+                        }
                       />
                     </Tippy>
                   </div>
@@ -259,6 +299,11 @@ export default function ModalPrescriptionPatients({
                       className="w-full col-span-1"
                       value={field.quantity}
                       onChange={(e) => handleChangeValue(field.id, e)}
+                      error={!!errors.quantity} // Kiểm tra nếu có lỗi
+                      helperText={errors.quantity}
+                      onFocus={() =>
+                        setErrors((prev) => ({ ...prev, quantity: undefined }))
+                      }
                     />
                     <TextField
                       label="Sáng"
@@ -285,27 +330,29 @@ export default function ModalPrescriptionPatients({
                       onChange={(e) => handleChangeValue(field.id, e)}
                     />
                   </div>
-                  <div className="flex justify-center items-center col-span-1 py-1 mt-1 border-2 rounded-md h-14">
-                    <select
-                      name="time"
-                      className="text-xl outline-none"
-                      id="time"
-                      value={field.time}
-                      onChange={(e) => handleChangeValue(field.id, e)}
-                    >
-                      <option value="Trước khi ăn">Trước khi ăn</option>
-                      <option value="Sau khi ăn">Sau khi ăn</option>
-                    </select>
+                  <div className="col-span-1">
+                    <div className="flex justify-center items-center h-14">
+                      <select
+                        name="time"
+                        className="text-xl text-center outline-none h-14 w-full mt-2 border-2 rounded-md block"
+                        id="time"
+                        value={field.time}
+                        onChange={(e) => handleChangeValue(field.id, e)}
+                      >
+                        <option value="Trước khi ăn">Trước khi ăn</option>
+                        <option value="Sau khi ăn">Sau khi ăn</option>
+                      </select>
+                      <div className="flex items-center justify-center">
+                        <button
+                          color="error"
+                          className="flex items-center justify-center border-2 border-red-500 w-8 h-8 rounded-full text-red-600 font-bold ml-4"
+                          onClick={() => removeField(field.id)}
+                        >
+                          <FontAwesomeIcon icon={faXmark} />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center justify-center">
-                  <button
-                    color="error"
-                    className="flex items-center justify-center border-2 border-red-500 w-8 h-8 rounded-full text-red-600 font-bold ml-4"
-                    onClick={() => removeField(field.id)}
-                  >
-                    <FontAwesomeIcon icon={faXmark} />
-                  </button>
                 </div>
               </div>
             ))}

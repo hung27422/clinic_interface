@@ -5,6 +5,10 @@ import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import useHandleUpdateFollowUp from "../hooks/useHandleUpdateFollowUp";
 import { FollowUp } from "../../../types";
+import useValidation, {
+  ValidationErrorsExaminations,
+} from "../../../hooks/components/useValidation";
+import { ValidationError } from "yup";
 
 const style = {
   position: "absolute",
@@ -29,14 +33,18 @@ export default function ModalReExaminationPatient({
   mutate,
 }: Props) {
   const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [errors, setErrors] = React.useState<ValidationErrorsExaminations>({});
+  const { examinationSchema } = useValidation();
+
   const [value, setValue] = React.useState({
     reason: "",
     history: "",
     diagnosis: "",
     summary: "",
   });
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
   const { handleUpdateFollowUp } = useHandleUpdateFollowUp({
     id: idFollowUp ?? "",
     mutate: mutate,
@@ -56,14 +64,28 @@ export default function ModalReExaminationPatient({
       });
     }
   }, [data]);
-  const handleSaveFollowUp = () => {
-    handleUpdateFollowUp({
-      id: data?.id,
-      reason: value.reason,
-      history: value.history,
-      diagnosis: value.diagnosis,
-      summary: value.summary,
-    });
+  const handleSaveFollowUp = async () => {
+    try {
+      await examinationSchema.validate(value, { abortEarly: false });
+      handleUpdateFollowUp({
+        id: data?.id,
+        reason: value.reason,
+        history: value.history,
+        diagnosis: value.diagnosis,
+        summary: value.summary,
+      });
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        err.inner.forEach((error) => {
+          // Kiểm tra xem error.path có tồn tại không
+          if (error.path) {
+            validationErrors[error.path] = error.message;
+          }
+        });
+        setErrors(validationErrors); // Cập nhật lỗi vào trạng thái
+      }
+    }
   };
   return (
     <div>
@@ -86,6 +108,14 @@ export default function ModalReExaminationPatient({
                 name="reason"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.reason}
+                helperText={errors.reason}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, reason: undefined }))
+                }
               />
             </div>
             <div className="mb-3">
@@ -96,6 +126,14 @@ export default function ModalReExaminationPatient({
                 name="history"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.history}
+                helperText={errors.history}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, history: undefined }))
+                }
               />
             </div>
             <div className="mb-3">
@@ -106,6 +144,14 @@ export default function ModalReExaminationPatient({
                 variant="outlined"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.diagnosis}
+                helperText={errors.diagnosis}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, diagnosis: undefined }))
+                }
               />
             </div>
             <div className="mb-3">
@@ -116,6 +162,14 @@ export default function ModalReExaminationPatient({
                 name="summary"
                 className="w-full mb-2 pb-2"
                 onChange={handleChangeValue}
+                error={!!errors.summary}
+                helperText={errors.summary}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, summary: undefined }))
+                }
               />
             </div>{" "}
           </div>

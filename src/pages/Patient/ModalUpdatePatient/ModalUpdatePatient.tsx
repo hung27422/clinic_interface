@@ -38,10 +38,6 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
     phoneNumber: "",
     checkStatus: "not_examined",
   });
-  const formattedDate = dobPattern.test(value.dob)
-    ? value.dob
-    : value.dob.split("-").reverse().join("-");
-  console.log("123", formattedDate);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { handleUpdateInfoPatient } = useHandleUpdatePatient({

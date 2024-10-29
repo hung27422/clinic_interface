@@ -2,6 +2,10 @@ import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import useHandleAddFollowUp from "../hooks/useHandleAddFollowUp";
 import { Patient } from "../../../types";
+import useValidation, {
+  ValidationErrorsExaminations,
+} from "../../../hooks/components/useValidation";
+import { ValidationError } from "yup";
 interface Props {
   idPatient?: string;
   dataPatient: Patient;
@@ -16,6 +20,8 @@ function InfoPatient({
   mutateFollowUp,
   handleClose,
 }: Props) {
+  const [errors, setErrors] = useState<ValidationErrorsExaminations>({});
+  const { examinationSchema } = useValidation();
   //Định dạng lại ngày dd/mm/yyyy
   const formattedDate = dataPatient.dob.split("-").reverse().join("-");
   const { handleSaveFollowUp } = useHandleAddFollowUp({
@@ -40,17 +46,32 @@ function InfoPatient({
     const { name, value } = e.target;
     setValue((prev) => ({ ...prev, [name]: value }));
   };
-  const handleAddFollowUp = () => {
+  const handleAddFollowUp = async () => {
     if (!idPatient) {
       return;
     }
-    handleSaveFollowUp({
-      patientId: idPatient,
-      reason: value.reason,
-      history: value.history,
-      diagnosis: value.diagnosis,
-      summary: value.summary,
-    });
+    try {
+      await examinationSchema.validate(value, { abortEarly: false });
+      handleSaveFollowUp({
+        patientId: idPatient,
+        reason: value.reason,
+        history: value.history,
+        diagnosis: value.diagnosis,
+        summary: value.summary,
+      });
+      setErrors({});
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        err.inner.forEach((error) => {
+          // Kiểm tra xem error.path có tồn tại không
+          if (error.path) {
+            validationErrors[error.path] = error.message;
+          }
+        });
+        setErrors(validationErrors); // Cập nhật lỗi vào trạng thái
+      }
+    }
   };
   return (
     <div>
@@ -69,6 +90,14 @@ function InfoPatient({
               className="w-full mb-2 pb-2"
               name="reason"
               onChange={handleChangeValue}
+              error={!!errors.reason}
+              helperText={errors.reason}
+              FormHelperTextProps={{
+                sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+              }}
+              onFocus={() =>
+                setErrors((prev) => ({ ...prev, reason: undefined }))
+              }
             />
           </div>
           <div className="mb-3">
@@ -78,6 +107,14 @@ function InfoPatient({
               className="w-full mb-2 pb-2"
               name="history"
               onChange={handleChangeValue}
+              error={!!errors.history}
+              helperText={errors.history}
+              FormHelperTextProps={{
+                sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+              }}
+              onFocus={() =>
+                setErrors((prev) => ({ ...prev, history: undefined }))
+              }
             />
           </div>
           <div className="mb-3">
@@ -87,6 +124,14 @@ function InfoPatient({
               name="diagnosis"
               className="w-full mb-2 pb-2"
               onChange={handleChangeValue}
+              error={!!errors.diagnosis}
+              helperText={errors.diagnosis}
+              FormHelperTextProps={{
+                sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+              }}
+              onFocus={() =>
+                setErrors((prev) => ({ ...prev, diagnosis: undefined }))
+              }
             />
           </div>
           <div className="mb-3">
@@ -96,6 +141,14 @@ function InfoPatient({
               variant="outlined"
               className="w-full mb-2 pb-2"
               onChange={handleChangeValue}
+              error={!!errors.summary}
+              helperText={errors.summary}
+              FormHelperTextProps={{
+                sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+              }}
+              onFocus={() =>
+                setErrors((prev) => ({ ...prev, summary: undefined }))
+              }
             />
           </div>
         </div>
