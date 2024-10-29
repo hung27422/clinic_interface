@@ -19,7 +19,7 @@ function Medication() {
   // Lấy data
   const { data: dataMedications } = useMedications({
     page: page,
-    limit: 5,
+    limit: 6,
   });
   const { data: dataSearch } = useSearchMedication({
     name: debouncedSearchValue,

@@ -38,6 +38,10 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
     phoneNumber: "",
     checkStatus: "not_examined",
   });
+  const formattedDate = dobPattern.test(value.dob)
+    ? value.dob
+    : value.dob.split("-").reverse().join("-");
+  console.log("123", formattedDate);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { handleUpdateInfoPatient } = useHandleUpdatePatient({
@@ -69,7 +73,10 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
       : value.dob.split("-").reverse().join("-");
 
     try {
-      await patientSchema.validate(value, { abortEarly: false }); // Xác thực thông tin
+      await patientSchema.validate(
+        { ...value, dob: formattedDate },
+        { abortEarly: false }
+      ); // Xác thực thông tin
       handleUpdateInfoPatient({
         id: data.id,
         name: value.name,

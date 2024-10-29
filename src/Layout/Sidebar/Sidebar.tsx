@@ -23,7 +23,7 @@ const menus = [
   },
   {
     id: 3,
-    title: "Quản lý thuốc",
+    title: "Thuốc",
     pathname: config.router.medications,
     icon: <FontAwesomeIcon icon={faNotesMedical} className="w-6 h-6 mr-3" />,
   },
