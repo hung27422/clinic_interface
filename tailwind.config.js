@@ -12,6 +12,9 @@ export default {
         primary: "#1b9fc9",
       },
     },
+    screens: {
+      "ipad-air5": "1640px",
+    },
   },
   plugins: [],
 };

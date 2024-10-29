@@ -46,19 +46,19 @@ export default function TableMedication({ data, mutate }: Props) {
                 <StyledTableCell width={"20%"} align="center">
                   Tên
                 </StyledTableCell>
-                <StyledTableCell width={"20%"} align="center">
+                <StyledTableCell width={"25%"} align="center">
                   Tên công ty
                 </StyledTableCell>
                 <StyledTableCell width={"10%"} align="center">
                   Giá
                 </StyledTableCell>
-                <StyledTableCell width={"15%"} align="center">
-                  Số lượng tồn kho
+                <StyledTableCell width={"10%"} align="center">
+                  Tồn kho
                 </StyledTableCell>
-                <StyledTableCell width={"15%"} align="center">
+                <StyledTableCell width={"10%"} align="center">
                   Loại
                 </StyledTableCell>
-                <StyledTableCell width={"15%"} align="center">
+                <StyledTableCell width={"25%"} align="center">
                   Hành động
                 </StyledTableCell>
               </TableRow>
@@ -69,24 +69,25 @@ export default function TableMedication({ data, mutate }: Props) {
                   <StyledTableCell width={"20%"} align="center">
                     {item.name}
                   </StyledTableCell>
-                  <StyledTableCell width={"20%"} align="center">
+                  <StyledTableCell width={"25%"} align="center">
                     {item.company}
                   </StyledTableCell>
-                  <StyledTableCell width={"15%"} align="center">
+                  <StyledTableCell width={"10%"} align="center">
                     {item.price}
                   </StyledTableCell>
                   <StyledTableCell width={"10%"} align="center">
                     {item.stock}
                   </StyledTableCell>
-                  <StyledTableCell width={"15%"} align="center">
+                  <StyledTableCell width={"10%"} align="center">
                     {item.type}
                   </StyledTableCell>
-                  <StyledTableCell width={"20%"} align="right">
+
+                  <StyledTableCell width={"25%"} align="center">
                     <div className="flex justify-center">
                       <div className="mr-3">
                         <ModalDeleteMedication data={item} mutate={mutate} />
                       </div>
-                      <div className="">
+                      <div>
                         <ModalUpdateMedication data={item} mutate={mutate} />
                       </div>
                     </div>

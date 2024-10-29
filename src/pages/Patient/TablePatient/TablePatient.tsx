@@ -56,11 +56,11 @@ export default function TablePatient({ data, mutate }: Props) {
                 <StyledTableCell width={"15%"} align="center">
                   Số điện thoại
                 </StyledTableCell>
-                <StyledTableCell width={"25%"} align="center">
+                <StyledTableCell width={"30%"} align="center">
                   Địa chỉ
                 </StyledTableCell>
-                <StyledTableCell width={"25%"} align="center">
-                  Xem thông tin
+                <StyledTableCell width={"30%"} align="center">
+                  Hành động
                 </StyledTableCell>
               </TableRow>
             </TableHead>
@@ -75,23 +75,23 @@ export default function TablePatient({ data, mutate }: Props) {
                   >
                     {item.name}
                   </StyledTableCell>
-
                   <StyledTableCell width={"10%"} align="center">
                     {item.age}
                   </StyledTableCell>
                   <StyledTableCell width={"15%"} align="center">
                     {item.phoneNumber}
                   </StyledTableCell>
-                  <StyledTableCell width={"25%"} align="center">
+                  <StyledTableCell width={"30%"} align="center">
                     {item.address}
                   </StyledTableCell>
-                  <StyledTableCell width={"25%"} align="center">
+                  <StyledTableCell width={"30%"} align="center">
                     <div className="flex justify-center">
                       <div className="mr-2">
                         <Link to={`${config.router.viewpatient}${item.id}`}>
                           <Button variant="contained">Thông tin</Button>
                         </Link>
                       </div>
+
                       <div className="mr-2">
                         <ModalDeletePatient data={item} mutate={mutate} />
                       </div>
