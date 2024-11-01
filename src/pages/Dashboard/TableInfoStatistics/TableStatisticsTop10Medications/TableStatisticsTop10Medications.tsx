@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { MedicationData } from "../../../../types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -27,99 +28,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const infoMedications = [
-  {
-    id: 1,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 2,
-    name: "Kẹo bạc hà",
-    company: "Candy",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 3,
-    name: "Kẹo dâu",
-    company: "Candy",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 4,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 5,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 6,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 7,
-    name: "Kẹo dâu",
-    company: "Candy",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 8,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 9,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 10,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-];
-
-export default function TableStatisticsTop10Medications() {
+interface Props {
+  data: MedicationData;
+}
+export default function TableStatisticsTop10Medications({ data }: Props) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell width={"5%"} align="left">
-              Id
-            </StyledTableCell>
-            <StyledTableCell width={"15%"} align="center">
+            <StyledTableCell width={"20%"} align="center">
               Tên
             </StyledTableCell>
             <StyledTableCell width={"20%"} align="center">
@@ -128,39 +46,25 @@ export default function TableStatisticsTop10Medications() {
             <StyledTableCell width={"20%"} align="center">
               Số lượng
             </StyledTableCell>
-            <StyledTableCell width={"20%"} align="center">
-              Giá
-            </StyledTableCell>
-            <StyledTableCell width={"20%"} align="center">
-              Tình trạng
-            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {infoMedications.map((item) => (
+          {data.medicines.map((item) => (
             <StyledTableRow key={item.id}>
               <StyledTableCell
-                width={"5%"}
-                align="left"
+                width={"20%"}
+                align="center"
                 component="th"
                 scope="row"
               >
-                {item.id}
-              </StyledTableCell>
-              <StyledTableCell width={"15%"} align="center">
                 {item.name}
               </StyledTableCell>
+
               <StyledTableCell width={"20%"} align="center">
                 {item.company}
               </StyledTableCell>
               <StyledTableCell width={"20%"} align="center">
-                {item.price}
-              </StyledTableCell>
-              <StyledTableCell width={"20%"} align="center">
-                {item.quantity}
-              </StyledTableCell>
-              <StyledTableCell width={"20%"} align="center">
-                {item.status}
+                {item.amount}
               </StyledTableCell>
             </StyledTableRow>
           ))}

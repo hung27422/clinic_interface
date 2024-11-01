@@ -49,7 +49,7 @@ export default function ModalAddNewPatient({ mutate }: Props) {
   // Hàm thêm bệnh nhân
   const handleAddInfoPatient = async () => {
     try {
-      await patientSchema.validate(patientInfo, { abortEarly: false }); // Xác thực thông tin
+      await patientSchema.validate(patientInfo, { abortEarly: false });
       handleSaveInfoPatient({
         name: patientInfo.name,
         address: patientInfo.address,

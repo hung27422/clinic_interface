@@ -35,6 +35,8 @@ export interface Medication {
   company: string;
   status?: string;
   createdAt?: string;
+  amount?: number;
+  combinedPrice?: number;
 }
 export interface MedicationData {
   medicines: Medication[];
@@ -107,4 +109,12 @@ export interface Prescriptions {
 export interface PrescriptionData {
   prescriptions: Prescriptions[];
   pagination: PaginationData;
+}
+export interface User {
+  id: string;
+  token: string;
+}
+export interface Account {
+  name: string;
+  password: string;
 }

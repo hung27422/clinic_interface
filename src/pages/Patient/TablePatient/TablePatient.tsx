@@ -88,7 +88,7 @@ export default function TablePatient({ data, mutate }: Props) {
                     <div className="flex justify-center">
                       <div className="mr-2">
                         <Link to={`${config.router.viewpatient}${item.id}`}>
-                          <Button variant="contained">Thông tin</Button>
+                          <Button variant="contained">Xem</Button>
                         </Link>
                       </div>
 

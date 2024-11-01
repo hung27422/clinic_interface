@@ -41,7 +41,8 @@ function useValidation() {
     company: string().required("Vui lòng nhập tên công ty"),
     stock: number()
       .required("Vui lòng nhập số lượng tồn kho")
-      .typeError("Số lượng tồn kho phải là kiểu số"),
+      .typeError("Số lượng tồn kho phải là kiểu số")
+      .positive("Số lượng phải lớn hơn 0"),
     price: number()
       .required("Vui lòng nhập số giá thuốc")
       .typeError("Giá thuốc phải là kiểu số")

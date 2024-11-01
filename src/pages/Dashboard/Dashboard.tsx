@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { DatePicker } from "@mui/x-date-pickers";
 import "../../App.css";
-import TableStatisticsMedications from "./TableInfoStatistics/TableStatisticsMedications/TableStatisticsMedications";
 import TableStatisticsTop10Medications from "./TableInfoStatistics/TableStatisticsTop10Medications/TableStatisticsTop10Medications";
-import PaginationClinic from "../../components/Pagination";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import StatisticsPatient from "./StatisticsDashboard/StatisticsPatient/StatisticsPatient";
 import useGetPatientByDate from "../../api/hooks/useGetPatientByDate";
 import useToastify from "../../hooks/Toastify/useToastify";
+import useGetMedicinePrescriptionByDate from "../../api/hooks/useGetMedicinePrescriptionByDate";
+import StatisticsMedicine from "./StatisticsDashboard/StatisticsMedicine/StatisticsMedicine";
+import useGetFirstAndLastDayOfMonth from "../../hooks/components/useGetFirstAndLastDayOfMonth";
+import useGetMedicineTop10ByDate from "../../api/hooks/useGetMedicineTop10ByDate";
 
 const today = new Date();
 // Lấy ngày (ngày trong tháng)
@@ -17,13 +19,20 @@ const day = today.getDate();
 const month = today.getMonth() + 1;
 // Lấy năm
 const year = today.getFullYear();
-
+function formatNumberWithDots(num: number): string {
+  return new Intl.NumberFormat("de-DE").format(num); // 'de-DE' sử dụng dấu chấm cho hàng nghìn
+}
 function HomePage() {
   const currentDate = `${day}-${month}-${year}`;
   const [errDate, setErrDate] = useState(false);
   const { notify } = useToastify({
     title: "Ngày bắt đầu không được lớn hơn ngày kết thúc",
     type: "error",
+  });
+  // Lấy ngày đầu tiên và cuối cùng của tháng
+  const { firstDay, lastDay } = useGetFirstAndLastDayOfMonth({
+    year: year,
+    month: month,
   });
   // Set ngày
   const [valueStartDate, setValueStartDate] = useState<Dayjs | null>(dayjs());
@@ -50,6 +59,39 @@ function HomePage() {
     page: 1,
     limit: 5,
   });
+  // Lấy dữ liệu thuốc đã bán theo Ngày
+  const { data: dataMedicine } = useGetMedicinePrescriptionByDate({
+    startDate: startDate || currentDate,
+    endDate: endDate || currentDate,
+    page: 1,
+    limit: 5,
+  });
+  // Lấy dữ liệu top 10 thuốc
+  const { data: dataMedicineTop10 } = useGetMedicineTop10ByDate({
+    startDate: firstDay,
+    endDate: lastDay,
+    page: 1,
+    limit: 5,
+  });
+  const exitDataMedicineTop10 = dataMedicineTop10?.medicines?.length
+    ? dataMedicineTop10.medicines.length > 0
+    : false;
+  const arrTotalPrice = dataMedicine?.medicines.map(
+    (item) => item.combinedPrice
+  );
+  const arrAmount = dataMedicine?.medicines.map((item) => item.amount);
+
+  const totalPrice: number = (arrTotalPrice ?? []).reduce(
+    (accumulator: number, currentValue: number | undefined) =>
+      accumulator + (currentValue ?? 0),
+    0
+  );
+  const totalAmount: number = (arrAmount ?? []).reduce(
+    (accumulator: number, currentValue: number | undefined) =>
+      accumulator + (currentValue ?? 0),
+    0
+  );
+  const formattedTotalAmount = formatNumberWithDots(totalPrice);
   // Menu statistical
   const statistical = [
     {
@@ -58,7 +100,11 @@ function HomePage() {
     },
     {
       title: "Tổng số lượng thuốc",
-      result: 50,
+      result: totalAmount,
+    },
+    {
+      title: "Doanh thu",
+      result: formattedTotalAmount + " VND",
     },
   ];
 
@@ -76,6 +122,7 @@ function HomePage() {
             defaultValue={dayjs(currentDate)}
             value={valueStartDate}
             onChange={(newValue) => setValueStartDate(newValue)}
+            views={["day", "month", "year"]}
           />
         </div>
         <div className="flex items-center mr-3">
@@ -104,9 +151,23 @@ function HomePage() {
       </div>
       {/* Thống kê top 10 thuốc bán chạy */}
       <div className="mt-4">
-        <h2 className="font-bold text-2xl mb-2">Top 10 thuốc bán chạy</h2>
-        <TableStatisticsTop10Medications />
+        <h2 className="font-medium text-2xl mb-2">
+          Top 10 thuốc bán chạy -
+          <span className="text-red-500"> Tháng {month}</span>
+        </h2>
+        {dataMedicineTop10 && exitDataMedicineTop10 ? (
+          <div className="mt-4">
+            <TableStatisticsTop10Medications data={dataMedicineTop10} />
+          </div>
+        ) : (
+          <div>
+            <span className="border-red-600 border-2 rounded-md p-2 text-2xl text-red-700 my-4 block">
+              Chưa có thông tin thuốc được bán trong tháng {month}
+            </span>
+          </div>
+        )}
       </div>
+
       {/* Thống kê bệnh nhân */}
       {dataPatient && !errDate ? (
         <div className="mt-4">
@@ -121,13 +182,18 @@ function HomePage() {
         </div>
       )}
       {/* Thống kê thuốc */}
-      <div className="mt-4">
-        <h2 className="font-bold text-2xl mb-2">Tổng số thuốc</h2>
-        <TableStatisticsMedications />
-        <div className="flex items-center justify-center mt-5">
-          <PaginationClinic count={10} page={1} />
+      {dataMedicine && !errDate ? (
+        <div className="mt-4">
+          <StatisticsMedicine data={dataMedicine} />
         </div>
-      </div>
+      ) : (
+        <div>
+          <h2 className="font-bold text-2xl my-2">Tổng số bệnh nhân</h2>
+          <span className="border-red-600 border-2 rounded-md p-2 text-2xl text-red-700 my-4 block">
+            Vui lòng chọn đúng định dạng ngày để hiện bảng thống kê thuốc
+          </span>
+        </div>
+      )}
     </div>
   );
 }

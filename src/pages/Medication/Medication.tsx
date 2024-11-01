@@ -35,7 +35,7 @@ function Medication() {
     setPage(value);
   };
   const { mutate } = useSWRInfinite(
-    () => `${apiUrl}/Medicine?page=${page}&limit=5`,
+    () => `${apiUrl}/Medicine?page=${page}&limit=6`,
     fetcher
   );
   if (!dataMedications) return null;

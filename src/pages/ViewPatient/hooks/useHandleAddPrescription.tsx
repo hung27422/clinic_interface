@@ -17,6 +17,10 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
       "Bạn phải nhập hướng dẫn cách uống thuốc ít nhất là: 'Sáng' hoặc 'Trưa' hoặc 'Chiều ",
     type: "error",
   });
+  const { notify: notifyErrStock } = useToastify({
+    title: "Số lượng thuốc không đủ để kê toa!!!",
+    type: "error",
+  });
   const handleSaveInfoPatient = async (
     newPrescription: Omit<Prescription, "id">
   ) => {
@@ -40,8 +44,10 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
         "At least one of Day, Lunch, or Afternoon must be a number."
       ) {
         notifyErr();
+      } else if (error.response.data.code === "Medicine.InsufficientStock") {
+        notifyErrStock();
       } else {
-        console.error("Failed to add patient:", error);
+        console.error("Failed to add prescription:", error);
       }
     }
   };

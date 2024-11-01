@@ -1,11 +1,22 @@
 import { Button, TextField } from "@mui/material";
-import { useNavigate } from "react-router";
-import config from "../../configs/configs";
+import { useState } from "react";
+import { Account } from "../../types";
+import useHandleLogin from "./hooks/useHandleLogin";
 
 function Login() {
-  const navigate = useNavigate();
+  const [valueLogin, setValueLogin] = useState<Account>({
+    name: "",
+    password: "",
+  });
+  // const navigate = useNavigate();
+  const { handleUserLogin } = useHandleLogin();
+
+  const handleLoginValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValueLogin((prev) => ({ ...prev, [name]: value }));
+  };
   const handleLogin = () => {
-    navigate(config.router.home);
+    handleUserLogin({ name: valueLogin.name, password: valueLogin.password });
   };
   return (
     <div className="flex flex-col items-center justify-center w-[80%] h-[90%] bg-page rounded-lg border-primary border-2">
@@ -14,15 +25,19 @@ function Login() {
         <TextField
           className="w-96"
           style={{ marginBottom: "16px" }}
-          id="outlined-basic"
+          id="name"
+          name="name"
           label="Tài khoản"
           variant="outlined"
+          onChange={handleLoginValue}
         />
         <TextField
           className="w-96"
-          id="outlined-basic"
+          id="password"
+          name="password"
           label="Mật khẩu"
           variant="outlined"
+          onChange={handleLoginValue}
         />
       </div>
       <div className="mt-6">

@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { MedicationData } from "../../../../types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -26,109 +27,55 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
-const infoMedications = [
-  {
-    id: 1,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 2,
-    name: "Kẹo bạc hà",
-    company: "Candy",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 3,
-    name: "Kẹo dâu",
-    company: "Candy",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 4,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 5,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-  {
-    id: 6,
-    name: "Socola kẹo mút",
-    company: "Socola",
-    price: "2000",
-    quantity: "100",
-    status: "Còn",
-  },
-];
-
-export default function TableStatisticsMedications() {
+interface Props {
+  data: MedicationData;
+}
+export default function TableStatisticsMedications({ data }: Props) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell width={"5%"} align="left">
-              Id
-            </StyledTableCell>
-            <StyledTableCell width={"15%"} align="center">
+            <StyledTableCell width={"20%"} align="center">
               Tên
             </StyledTableCell>
-            <StyledTableCell width={"20%"} align="center">
+            <StyledTableCell width={"25%"} align="center">
               Tên công ty
             </StyledTableCell>
             <StyledTableCell width={"20%"} align="center">
-              Số lượng
+              Tổng số lượng bán
             </StyledTableCell>
             <StyledTableCell width={"20%"} align="center">
-              Giá
+              Tổng tiền
             </StyledTableCell>
-            <StyledTableCell width={"20%"} align="center">
-              Tình trạng
+            <StyledTableCell width={"15%"} align="center">
+              Loại
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {infoMedications.map((item) => (
+          {data.medicines.map((item) => (
             <StyledTableRow key={item.id}>
               <StyledTableCell
-                width={"5%"}
-                align="left"
+                width={"20%"}
+                align="center"
                 component="th"
                 scope="row"
               >
-                {item.id}
-              </StyledTableCell>
-              <StyledTableCell width={"15%"} align="center">
                 {item.name}
               </StyledTableCell>
-              <StyledTableCell width={"20%"} align="center">
+
+              <StyledTableCell width={"25%"} align="center">
                 {item.company}
               </StyledTableCell>
               <StyledTableCell width={"20%"} align="center">
-                {item.price}
+                {item.amount}
               </StyledTableCell>
               <StyledTableCell width={"20%"} align="center">
-                {item.quantity}
+                {item.combinedPrice}
               </StyledTableCell>
-              <StyledTableCell width={"20%"} align="center">
-                {item.status}
+              <StyledTableCell width={"15%"} align="center">
+                {item.type}
               </StyledTableCell>
             </StyledTableRow>
           ))}

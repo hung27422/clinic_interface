@@ -29,7 +29,7 @@ function Patient() {
     setPage(value);
   };
   const { mutate } = useSWRInfinite(
-    () => `${apiUrl}/Patient?page=${page}&limit=5`,
+    () => `${apiUrl}/Patient?page=${page}&limit=6`,
     fetcher
   );
   // Hàm lấy value search
@@ -39,6 +39,7 @@ function Patient() {
   const data =
     dataSearch && dataSearch?.patients.length > 0 ? dataSearch : dataPatients;
   const countPage = dataPatients?.pagination?.totalPages || 1;
+  const exitDataSearch = dataSearch ? dataSearch?.patients.length > 0 : 0;
   if (!data) return null;
   return (
     <div className="flex min-h-screen flex-col p-2 relative">
@@ -63,7 +64,7 @@ function Patient() {
               onChange={(e) => handleSearchPatient(e.target.value)}
             />
           </div>
-          {valueSearch && !dataSearch && (
+          {valueSearch && !exitDataSearch && (
             <span className="flex items-center justify-center mt-2 text-xl text-red-600 font-medium">
               Không tìm thấy bệnh nhân
             </span>
