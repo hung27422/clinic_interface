@@ -5,7 +5,7 @@ interface Props {
 }
 function LoginLayout({ children }: Props) {
   return (
-    <div className="bg-background h-lvh flex items-center justify-center">
+    <div className="bg-background flex items-center justify-center min-h-screen">
       {children}
     </div>
   );

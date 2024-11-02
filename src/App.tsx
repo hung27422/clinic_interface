@@ -2,73 +2,58 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
+  useNavigate,
+  useLocation,
 } from "react-router-dom";
 import publicRoutes from "./routes/routes";
 import "./App.css";
 import DefaultLayout from "./Layout/DefaultLayout/DefaultLayout";
-import { useContext } from "react";
-import { ClinicContext } from "./Context/ContextClinic";
-import config from "./configs/configs";
+import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
+import useConfirmTokenUser from "./hooks/ConfirmTokenUser/useConfirmTokenUser";
+
+function AppRoutes() {
+  const { isTokenExpired } = useConfirmTokenUser();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isTokenExpired) {
+      navigate("/login");
+    } else if (isTokenExpired && pathname === "/login") {
+      navigate("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isTokenExpired, navigate, pathname]);
+
+  return (
+    <Routes>
+      {publicRoutes.map((router, index) => {
+        const Layout = router.layout ? router.layout : DefaultLayout;
+        const Page = router.component;
+
+        return (
+          <Route
+            key={index}
+            path={router.path}
+            element={
+              <Layout>
+                <ToastContainer />
+                <Page />
+              </Layout>
+            }
+          />
+        );
+      })}
+    </Routes>
+  );
+}
 
 function App() {
-  const { dataUser } = useContext(ClinicContext);
-  const isUserLoggedIn = Object.keys(dataUser).length > 0; // Kiểm tra xem user đã đăng nhập hay chưa
-
   return (
     <Router>
       <div>
-        <Routes>
-          {publicRoutes.map((router, index) => {
-            let Layout = DefaultLayout;
-
-            if (router.layout) {
-              Layout = router.layout;
-            }
-
-            const Page = router.component;
-
-            // Nếu đã đăng nhập
-            if (isUserLoggedIn) {
-              // Nếu đang cố gắng truy cập vào trang login, chuyển hướng đến dashboard
-              if (router.path === config.router.login) {
-                return (
-                  <Route
-                    key={index}
-                    path={router.path}
-                    element={<Navigate to={config.router.home} replace />}
-                  />
-                );
-              }
-            } else {
-              // Nếu chưa đăng nhập và không phải trang login, chuyển hướng về trang login
-              if (router.path !== config.router.login) {
-                return (
-                  <Route
-                    key={index}
-                    path={router.path}
-                    element={<Navigate to={config.router.login} replace />}
-                  />
-                );
-              }
-            }
-
-            // Render các routes còn lại
-            return (
-              <Route
-                key={index}
-                path={router.path}
-                element={
-                  <Layout>
-                    <ToastContainer />
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
-          })}
-        </Routes>
+        <AppRoutes />
       </div>
     </Router>
   );

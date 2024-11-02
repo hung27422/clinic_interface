@@ -111,8 +111,8 @@ export interface PrescriptionData {
   pagination: PaginationData;
 }
 export interface User {
-  id: string;
-  token: string;
+  id?: string;
+  token?: string;
 }
 export interface Account {
   name: string;

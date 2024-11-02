@@ -8,9 +8,8 @@ function Login() {
     name: "",
     password: "",
   });
-  // const navigate = useNavigate();
-  const { handleUserLogin } = useHandleLogin();
 
+  const { handleUserLogin } = useHandleLogin();
   const handleLoginValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValueLogin((prev) => ({ ...prev, [name]: value }));
@@ -19,7 +18,7 @@ function Login() {
     handleUserLogin({ name: valueLogin.name, password: valueLogin.password });
   };
   return (
-    <div className="flex flex-col items-center justify-center w-[80%] h-[90%] bg-page rounded-lg border-primary border-2">
+    <div className="flex flex-col items-center justify-center w-[80%] h-[80vh]  bg-page rounded-lg border-primary border-2">
       <h2 className="text-5xl text-primary mb-6">Đăng Nhập</h2>
       <div className="flex flex-col">
         <TextField

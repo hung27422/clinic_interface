@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import useToastify from "../../../hooks/Toastify/useToastify";
-import { ClinicContext } from "../../../Context/ContextClinic";
-import { useContext } from "react";
 
 interface LoginData {
   name: string;
@@ -10,7 +8,6 @@ interface LoginData {
 }
 
 function useHandleLogin() {
-  const { setDataUser } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify: notifySuccess } = useToastify({
     title: "Đăng nhập thành công",
@@ -31,7 +28,9 @@ function useHandleLogin() {
       });
       notifySuccess();
       if (response.data) {
-        setDataUser(response.data);
+        console.log("Response data:", response.data);
+        localStorage.setItem("userData", JSON.stringify(response.data));
+        window.location.reload();
       }
     } catch (error: any) {
       if (error.response?.data?.code === "User.InvalidCredentials") {

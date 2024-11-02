@@ -4,11 +4,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Avatar } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
-import { ClinicContext } from "../../../Context/ContextClinic";
+import useDecodedUserToken from "../../../api/hooks/useDecodedUserToken";
 
 export default function SidebarsBottom() {
-  const { setIsAuthenticated } = React.useContext(ClinicContext);
-
+  const { decodedToken } = useDecodedUserToken();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -19,8 +18,11 @@ export default function SidebarsBottom() {
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    // Xóa dữ liệu từ localStorage để đăng xuất
+    localStorage.removeItem("userData");
+    window.location.reload();
   };
+  const firstCharName = decodedToken?.name ?? "A";
   return (
     <div>
       <Button
@@ -36,9 +38,9 @@ export default function SidebarsBottom() {
           style={{ width: "32px", height: "32px", marginRight: "12px" }}
           sx={{ bgcolor: deepOrange[500] }}
         >
-          N
+          {firstCharName[0]}
         </Avatar>
-        Cài đặt
+        {decodedToken?.name}
       </Button>
       <Menu
         id="basic-menu"
