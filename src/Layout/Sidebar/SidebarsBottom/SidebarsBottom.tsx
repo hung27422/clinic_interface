@@ -4,10 +4,12 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Avatar } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
-import useDecodedUserToken from "../../../api/hooks/useDecodedUserToken";
+import { useNavigate } from "react-router";
+import useInfoUserToken from "../../../api/hooks/useInfoUserToken";
 
 export default function SidebarsBottom() {
-  const { decodedToken } = useDecodedUserToken();
+  const navigate = useNavigate();
+  const { decodedToken } = useInfoUserToken();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,7 +22,7 @@ export default function SidebarsBottom() {
   const handleLogout = () => {
     // Xóa dữ liệu từ localStorage để đăng xuất
     localStorage.removeItem("userData");
-    window.location.reload();
+    navigate("/login");
   };
   const firstCharName = decodedToken?.name ?? "A";
   return (

@@ -10,21 +10,39 @@ import "./App.css";
 import DefaultLayout from "./Layout/DefaultLayout/DefaultLayout";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
-import useConfirmTokenUser from "./hooks/ConfirmTokenUser/useConfirmTokenUser";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 function AppRoutes() {
-  const { isTokenExpired } = useConfirmTokenUser();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  //Lấy data user lưu từ local storage
+  const storedDataUser = JSON.parse(localStorage.getItem("userData") || "{}");
+
+  const token = storedDataUser?.token;
+  let isTokenExpired = true; // Mặc định là token hết hạn, nếu không hợp lệ
+  // Check xem có token và token có phải là string không
+  if (token && typeof token === "string") {
+    // Phải thì thực hiện check thời gian token
+    try {
+      const decoded: JwtPayload = jwtDecode(token);
+      const expExpirationTime = decoded.exp ?? 0;
+      const currentTime = Date.now() / 1000;
+      isTokenExpired = currentTime > expExpirationTime;
+    } catch (error) {
+      console.error("Failed to decode token:", error);
+      isTokenExpired = true; // Nếu không thì cho token là hết hạn
+    }
+  }
+
   useEffect(() => {
-    // Chỉ điều hướng sau khi trạng thái đã được khởi tạo
-    if (isTokenExpired && pathname === "/login") {
+    // Nếu đã đăng nhập mà người dùng cố truy cập về login thì về "/"
+    if (!isTokenExpired && pathname === "/login") {
       navigate("/");
-    } else if (!isTokenExpired && pathname !== "/login") {
-      navigate("/login");
+    } else if (isTokenExpired && pathname !== "/login") {
+      navigate("/login"); //Token hết hạn thì về trang login
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTokenExpired, navigate]);
+  }, [isTokenExpired, pathname, navigate]);
 
   return (
     <Routes>

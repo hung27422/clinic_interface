@@ -34,9 +34,7 @@ function useHandleLogin() {
       });
       notifySuccess();
       if (response.data) {
-        console.log("Response data:", response.data);
         localStorage.setItem("userData", JSON.stringify(response.data));
-        window.location.reload();
         navigate("/");
       }
     } catch (error: any) {

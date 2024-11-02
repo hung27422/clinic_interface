@@ -7,12 +7,11 @@ interface CustomJwtPayload extends JwtPayload {
   name?: string; // hoặc name: string nếu bạn chắc chắn rằng nó sẽ có
 }
 
-function useDecodedUserToken() {
+function useInfoUserToken() {
   const [userData, setUserData] = useState<User>();
   const [decodedToken, setDecodedToken] = useState<CustomJwtPayload | null>(
     null
   );
-  // localStorage.setItem("userData", JSON.stringify(response.data));
   useEffect(() => {
     const storedData = localStorage.getItem("userData");
     if (storedData) {
@@ -40,4 +39,4 @@ function useDecodedUserToken() {
   return { userData, decodedToken };
 }
 
-export default useDecodedUserToken;
+export default useInfoUserToken;
