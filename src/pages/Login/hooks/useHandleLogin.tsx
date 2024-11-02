@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import useToastify from "../../../hooks/Toastify/useToastify";
+import { useNavigate } from "react-router";
 
 interface LoginData {
   name: string;
@@ -8,6 +9,7 @@ interface LoginData {
 }
 
 function useHandleLogin() {
+  const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify: notifySuccess } = useToastify({
     title: "Đăng nhập thành công",
@@ -15,6 +17,10 @@ function useHandleLogin() {
   });
   const { notify: notifyErr } = useToastify({
     title: "Tên đăng nhập hoặc mật khẩu không chính xác !!!",
+    type: "error",
+  });
+  const { notify: notifyErrEmpty } = useToastify({
+    title: "Vui lòng nhập tài khoản và mật khẩu !!!",
     type: "error",
   });
 
@@ -31,11 +37,16 @@ function useHandleLogin() {
         console.log("Response data:", response.data);
         localStorage.setItem("userData", JSON.stringify(response.data));
         window.location.reload();
+        navigate("/");
       }
     } catch (error: any) {
-      if (error.response?.data?.code === "User.InvalidCredentials") {
+      if (error.response?.data?.code === "Users.UncorrectLoginInfo") {
         // Giả định mã lỗi cho thông tin đăng nhập không hợp lệ
         notifyErr();
+      } else if (
+        error.response.data.description === "Sequence contains no elements."
+      ) {
+        notifyErrEmpty();
       } else {
         console.error("Đăng nhập thất bại:", error);
       }

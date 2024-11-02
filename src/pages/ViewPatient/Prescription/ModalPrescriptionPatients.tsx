@@ -38,17 +38,6 @@ import useValidation, {
 } from "../../../hooks/components/useValidation";
 import { ValidationError } from "yup";
 
-// const medicinalSchema = Yup.object({
-//   name: Yup.string().required("Tên thuốc không được để trống"),
-//   quantity: Yup.number()
-//     .required("Số lượng không được để trống")
-//     .min(1, "Số lượng phải lớn hơn 0"),
-//   morning: Yup.string(),
-//   afternoon: Yup.string(),
-//   night: Yup.string(),
-//   time: Yup.string().required("Thời gian uống thuốc không được để trống"),
-//   idMedication: Yup.string().required("ID thuốc không được để trống"),
-// });
 export default function ModalPrescriptionPatients({
   flUpId,
   patientId,

@@ -10,6 +10,7 @@ function InfoPrescription({ data }: Props) {
   const date = now.getDate();
   const month = now.getMonth() + 1;
   const year = now.getFullYear();
+
   const divRef = React.useRef<HTMLDivElement>(null);
   const handlePrint = () => {
     if (divRef.current) {

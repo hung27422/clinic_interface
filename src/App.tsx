@@ -16,15 +16,15 @@ function AppRoutes() {
   const { isTokenExpired } = useConfirmTokenUser();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
   useEffect(() => {
-    if (!isTokenExpired) {
-      navigate("/login");
-    } else if (isTokenExpired && pathname === "/login") {
+    // Chỉ điều hướng sau khi trạng thái đã được khởi tạo
+    if (isTokenExpired && pathname === "/login") {
       navigate("/");
+    } else if (!isTokenExpired && pathname !== "/login") {
+      navigate("/login");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTokenExpired, navigate, pathname]);
+  }, [isTokenExpired, navigate]);
 
   return (
     <Routes>

@@ -1,7 +1,7 @@
 import { FollowUp, FollowUpData, Patient } from "../../../types";
-import DeleteInfoExamination from "../ModalDeleteInfoExamination/ModalDeleteInfoExamination";
-import ModalPrescriptionPatients from "../ModalPrescriptionPatients/ModalPrescriptionPatients";
-import ModalReExaminationPatient from "../ModalReExaminationPatient/ModalReExaminationPatient";
+import DeleteInfoExamination from "../Examination/ModalDeleteInfoExamination";
+import ModalPrescriptionPatients from "../Prescription/ModalPrescriptionPatients";
+import ModalReExaminationPatient from "../Examination/ModalReExaminationPatient";
 
 interface Props {
   dataPatient: Patient;

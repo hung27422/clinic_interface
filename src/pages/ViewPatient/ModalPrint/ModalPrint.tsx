@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import InfoPrescription from "../InfoPrescription/InfoPrescription";
+import InfoPrescription from "../Prescription/InfoPrescription";
 import { Prescriptions } from "../../../types";
 
 const style = {

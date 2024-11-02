@@ -7,13 +7,24 @@ import IsInfoPatients from "./InfoPatient/IsInfoPatient.tsx";
 import useFollowUp from "../../api/hooks/useFollowUp.tsx";
 import useGetPrescriptionByPhone from "../../api/hooks/useGetPrescriptionByPhone.tsx";
 import ModalPrint from "./ModalPrint/ModalPrint.tsx";
-import ModalAddInfoExamination from "./ModalAddInfoExamination/ModalAddInfoExamination.tsx";
+import ModalAddInfoExamination from "./Examination/ModalAddInfoExamination.tsx";
 import Spinner from "../../hooks/Spinner/Spinner.tsx";
 import PaginationClinic from "../../components/Pagination.tsx";
 import { useState } from "react";
-import ModalDeletePrescription from "./ModalDeletePrescription/ModalDeletePrescription.tsx";
+import ModalDeletePrescription from "./Prescription/ModalDeletePrescription.tsx";
 import useSWRInfinite from "swr/infinite";
 import axios from "axios";
+function formatDate(isoString: string) {
+  const date = new Date(isoString);
+
+  // Get the parts of the date
+  const day = String(date.getDate()).padStart(2, "0"); // Day
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month (0-indexed)
+  const year = date.getFullYear(); // Year
+
+  // Return formatted date
+  return `${day}/${month}/${year}`; // Example format: dd/mm/yyyy
+}
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 function ViewPatients() {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -89,7 +100,7 @@ function ViewPatients() {
           {/* Bệnh nhân chưa có thông tin khám */}
           {dataPatient?.patient.status === "not_examined" && (
             <div className="text-2xl text-center">
-              Hãy thêm bệnh mới cho bệnh nhân{" "}
+              Hãy thêm bệnh mới cho bệnh nhân
               <span className="text-red-500 font-semibold">
                 {" " + dataPatient.patient.name}
               </span>{" "}
@@ -145,6 +156,8 @@ function ViewPatients() {
               </h2>
               <div className="bg-black/10 px-2 py-4 mt-2 rounded-md h-fit">
                 {dataPrescription.prescriptions.map((item) => {
+                  const isoString = item.createdAt;
+                  const formattedDate = formatDate(isoString);
                   return (
                     <div
                       key={item.id}
@@ -169,9 +182,9 @@ function ViewPatients() {
                       <div className="col-span-1 text-center">
                         <div>
                           <span className="text-xl font-medium">
-                            Ngày khám:{" "}
+                            Ngày khám:
                           </span>
-                          <span className="text-xl">20-10-2024</span>
+                          <span className="text-xl">{" " + formattedDate}</span>
                         </div>
                       </div>
                       <div className="col-span-1 flex items-end justify-end">
