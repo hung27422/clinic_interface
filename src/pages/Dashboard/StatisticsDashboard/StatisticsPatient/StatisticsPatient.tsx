@@ -23,7 +23,7 @@ function StatisticsPatient({ dataPatient }: Props) {
       <h2 className="font-bold text-2xl mb-2">
         Tổng số bệnh nhân -
         <span className="text-red-500">
-          {" " + dataPatient.patients.length || 0}
+          {" " + dataPatient.pagination.totalItems || 0}
         </span>
       </h2>
       {exitDataPatient ? (

@@ -11,6 +11,7 @@ import useGetMedicinePrescriptionByDate from "../../api/hooks/useGetMedicinePres
 import StatisticsMedicine from "./StatisticsDashboard/StatisticsMedicine/StatisticsMedicine";
 import useGetFirstAndLastDayOfMonth from "../../hooks/components/useGetFirstAndLastDayOfMonth";
 import useGetMedicineTop10ByDate from "../../api/hooks/useGetMedicineTop10ByDate";
+import PaginationClinic from "../../components/Pagination";
 
 const today = new Date();
 // Lấy ngày (ngày trong tháng)
@@ -23,18 +24,33 @@ function formatNumberWithDots(num: number): string {
   return new Intl.NumberFormat("de-DE").format(num); // 'de-DE' sử dụng dấu chấm cho hàng nghìn
 }
 function HomePage() {
-  const currentDate = `${day}-${month}-${year}`;
+  const currentDate = `${month}-${day}-${year}`;
+  const [pageMedicine, setPageMedicine] = useState(1);
+  const [pagePatient, setPagePatient] = useState(1);
   const [errDate, setErrDate] = useState(false);
   const { notify } = useToastify({
     title: "Ngày bắt đầu không được lớn hơn ngày kết thúc",
     type: "error",
   });
+  // Chuyển trang của thuốc
+  const handleChangePageMedicine = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPageMedicine(value);
+  };
+  // Chuyển trang của bệnh nhân
+  const handleChangePagePatient = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPagePatient(value);
+  };
   // Lấy ngày đầu tiên và cuối cùng của tháng
   const { firstDay, lastDay } = useGetFirstAndLastDayOfMonth({
     year: year,
     month: month,
   });
-
   // Set ngày
   const [valueStartDate, setValueStartDate] = useState<Dayjs | null>(null);
   const [valueEndDate, setValueEndDate] = useState<Dayjs | null>(null);
@@ -58,14 +74,14 @@ function HomePage() {
   const { data: dataPatient } = useGetPatientByDate({
     startDate: startDate || firstDay,
     endDate: endDate || lastDay,
-    page: 1,
+    page: pagePatient,
     limit: 5,
   });
   // Lấy dữ liệu thuốc đã bán theo Ngày
   const { data: dataMedicine } = useGetMedicinePrescriptionByDate({
     startDate: startDate || firstDay,
     endDate: endDate || lastDay,
-    page: 1,
+    page: pageMedicine,
     limit: 5,
   });
   // Lấy dữ liệu top 10 thuốc
@@ -93,6 +109,8 @@ function HomePage() {
       accumulator + (currentValue ?? 0),
     0
   );
+  const countPagesMedicine = dataMedicine?.pagination.totalPages || 0;
+  const countPagesPatient = dataPatient?.pagination.totalPages || 0;
   const formattedTotalAmount = formatNumberWithDots(totalPrice);
   // Menu statistical
   const statistical = [
@@ -131,8 +149,8 @@ function HomePage() {
           <span className="mr-2 text-2xl">Đến</span>
           <DatePicker
             label="Ngày kết thúc"
-            value={valueEndDate}
             defaultValue={dayjs(currentDate)}
+            value={valueEndDate}
             onChange={(newValue) => setValueEndDate(newValue)}
           />
         </div>
@@ -174,6 +192,15 @@ function HomePage() {
       {dataPatient && !errDate ? (
         <div className="mt-4">
           <StatisticsPatient dataPatient={dataPatient} />
+          <div className="flex items-center justify-center mt-5">
+            {countPagesPatient > 1 && (
+              <PaginationClinic
+                onChange={handleChangePagePatient}
+                count={countPagesPatient}
+                page={pagePatient}
+              />
+            )}
+          </div>
         </div>
       ) : (
         <div>
@@ -187,6 +214,15 @@ function HomePage() {
       {dataMedicine && !errDate ? (
         <div className="mt-4">
           <StatisticsMedicine data={dataMedicine} />
+          <div className="flex items-center justify-center mt-5">
+            {countPagesMedicine > 1 && (
+              <PaginationClinic
+                onChange={handleChangePageMedicine}
+                count={countPagesMedicine}
+                page={pageMedicine}
+              />
+            )}
+          </div>
         </div>
       ) : (
         <div>
