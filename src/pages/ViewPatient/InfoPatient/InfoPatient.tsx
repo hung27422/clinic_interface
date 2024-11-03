@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
-import useHandleAddFollowUp from "../hooks/useHandleAddFollowUp";
+import useHandleAddFollowUp from "../Examination/hooks/useHandleAddFollowUp";
 import { Patient } from "../../../types";
 import useValidation, {
   ValidationErrorsExaminations,

@@ -1,6 +1,6 @@
 import axios from "axios";
-import useToastify from "../../../hooks/Toastify/useToastify";
-import { FollowUp } from "../../../types";
+import useToastify from "../../../../hooks/Toastify/useToastify";
+import { FollowUp } from "../../../../types";
 interface Props {
   id: string;
   mutate: () => void;

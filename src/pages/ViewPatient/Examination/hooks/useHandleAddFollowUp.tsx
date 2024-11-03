@@ -1,7 +1,7 @@
 import axios from "axios";
-import { FollowUp } from "../../../types";
-import useHandleUpdatePatient from "../../Patient/ModalUpdatePatient/hook/useHandleUpdatePatient";
-import useToastify from "../../../hooks/Toastify/useToastify";
+import { FollowUp } from "../../../../types";
+import useHandleUpdatePatient from "../../../Patient/ModalUpdatePatient/hook/useHandleUpdatePatient";
+import useToastify from "../../../../hooks/Toastify/useToastify";
 
 interface Props {
   idPatient: string;

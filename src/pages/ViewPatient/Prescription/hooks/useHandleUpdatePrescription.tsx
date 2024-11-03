@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Prescription, PrescriptionUpdate } from "../../../../types";
+import { PrescriptionUpdate } from "../../../../types";
 import useToastify from "../../../../hooks/Toastify/useToastify";
 interface Props {
   id: string;
