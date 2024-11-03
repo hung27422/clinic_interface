@@ -3,12 +3,16 @@ import useToastify from "../../../../hooks/Toastify/useToastify";
 import { PrescriptionUpdate } from "../../../../types";
 
 interface Props {
-  _id: string; // đổi id thành _id
+  idPrescriptions: string; // đổi id thành _id
   mutate: () => void;
   handleClose: () => void;
 }
 
-function useHandleUpdatePrescription({ _id: id, mutate, handleClose }: Props) {
+function useHandleUpdatePrescription({
+  idPrescriptions,
+  mutate,
+  handleClose,
+}: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify } = useToastify({
     title: "Tái khám thành công",
@@ -19,12 +23,16 @@ function useHandleUpdatePrescription({ _id: id, mutate, handleClose }: Props) {
     newPrescription: PrescriptionUpdate
   ) => {
     try {
-      await axios.put(`${apiUrl}/Prescription/${id}`, newPrescription, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      await axios.put(
+        `${apiUrl}/Prescription/${idPrescriptions}`,
+        newPrescription,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (mutate) mutate();
       if (handleClose) handleClose();
       notify();
