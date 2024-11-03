@@ -17,7 +17,7 @@ function Patient() {
   const [page, setPage] = useState(1);
   const [valueSearch, setValueSearch] = useState("");
   const debouncedSearchValue = useDebounce(valueSearch, 2000);
-  const { data: dataPatients } = usePatients({ page: page, limit: 6 });
+  const { data: dataPatients } = usePatients({ page: page, limit: 5 });
   const { data: dataSearch } = useSearchPatient({
     phone: debouncedSearchValue || null,
   });
@@ -29,7 +29,7 @@ function Patient() {
     setPage(value);
   };
   const { mutate } = useSWRInfinite(
-    () => `${apiUrl}/Patient?page=${page}&limit=6`,
+    () => `${apiUrl}/Patient?page=${page}&limit=5`,
     fetcher
   );
   // Hàm lấy value search

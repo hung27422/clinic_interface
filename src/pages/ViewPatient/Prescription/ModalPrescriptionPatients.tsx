@@ -13,7 +13,7 @@ import {
   faRotateRight,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import useHandleAddPrescription from "../hooks/useHandleAddPrescription";
+import useHandleAddPrescription from "./hooks/useHandleAddPrescription";
 import Spinner from "../../../hooks/Spinner/Spinner";
 const style = {
   position: "absolute",
@@ -172,6 +172,7 @@ export default function ModalPrescriptionPatients({
     );
     setValueSearch("");
   };
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resultSearchMedication = (id: number, attrs: any) => (
     <div

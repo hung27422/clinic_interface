@@ -2,8 +2,8 @@
 import { DatePicker } from "@mui/x-date-pickers";
 import "../../App.css";
 import TableStatisticsTop10Medications from "./TableInfoStatistics/TableStatisticsTop10Medications/TableStatisticsTop10Medications";
-import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
 import StatisticsPatient from "./StatisticsDashboard/StatisticsPatient/StatisticsPatient";
 import useGetPatientByDate from "../../api/hooks/useGetPatientByDate";
 import useToastify from "../../hooks/Toastify/useToastify";
@@ -34,11 +34,13 @@ function HomePage() {
     year: year,
     month: month,
   });
+
   // Set ngày
-  const [valueStartDate, setValueStartDate] = useState<Dayjs | null>(dayjs());
-  const [valueEndDate, setValueEndDate] = useState<Dayjs | null>(dayjs());
+  const [valueStartDate, setValueStartDate] = useState<Dayjs | null>(null);
+  const [valueEndDate, setValueEndDate] = useState<Dayjs | null>(null);
   const startDate = valueStartDate?.format("DD-MM-YYYY").toString();
   const endDate = valueEndDate?.format("DD-MM-YYYY").toString();
+
   //Kiểm tra nếu ngày bắt đầu lớn hơn ngày kết thúc thì thông báo
   useEffect(() => {
     if (
@@ -54,15 +56,15 @@ function HomePage() {
   }, [valueStartDate, valueEndDate]);
   // Lấy dữ liệu patient theo ngày
   const { data: dataPatient } = useGetPatientByDate({
-    startDate: startDate || currentDate,
-    endDate: endDate || currentDate,
+    startDate: startDate || firstDay,
+    endDate: endDate || lastDay,
     page: 1,
     limit: 5,
   });
   // Lấy dữ liệu thuốc đã bán theo Ngày
   const { data: dataMedicine } = useGetMedicinePrescriptionByDate({
-    startDate: startDate || currentDate,
-    endDate: endDate || currentDate,
+    startDate: startDate || firstDay,
+    endDate: endDate || lastDay,
     page: 1,
     limit: 5,
   });
@@ -119,8 +121,8 @@ function HomePage() {
           <span className="mr-2 text-2xl">Từ</span>
           <DatePicker
             label="Ngày bắt đầu"
-            defaultValue={dayjs(currentDate)}
             value={valueStartDate}
+            defaultValue={dayjs(currentDate)}
             onChange={(newValue) => setValueStartDate(newValue)}
             views={["day", "month", "year"]}
           />
@@ -129,8 +131,8 @@ function HomePage() {
           <span className="mr-2 text-2xl">Đến</span>
           <DatePicker
             label="Ngày kết thúc"
-            defaultValue={dayjs(currentDate)}
             value={valueEndDate}
+            defaultValue={dayjs(currentDate)}
             onChange={(newValue) => setValueEndDate(newValue)}
           />
         </div>

@@ -14,6 +14,7 @@ import { useState } from "react";
 import ModalDeletePrescription from "./Prescription/ModalDeletePrescription.tsx";
 import useSWRInfinite from "swr/infinite";
 import axios from "axios";
+import ModalUpdatePrescription from "./Prescription/ModalUpdatePrescription.tsx.tsx";
 function formatDate(isoString: string) {
   const date = new Date(isoString);
 
@@ -188,8 +189,16 @@ function ViewPatients() {
                         </div>
                       </div>
                       <div className="col-span-1 flex items-end justify-end">
-                        <ModalPrint data={item} />
-                        <div className=" flex items-center justify-center w-9 h-9 ml-4 border-red-400 border-2 rounded-full cursor-pointer">
+                        <div>
+                          <ModalPrint data={item} />
+                        </div>
+                        <div className="mx-4">
+                          <ModalUpdatePrescription
+                            data={item}
+                            mutatePrescription={mutatePrescription}
+                          />
+                        </div>
+                        <div className=" flex items-center justify-center w-9 h-9 border-red-400 border-2 rounded-full cursor-pointer">
                           <ModalDeletePrescription
                             idPrescription={item.id}
                             summary={item.summary.summary}

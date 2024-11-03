@@ -40,11 +40,11 @@ function useHandleLogin() {
     } catch (error: any) {
       if (error.response?.data?.code === "Users.UncorrectLoginInfo") {
         // Giả định mã lỗi cho thông tin đăng nhập không hợp lệ
-        notifyErr();
+        notifyErrEmpty();
       } else if (
         error.response.data.description === "Sequence contains no elements."
       ) {
-        notifyErrEmpty();
+        notifyErr();
       } else {
         console.error("Đăng nhập thất bại:", error);
       }

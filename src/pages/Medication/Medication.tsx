@@ -19,7 +19,7 @@ function Medication() {
   // Lấy data
   const { data: dataMedications } = useMedications({
     page: page,
-    limit: 6,
+    limit: 5,
   });
   const { data: dataSearch } = useSearchMedication({
     name: debouncedSearchValue,
@@ -35,7 +35,7 @@ function Medication() {
     setPage(value);
   };
   const { mutate } = useSWRInfinite(
-    () => `${apiUrl}/Medicine?page=${page}&limit=6`,
+    () => `${apiUrl}/Medicine?page=${page}&limit=5`,
     fetcher
   );
   if (!dataMedications) return null;

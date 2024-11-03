@@ -91,6 +91,7 @@ export interface Prescriptions {
   };
   products: [
     {
+      medicineId: string;
       name: string;
       quantity: number;
       instructions: {
@@ -106,10 +107,25 @@ export interface Prescriptions {
   billDate: string;
   createdAt: string;
 }
+export interface PrescriptionUpdate {
+  id: string;
+  medicines: {
+    medicineId: string;
+    quantity: number;
+    instructions: {
+      day: string;
+      lunch: string;
+      afternoon: string;
+      manual: string;
+    };
+  }[];
+  notes: string;
+}
 export interface PrescriptionData {
   prescriptions: Prescriptions[];
   pagination: PaginationData;
 }
+
 export interface User {
   id?: string;
   token?: string;

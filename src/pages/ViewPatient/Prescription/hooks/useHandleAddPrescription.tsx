@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import useToastify from "../../../hooks/Toastify/useToastify";
-import { Prescription } from "../../../types";
+import useToastify from "../../../../hooks/Toastify/useToastify";
+import { Prescription } from "../../../../types";
 interface Props {
   mutate: () => void;
   handleClose: () => void;
