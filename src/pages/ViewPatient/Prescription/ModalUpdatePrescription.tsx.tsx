@@ -48,7 +48,7 @@ export default function ModalUpdatePrescription({
   const { prescriptionSchema } = useValidation();
   const { handleUpdatePrescription } = useHandleUpdatePrescription({
     handleClose: handleClose,
-    id: data.id,
+    _id: data.id,
     mutate: mutatePrescription,
   });
   const [medicinal, setMedicinal] = React.useState({
