@@ -1,17 +1,20 @@
 import axios from "axios";
-import { PrescriptionUpdate } from "../../../../types";
 import useToastify from "../../../../hooks/Toastify/useToastify";
+import { PrescriptionUpdate } from "../../../../types";
+
 interface Props {
-  id: string;
+  _id: string; // đổi id thành _id
   mutate: () => void;
   handleClose: () => void;
 }
-function useHandleUpdatePrescription({ id, mutate, handleClose }: Props) {
+
+function useHandleUpdatePrescription({ _id: id, mutate, handleClose }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify } = useToastify({
     title: "Tái khám thành công",
     type: "success",
   });
+
   const handleUpdatePrescription = async (
     newPrescription: PrescriptionUpdate
   ) => {
@@ -30,6 +33,7 @@ function useHandleUpdatePrescription({ id, mutate, handleClose }: Props) {
       alert("Failed to update prescription.");
     }
   };
+
   return { handleUpdatePrescription };
 }
 
