@@ -178,7 +178,7 @@ export default function ModalUpdatePrescription({
   };
   console.log(medicinal);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const resultSearchMedication = (id: string, attrs: any) => (
+  const resultSearchMedication = (attrs: any) => (
     <div
       className="w-[150px]  p-2 bg-white shadow-lg shadow-slate-300 border-primary border-2 rounded-md overflow-hidden"
       {...attrs}
@@ -264,7 +264,7 @@ export default function ModalUpdatePrescription({
                       render={(attrs) =>
                         valueSearch.length > 0 &&
                         data &&
-                        resultSearchMedication(field.medicineId, attrs)
+                        resultSearchMedication(attrs)
                       }
                       interactive
                       offset={[50, 10]}

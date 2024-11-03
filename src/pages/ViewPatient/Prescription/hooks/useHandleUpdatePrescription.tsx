@@ -3,7 +3,7 @@ import useToastify from "../../../../hooks/Toastify/useToastify";
 import { PrescriptionUpdate } from "../../../../types";
 
 interface Props {
-  idPrescriptions: string; // đổi id thành _id
+  idPrescriptions: string;
   mutate: () => void;
   handleClose: () => void;
 }
