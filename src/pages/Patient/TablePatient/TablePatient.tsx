@@ -12,6 +12,8 @@ import { Button } from "@mui/material";
 import ModalDeletePatient from "../ModalDeletePatient/ModalDeletePatient";
 import ModalUpdatePatient from "../ModalUpdatePatient/ModalUpdatePatient";
 import { Patient, PatientData } from "../../../types";
+import { useContext, useEffect } from "react";
+import { ClinicContext } from "../../../Context/ContextClinic";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,10 +38,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 interface Props {
   data: PatientData;
   mutate: () => void;
+  page: number;
+  setPage(page: number): void;
 }
-export default function TablePatient({ data, mutate }: Props) {
-  if (!data) return null;
+export default function TablePatient({ data, mutate, setPage, page }: Props) {
   const dataExit = data.patients && data.patients.length > 0;
+  const { setKeyReloadPatient } = useContext(ClinicContext);
+  //Thực hiện chuyển trang khi page không có phần tử nào
+  useEffect(() => {
+    if (!dataExit && page !== 1) {
+      setPage(page - 1);
+      setKeyReloadPatient((prev) => prev + 1);
+    }
+  }, [dataExit, page, setKeyReloadPatient, setPage]);
+
   return (
     <>
       {dataExit ? (

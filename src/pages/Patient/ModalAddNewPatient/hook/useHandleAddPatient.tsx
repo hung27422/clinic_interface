@@ -2,12 +2,16 @@
 import axios from "axios";
 import { Patient } from "../../../../types";
 import useToastify from "../../../../hooks/Toastify/useToastify";
+import { useContext } from "react";
+import { ClinicContext } from "../../../../Context/ContextClinic";
 interface Props {
   mutate: () => void;
   handleClose: () => void;
 }
 function useHandleAddPatient({ mutate, handleClose }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
+  const { setKeyReload } = useContext(ClinicContext);
+
   const { notify: notifySuccess } = useToastify({
     title: "Thêm bệnh nhân thành công",
     type: "success",
@@ -29,6 +33,7 @@ function useHandleAddPatient({ mutate, handleClose }: Props) {
       });
       notifySuccess();
       mutate();
+      setKeyReload((prev) => prev + 1);
       handleClose();
     } catch (error: any) {
       if (error.response.data.code === "Patient.ExistPhoneNumber") {

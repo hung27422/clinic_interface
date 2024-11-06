@@ -9,6 +9,8 @@ import Paper from "@mui/material/Paper";
 import ModalDeleteMedication from "../ModalDeleteMedication/ModalDeleteMedication";
 import ModalUpdateMedication from "../ModalUpdateMedication/ModalUpdateMedication";
 import { Medication, MedicationData } from "../../../types";
+import { useContext, useEffect } from "react";
+import { ClinicContext } from "../../../Context/ContextClinic";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,9 +35,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 interface Props {
   data: MedicationData;
   mutate: () => void;
+  page: number;
+  setPage(page: number): void;
 }
-export default function TableMedication({ data, mutate }: Props) {
+export default function TableMedication({
+  data,
+  mutate,
+  page,
+  setPage,
+}: Props) {
   const dataExit = data.medicines && data.medicines.length > 0;
+  const { setKeyReloadMedication } = useContext(ClinicContext);
+  useEffect(() => {
+    if (!dataExit && page !== 1) {
+      setPage(page - 1);
+      setKeyReloadMedication((prev) => prev + 1);
+    }
+  }, [dataExit, page, setKeyReloadMedication, setPage]);
   return (
     <>
       {dataExit ? (

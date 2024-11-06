@@ -70,7 +70,7 @@ export default function ModalPrescriptionPatients({
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { handleSaveInfoPatient } = useHandleAddPrescription({
+  const { handleSaveInfoPrescriptionPatient } = useHandleAddPrescription({
     mutate: mutatePrescription,
     handleClose: handleClose,
   });
@@ -133,7 +133,7 @@ export default function ModalPrescriptionPatients({
       for (const med of medicinal) {
         await prescriptionSchema.validate(med, { abortEarly: false });
       }
-      handleSaveInfoPatient({
+      handleSaveInfoPrescriptionPatient({
         followUpId: flUpId || "",
         patientId: patientId || "",
         notes: note ? note : "Không",

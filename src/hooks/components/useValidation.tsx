@@ -26,7 +26,7 @@ function useValidation() {
     name: string().required("Vui lòng nhập tên bệnh nhân"),
     address: string().required("Vui lòng nhập địa chỉ của bệnh nhân"),
     phone: string().matches(
-      /^\d{1,10}$/,
+      /^\d{10}$/,
       "Số điện thoại phải đủ hoặc không dưới 10 số"
     ),
     dob: string()

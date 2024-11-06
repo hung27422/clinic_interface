@@ -37,6 +37,7 @@ export default function ModalDeletePatient({ data, mutate }: Props) {
       await axios.delete(`${apiUrl}/Patient/${data.id}`);
       if (mutate) mutate();
       handleClose();
+
       notify();
     } catch (err) {
       console.log("Lỗi", err);

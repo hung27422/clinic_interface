@@ -2,11 +2,14 @@
 import axios from "axios";
 import useToastify from "../../../../hooks/Toastify/useToastify";
 import { Prescription } from "../../../../types";
+import { useContext } from "react";
+import { ClinicContext } from "../../../../Context/ContextClinic";
 interface Props {
   mutate: () => void;
   handleClose: () => void;
 }
 function useHandleAddPrescription({ mutate, handleClose }: Props) {
+  const { setKeyReloadPrescription } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify: notifySuccess } = useToastify({
     title: "Kê toa thuốc thành công",
@@ -21,7 +24,7 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
     title: "Số lượng thuốc không đủ để kê toa!!!",
     type: "error",
   });
-  const handleSaveInfoPatient = async (
+  const handleSaveInfoPrescriptionPatient = async (
     newPrescription: Omit<Prescription, "id">
   ) => {
     try {
@@ -36,6 +39,7 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
       });
       notifySuccess();
       mutate();
+      setKeyReloadPrescription((prev) => prev + 1);
       handleClose();
     } catch (error: any) {
       console.error("Failed to add patient:", error);
@@ -52,7 +56,7 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
     }
   };
 
-  return { handleSaveInfoPatient };
+  return { handleSaveInfoPrescriptionPatient };
 }
 
 export default useHandleAddPrescription;

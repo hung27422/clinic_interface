@@ -1,12 +1,15 @@
 import axios from "axios";
 import { Medication } from "../../../types";
 import useToastify from "../../../hooks/Toastify/useToastify";
+import { useContext } from "react";
+import { ClinicContext } from "../../../Context/ContextClinic";
 interface Props {
   mutate: () => void;
   handleClose: () => void;
 }
 
 function useHandleAddMedication({ handleClose, mutate: mutateAddNew }: Props) {
+  const { setKeyReload } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify: notifySuccess } = useToastify({
     title: "Thêm thuốc thành công",
@@ -28,6 +31,7 @@ function useHandleAddMedication({ handleClose, mutate: mutateAddNew }: Props) {
       });
       handleClose();
       mutateAddNew();
+      setKeyReload((prev) => prev + 1);
       notifySuccess();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

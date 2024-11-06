@@ -1,5 +1,7 @@
 import useSWR from "swr";
 import { PatientData } from "../../types";
+import { useContext } from "react";
+import { ClinicContext } from "../../Context/ContextClinic";
 const fetcher = async (url: string) => {
   const res = await fetch(url);
   if (!res.ok) {
@@ -15,8 +17,9 @@ interface Props {
 
 function usePatients({ page, limit }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
+  const { keyReloadPatient } = useContext(ClinicContext);
   const { data, isLoading, mutate } = useSWR<PatientData>(
-    `${apiUrl}/Patient?page=${page}&limit=${limit}`,
+    `${apiUrl}/Patient?page=${page}&limit=${limit}&reload=${keyReloadPatient}`,
     fetcher,
     {
       revalidateIfStale: false,

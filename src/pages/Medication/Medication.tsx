@@ -3,21 +3,21 @@ import ModalAddNewMedication from "./ModalAddNewMedication/ModalAddNewMedication
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import TableMedication from "./TableMedication/TableMedication";
 import useMedications from "../../api/hooks/useMedications";
-import { useState } from "react";
-import useSWRInfinite from "swr/infinite";
-import axios from "axios";
+import { useContext, useState } from "react";
 import useSearchMedication from "../../api/hooks/useSearchMedication";
 import PaginationClinic from "../../components/Pagination";
 import Spinner from "../../hooks/Spinner/Spinner";
 import useDebounce from "../../hooks/components/useDebounce";
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+import { Button } from "@mui/material";
+import { ClinicContext } from "../../Context/ContextClinic";
 function Medication() {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const { setKeyReloadMedication } = useContext(ClinicContext);
   const [page, setPage] = useState(1);
+
   const [valueSearch, setValueSearch] = useState("");
   const debouncedSearchValue = useDebounce(valueSearch, 1000);
   // Lấy data
-  const { data: dataMedications } = useMedications({
+  const { data: dataMedications, mutate } = useMedications({
     page: page,
     limit: 5,
   });
@@ -34,11 +34,7 @@ function Medication() {
   ) => {
     setPage(value);
   };
-  const { mutate } = useSWRInfinite(
-    () => `${apiUrl}/Medicine?page=${page}&limit=5`,
-    fetcher
-  );
-  if (!dataMedications) return null;
+
   // Hàm lấy value search
   const handleSearchMedical = (value: string) => {
     setValueSearch(value);
@@ -48,13 +44,24 @@ function Medication() {
       ? dataSearch
       : dataMedications;
 
-  const countPage = dataSearch
-    ? dataSearch.pagination.totalPages
-    : dataMedications.pagination.totalPages;
+  const countPage =
+    (dataMedications && dataMedications.pagination.totalPages) || 1;
+  const exitData = dataMedications && dataMedications?.medicines.length > 0;
+
   return (
     <div className="relative min-h-screen">
       <div className="flex items-center justify-between">
-        <div className="w-60"></div>
+        <div className="w-60">
+          {exitData && (
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => setKeyReloadMedication((prev) => prev + 1)}
+            >
+              Làm mới
+            </Button>
+          )}
+        </div>
         <h2 className=" text-5xl font-bold tracking-widest text-center">
           Quản Lý Thuốc
         </h2>
@@ -80,17 +87,28 @@ function Medication() {
         )}
       </div>
       <div className="mt-5">
-        {data ? <TableMedication data={data} mutate={mutate} /> : <Spinner />}
+        {data ? (
+          <div>
+            <TableMedication
+              data={data}
+              mutate={mutate}
+              page={page}
+              setPage={setPage}
+            />
+            {data && countPage > 1 && (
+              <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
+                <PaginationClinic
+                  onChange={handleChangePage}
+                  count={countPage}
+                  page={page}
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          <Spinner />
+        )}
       </div>
-      {data && countPage > 1 && (
-        <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
-          <PaginationClinic
-            onChange={handleChangePage}
-            count={countPage}
-            page={page}
-          />
-        </div>
-      )}
     </div>
   );
 }

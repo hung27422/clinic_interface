@@ -120,7 +120,6 @@ export default function ModalUpdatePrescription({
       }));
     }
   }, [data.products]);
-  console.log(medicinal);
 
   const { data: dataSearchMedicine, isLoading } = useSearchMedication({
     name: valueSearch,
@@ -174,9 +173,8 @@ export default function ModalUpdatePrescription({
     }));
 
     setValueSearch(""); // Clear the search field
-    // setActiveRow(-1); // Optionally reset the active row
   };
-  console.log(medicinal);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resultSearchMedication = (attrs: any) => (
     <div
@@ -212,8 +210,8 @@ export default function ModalUpdatePrescription({
   );
   return (
     <div>
-      <Button onClick={handleOpen} variant="contained">
-        Kê toa
+      <Button onClick={handleOpen} variant="contained" color="success">
+        Sửa toa
       </Button>
       <Modal
         open={open}

@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { Patient } from "../../../types";
+import { Patient, PrescriptionData } from "../../../types";
 import axios from "axios";
 import useToastify from "../../../hooks/Toastify/useToastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,17 +25,21 @@ interface Props {
   summary: string;
   mutatePrescription: () => void;
   idPrescription: string;
+  dataPrescription: PrescriptionData;
+  onDeleteSuccess: () => void;
 }
 export default function ModalDeletePrescription({
   dataPatient,
   summary,
   mutatePrescription,
   idPrescription,
+
+  onDeleteSuccess,
 }: Props) {
   const [open, setOpen] = React.useState(false);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   //   Thông báo xóa thông tin bệnh nhân nếu thành công
   const { notify } = useToastify({
     title: `Xóa thông tin khám bênh của ${dataPatient?.name} thành công`,
@@ -49,6 +53,7 @@ export default function ModalDeletePrescription({
       await axios.delete(`${apiUrl}/Prescription/${idPrescription}`);
       mutatePrescription();
       handleClose();
+      if (onDeleteSuccess) onDeleteSuccess();
       notify();
     } catch (err) {
       console.log("Lỗi", err);

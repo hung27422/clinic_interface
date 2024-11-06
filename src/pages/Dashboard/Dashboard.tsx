@@ -142,7 +142,6 @@ function HomePage() {
             value={valueStartDate}
             defaultValue={dayjs(currentDate)}
             onChange={(newValue) => setValueStartDate(newValue)}
-            views={["day", "month", "year"]}
           />
         </div>
         <div className="flex items-center mr-3">
