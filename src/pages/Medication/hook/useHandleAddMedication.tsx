@@ -9,7 +9,7 @@ interface Props {
 }
 
 function useHandleAddMedication({ handleClose, mutate: mutateAddNew }: Props) {
-  const { setKeyReload } = useContext(ClinicContext);
+  const { setKeyReloadMedication } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify: notifySuccess } = useToastify({
     title: "Thêm thuốc thành công",
@@ -31,7 +31,7 @@ function useHandleAddMedication({ handleClose, mutate: mutateAddNew }: Props) {
       });
       handleClose();
       mutateAddNew();
-      setKeyReload((prev) => prev + 1);
+      setKeyReloadMedication((prev) => prev + 1);
       notifySuccess();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

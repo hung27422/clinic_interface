@@ -8,12 +8,12 @@ import useFollowUp from "../../api/hooks/useFollowUp.tsx";
 import useGetPrescriptionByPhone from "../../api/hooks/useGetPrescriptionByPhone.tsx";
 import ModalPrint from "./ModalPrint/ModalPrint.tsx";
 import ModalAddInfoExamination from "./Examination/ModalAddInfoExamination.tsx";
-import Spinner from "../../hooks/Spinner/Spinner.tsx";
 import PaginationClinic from "../../components/Pagination.tsx";
 import { useContext, useState } from "react";
 import ModalDeletePrescription from "./Prescription/ModalDeletePrescription.tsx";
 import ModalUpdatePrescription from "./Prescription/ModalUpdatePrescription.tsx.tsx";
 import { ClinicContext } from "../../Context/ContextClinic.tsx";
+import { Button } from "@mui/material";
 function formatDate(isoString: string) {
   const date = new Date(isoString);
   // Get the parts of the date
@@ -28,6 +28,7 @@ function formatDate(isoString: string) {
 function ViewPatients() {
   const { setKeyReloadPrescription } = useContext(ClinicContext);
   const [page, setPage] = useState(1);
+
   // Lấy id của patient
   const { id } = useParams<{ id: string }>();
   const { data: dataPatient, mutate } = useGetPatientById({ id: id ?? "" });
@@ -51,16 +52,9 @@ function ViewPatients() {
   ) => {
     setPage(value);
   };
-  // Kiểm tra nếu trang hiện tại không còn item nào thì giảm page đi 1
-  const handleDelete = () => {
-    if (
-      dataPrescription &&
-      dataPrescription.prescriptions.length > 0 &&
-      page > 1
-    ) {
-      setPage(page - 1);
-      setKeyReloadPrescription((prev) => prev + 1);
-    }
+  const handlePrevPage = () => {
+    setPage(page - 1);
+    setKeyReloadPrescription((prev) => prev + 1);
   };
   // Lấy data đầu tiên của toa thuốc
   const dataPrescriptionFirst =
@@ -69,7 +63,8 @@ function ViewPatients() {
   const totalPages = dataPrescription?.pagination.totalPages || 0;
   const exitPrescription =
     dataPrescription && dataPrescription.prescriptions.length > 0;
-
+  const exitPagination =
+    dataPrescription && dataPrescription?.pagination.totalPages > 1;
   return (
     <div>
       <div className="grid grid-cols-3 items-center">
@@ -207,7 +202,6 @@ function ViewPatients() {
                               dataPatient={dataPatient?.patient}
                               mutatePrescription={mutatePrescription}
                               dataPrescription={dataPrescription}
-                              onDeleteSuccess={handleDelete}
                             />
                           </div>
                         </div>
@@ -217,7 +211,7 @@ function ViewPatients() {
                 </div>
               </div>
               <div className="mt-4 flex items-center justify-center">
-                {exitPrescription && (
+                {exitPagination && exitPrescription && (
                   <PaginationClinic
                     count={totalPages}
                     page={page}
@@ -227,7 +221,24 @@ function ViewPatients() {
               </div>
             </div>
           ) : (
-            <Spinner />
+            <div>
+              {page > 1 && (
+                <div className="flex flex-col items-center justify-center">
+                  <h2 className="text-3xl font-semibold text-center ">
+                    Thông tin toa thuốc
+                  </h2>
+                  <div className="text-2xl font-bold mb-4">
+                    Vì bạn vừa xóa hết dữ liệu toa thuốc của trang
+                    <span className="text-red-500">{" " + page + " "}</span>
+                    nên giờ hãy nhấp vào đây để trở về trang
+                    <span className="text-red-500">{" " + `${page - 1}`}</span>
+                  </div>
+                  <Button variant="contained" onClick={handlePrevPage}>
+                    Nhấp vào đây
+                  </Button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
