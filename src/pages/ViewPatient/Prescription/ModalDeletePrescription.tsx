@@ -26,15 +26,13 @@ interface Props {
   mutatePrescription: () => void;
   idPrescription: string;
   dataPrescription: PrescriptionData;
-  // onDeleteSuccess: () => void;
 }
 export default function ModalDeletePrescription({
   dataPatient,
   summary,
   mutatePrescription,
   idPrescription,
-}: // onDeleteSuccess,
-Props) {
+}: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -52,7 +50,6 @@ Props) {
       await axios.delete(`${apiUrl}/Prescription/${idPrescription}`);
       mutatePrescription();
       handleClose();
-      // if (onDeleteSuccess) onDeleteSuccess();
       notify();
     } catch (err) {
       console.log("Lỗi", err);

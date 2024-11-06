@@ -10,7 +10,7 @@ interface Props {
 }
 function useHandleAddPatient({ mutate, handleClose }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const { setKeyReload } = useContext(ClinicContext);
+  const { setKeyReloadPatient } = useContext(ClinicContext);
 
   const { notify: notifySuccess } = useToastify({
     title: "Thêm bệnh nhân thành công",
@@ -33,7 +33,7 @@ function useHandleAddPatient({ mutate, handleClose }: Props) {
       });
       notifySuccess();
       mutate();
-      setKeyReload((prev) => prev + 1);
+      setKeyReloadPatient((prev) => prev + 1);
       handleClose();
     } catch (error: any) {
       if (error.response.data.code === "Patient.ExistPhoneNumber") {
