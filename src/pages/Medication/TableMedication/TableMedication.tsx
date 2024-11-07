@@ -101,10 +101,10 @@ export default function TableMedication({
                   <StyledTableCell width={"25%"} align="center">
                     <div className="flex justify-center">
                       <div className="mr-3">
-                        <ModalDeleteMedication data={item} mutate={mutate} />
+                        <ModalUpdateMedication data={item} mutate={mutate} />
                       </div>
                       <div>
-                        <ModalUpdateMedication data={item} mutate={mutate} />
+                        <ModalDeleteMedication data={item} mutate={mutate} />
                       </div>
                     </div>
                   </StyledTableCell>

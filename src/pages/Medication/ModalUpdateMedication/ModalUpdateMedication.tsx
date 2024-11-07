@@ -92,7 +92,7 @@ export default function ModalUpdateMedication({ data, mutate }: Props) {
   }, [data]);
   return (
     <div>
-      <Button variant="contained" onClick={handleOpen}>
+      <Button variant="contained" color="success" onClick={handleOpen}>
         Sửa
       </Button>
       <Modal

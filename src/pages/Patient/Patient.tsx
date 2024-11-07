@@ -37,7 +37,7 @@ function Patient() {
   const exitDataSearch = dataSearch ? dataSearch?.patients.length > 0 : 0;
   const exitData = dataPatients && dataPatients?.patients.length > 0;
   return (
-    <div className="flex min-h-screen flex-col p-2 relative">
+    <div className="flex min-h-screen flex-col relative">
       <div>
         <div className="flex items-center justify-between">
           <div className="w-60">

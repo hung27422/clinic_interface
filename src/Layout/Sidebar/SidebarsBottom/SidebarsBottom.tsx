@@ -6,10 +6,15 @@ import { Avatar } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import { useNavigate } from "react-router";
 import useInfoUserToken from "../../../api/hooks/useInfoUserToken";
+import useToastify from "../../../hooks/Toastify/useToastify";
 
 export default function SidebarsBottom() {
   const navigate = useNavigate();
   const { decodedToken } = useInfoUserToken();
+  const { notify } = useToastify({
+    title: "Đang đăng xuất...",
+    type: "success",
+  });
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,7 +27,10 @@ export default function SidebarsBottom() {
   const handleLogout = () => {
     // Xóa dữ liệu từ localStorage để đăng xuất
     localStorage.removeItem("userData");
-    navigate("/login");
+    notify();
+    setTimeout(() => {
+      navigate("/login");
+    }, 2000);
   };
   const firstCharName = decodedToken?.name ?? "A";
   return (

@@ -2,11 +2,10 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { User } from "../../types";
 
-// Mở rộng kiểu JwtPayload để bao gồm thuộc tính name
-interface CustomJwtPayload extends JwtPayload {
-  name?: string; // hoặc name: string nếu bạn chắc chắn rằng nó sẽ có
-}
 
+interface CustomJwtPayload extends JwtPayload {
+  name?: string; 
+}
 function useInfoUserToken() {
   const [userData, setUserData] = useState<User>();
   const [decodedToken, setDecodedToken] = useState<CustomJwtPayload | null>(

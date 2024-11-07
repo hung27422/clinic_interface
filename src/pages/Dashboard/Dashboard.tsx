@@ -12,6 +12,7 @@ import StatisticsMedicine from "./StatisticsDashboard/StatisticsMedicine/Statist
 import useGetFirstAndLastDayOfMonth from "../../hooks/components/useGetFirstAndLastDayOfMonth";
 import useGetMedicineTop10ByDate from "../../api/hooks/useGetMedicineTop10ByDate";
 import PaginationClinic from "../../components/Pagination";
+import Spinner from "../../hooks/Spinner/Spinner";
 
 const today = new Date();
 // Lấy ngày (ngày trong tháng)
@@ -127,7 +128,16 @@ function HomePage() {
       result: formattedTotalAmount + " VND",
     },
   ];
-
+  if (!dataMedicine && !dataPatient && !dataMedicineTop10) {
+    return (
+      <div>
+        <h2 className="text-5xl font-bold tracking-widest text-center ">
+          Dashboard
+        </h2>
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <div>
       <h2 className="text-5xl font-bold tracking-widest text-center ">

@@ -21,6 +21,10 @@ export interface ValidationErrorsExaminations {
 export interface ValidationErrorsPrescriptions {
   [key: string]: string | undefined;
 }
+export interface ValidationErrorsLogin {
+  name?: string;
+  password?: string;
+}
 function useValidation() {
   const patientSchema = object({
     name: string().required("Vui lòng nhập tên bệnh nhân"),
@@ -63,11 +67,16 @@ function useValidation() {
       .typeError("Số lượng phải là số")
       .positive("Số lượng phải lớn hơn 0"),
   });
+  const loginSchema = object({
+    name: string().required("Vui lòng nhập tài khoản"),
+    password: string().required("Vui lòng nhập mật khẩu"),
+  });
   return {
     patientSchema,
     medicineSchema,
     examinationSchema,
     prescriptionSchema,
+    loginSchema,
   };
 }
 

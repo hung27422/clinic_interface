@@ -96,8 +96,8 @@ function ViewPatients() {
               Hãy thêm bệnh mới cho bệnh nhân
               <span className="text-red-500 font-semibold">
                 {" " + dataPatient.patient.name}
-              </span>{" "}
-              <div>
+              </span>
+              <div className="mt-3">
                 {dataPatient && (
                   <ModalAddInfoExamination
                     idPatient={id}

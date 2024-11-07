@@ -98,17 +98,16 @@ export default function TablePatient({ data, mutate, setPage, page }: Props) {
                   </StyledTableCell>
                   <StyledTableCell width={"30%"} align="center">
                     <div className="flex justify-center">
-                      <div className="mr-2">
+                      <div>
                         <Link to={`${config.router.viewpatient}${item.id}`}>
                           <Button variant="contained">Xem</Button>
                         </Link>
                       </div>
-
-                      <div className="mr-2">
-                        <ModalDeletePatient data={item} mutate={mutate} />
+                      <div className="mx-2">
+                        <ModalUpdatePatient data={item} mutate={mutate} />
                       </div>
                       <div>
-                        <ModalUpdatePatient data={item} mutate={mutate} />
+                        <ModalDeletePatient data={item} mutate={mutate} />
                       </div>
                     </div>
                   </StyledTableCell>
