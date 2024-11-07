@@ -12,9 +12,10 @@ interface Props {
 function useGetPrescriptionByPhone({ phone, limit, page }: Props) {
   const { keyReloadPrescription } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
-  const { data, isLoading, mutate } = useSWR<PrescriptionData>(
-    `${apiUrl}/Prescription/Phone/${phone}?page=${page}&limit=${limit}&reload=${keyReloadPrescription}`
-  );
+  const shouldFetch = phone
+    ? `${apiUrl}/Prescription/Phone/${phone}?page=${page}&limit=${limit}&reload=${keyReloadPrescription}`
+    : null;
+  const { data, isLoading, mutate } = useSWR<PrescriptionData>(shouldFetch);
 
   return { data, isLoading, mutate };
 }

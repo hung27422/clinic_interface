@@ -6,6 +6,7 @@ import { Patient } from "../../../types";
 // import { mutate } from "swr";
 import axios from "axios";
 import useToastify from "../../../hooks/Toastify/useToastify";
+import { ClinicContext } from "../../../Context/ContextClinic";
 const style = {
   position: "absolute",
   top: "50%",
@@ -27,6 +28,7 @@ export default function ModalDeletePatient({ data, mutate }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { setKeyReloadPatientByDate } = React.useContext(ClinicContext);
   const { notify } = useToastify({
     title: `Xóa bệnh nhân ${data.name} thành công`,
     type: "success",
@@ -37,8 +39,8 @@ export default function ModalDeletePatient({ data, mutate }: Props) {
       await axios.delete(`${apiUrl}/Patient/${data.id}`);
       if (mutate) mutate();
       handleClose();
-
       notify();
+      setKeyReloadPatientByDate((prev) => prev + 1);
     } catch (err) {
       console.log("Lỗi", err);
     }

@@ -9,7 +9,7 @@ import useGetPrescriptionByPhone from "../../api/hooks/useGetPrescriptionByPhone
 import ModalPrint from "./ModalPrint/ModalPrint.tsx";
 import ModalAddInfoExamination from "./Examination/ModalAddInfoExamination.tsx";
 import PaginationClinic from "../../components/Pagination.tsx";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ModalDeletePrescription from "./Prescription/ModalDeletePrescription.tsx";
 import ModalUpdatePrescription from "./Prescription/ModalUpdatePrescription.tsx.tsx";
 import { ClinicContext } from "../../Context/ContextClinic.tsx";
@@ -26,11 +26,17 @@ function formatDate(isoString: string) {
 }
 
 function ViewPatients() {
-  const { setKeyReloadPrescription } = useContext(ClinicContext);
+  const { setKeyReloadPrescription, setIDPatientPathname } =
+    useContext(ClinicContext);
   const [page, setPage] = useState(1);
-
   // Lấy id của patient
   const { id } = useParams<{ id: string }>();
+  //Lấy id của patient để khi update thì mutate
+  useEffect(() => {
+    if (id) {
+      setIDPatientPathname(id);
+    }
+  }, [id, setIDPatientPathname]);
   const { data: dataPatient, mutate } = useGetPatientById({ id: id ?? "" });
 
   // Lấy data followUp theo id của patient

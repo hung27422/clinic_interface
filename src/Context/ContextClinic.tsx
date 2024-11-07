@@ -15,6 +15,14 @@ interface ClinicContextType {
   setKeyReloadMedication: React.Dispatch<React.SetStateAction<number>>;
   keyReloadPrescription: number;
   setKeyReloadPrescription: React.Dispatch<React.SetStateAction<number>>;
+  keyReloadMedicineByDate: number;
+  setKeyReloadMedicineByDate: React.Dispatch<React.SetStateAction<number>>;
+  keyReloadMedicineTop10: number;
+  setKeyReloadMedicineTop10: React.Dispatch<React.SetStateAction<number>>;
+  keyReloadPatientByDate: number;
+  setKeyReloadPatientByDate: React.Dispatch<React.SetStateAction<number>>;
+  idPatientPathname: string;
+  setIDPatientPathname: React.Dispatch<React.SetStateAction<string>>;
 }
 const defaultValue: ClinicContextType = {
   isAuthenticated: false,
@@ -27,6 +35,14 @@ const defaultValue: ClinicContextType = {
   setKeyReloadMedication: () => {},
   keyReloadPrescription: 1,
   setKeyReloadPrescription: () => {},
+  keyReloadMedicineByDate: 1,
+  setKeyReloadMedicineByDate: () => {},
+  keyReloadMedicineTop10: 1,
+  setKeyReloadMedicineTop10: () => {},
+  keyReloadPatientByDate: 1,
+  setKeyReloadPatientByDate: () => {},
+  idPatientPathname: "",
+  setIDPatientPathname: () => {},
 };
 
 export const ClinicContext = createContext<ClinicContextType>(defaultValue);
@@ -36,6 +52,14 @@ function ContextClinic({ children }: Props) {
   const [keyReloadPatient, setKeyReloadPatient] = useState<number>(1);
   const [keyReloadMedication, setKeyReloadMedication] = useState<number>(1);
   const [keyReloadPrescription, setKeyReloadPrescription] = useState<number>(1);
+  const [keyReloadMedicineByDate, setKeyReloadMedicineByDate] =
+    useState<number>(1);
+  const [keyReloadMedicineTop10, setKeyReloadMedicineTop10] =
+    useState<number>(1);
+  const [keyReloadPatientByDate, setKeyReloadPatientByDate] =
+    useState<number>(1);
+
+  const [idPatientPathname, setIDPatientPathname] = useState<string>("");
   const contextValue = {
     isAuthenticated,
     setIsAuthenticated,
@@ -47,6 +71,15 @@ function ContextClinic({ children }: Props) {
     setKeyReloadMedication,
     keyReloadPrescription,
     setKeyReloadPrescription,
+    keyReloadMedicineByDate,
+    setKeyReloadMedicineByDate,
+    keyReloadMedicineTop10,
+    setKeyReloadMedicineTop10,
+    keyReloadPatientByDate,
+    setKeyReloadPatientByDate,
+
+    idPatientPathname,
+    setIDPatientPathname,
   };
   return (
     <ClinicContext.Provider value={contextValue}>

@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import { Medication } from "../../../types";
 import axios from "axios";
 import useToastify from "../../../hooks/Toastify/useToastify";
+import { ClinicContext } from "../../../Context/ContextClinic";
 
 const style = {
   position: "absolute",
@@ -23,6 +24,8 @@ interface Props {
   mutate: () => void;
 }
 export default function ModalDeleteMedication({ data, mutate }: Props) {
+  const { setKeyReloadMedicineByDate, setKeyReloadMedicineTop10 } =
+    React.useContext(ClinicContext);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,6 +40,8 @@ export default function ModalDeleteMedication({ data, mutate }: Props) {
       mutate();
       handleClose();
       notify();
+      setKeyReloadMedicineTop10((prev) => prev + 1);
+      setKeyReloadMedicineByDate((prev) => prev + 1);
     } catch (err) {
       console.log("Lỗi", err);
     }

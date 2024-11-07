@@ -9,7 +9,11 @@ interface Props {
   handleClose: () => void;
 }
 function useHandleAddPrescription({ mutate, handleClose }: Props) {
-  const { setKeyReloadPrescription } = useContext(ClinicContext);
+  const {
+    setKeyReloadPrescription,
+    setKeyReloadMedicineTop10,
+    setKeyReloadMedicineByDate,
+  } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify: notifySuccess } = useToastify({
     title: "Kê toa thuốc thành công",
@@ -40,6 +44,8 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
       notifySuccess();
       mutate();
       setKeyReloadPrescription((prev) => prev + 1);
+      setKeyReloadMedicineTop10((prev) => prev + 1);
+      setKeyReloadMedicineByDate((prev) => prev + 1);
       handleClose();
     } catch (error: any) {
       console.error("Failed to add patient:", error);

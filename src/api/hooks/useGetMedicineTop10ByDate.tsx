@@ -1,5 +1,7 @@
 import useSWR from "swr";
 import { MedicationData } from "../../types";
+import { ClinicContext } from "../../Context/ContextClinic";
+import { useContext } from "react";
 
 interface Props {
   startDate: string;
@@ -9,9 +11,10 @@ interface Props {
 }
 
 function useGetMedicineTop10ByDate({ startDate, endDate, page, limit }: Props) {
+  const { keyReloadMedicineTop10 } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
   const { data, isLoading, mutate } = useSWR<MedicationData>(
-    `${apiUrl}/Medicine/Prescription/Range/Top10/Start=${startDate}&End=${endDate}?page=${page}&limit=${limit}`
+    `${apiUrl}/Medicine/Prescription/Range/Top10/Start=${startDate}&End=${endDate}?page=${page}&limit=${limit}&reload=${keyReloadMedicineTop10}`
   );
 
   return { data, isLoading, mutate };

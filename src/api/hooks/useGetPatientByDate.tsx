@@ -1,5 +1,7 @@
 import useSWR from "swr";
 import { PatientDataTemp } from "../../types";
+import { useContext } from "react";
+import { ClinicContext } from "../../Context/ContextClinic";
 
 interface Props {
   startDate: string;
@@ -9,9 +11,10 @@ interface Props {
 }
 
 function useGetPatientByDate({ startDate, endDate, page, limit }: Props) {
+  const { keyReloadPatientByDate } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
   const { data, isLoading, mutate } = useSWR<PatientDataTemp>(
-    `${apiUrl}/Patient/Date/Start=${startDate}&End=${endDate}?page=${page}&limit=${limit}`
+    `${apiUrl}/Patient/Date/Start=${startDate}&End=${endDate}?page=${page}&limit=${limit}&reload=${keyReloadPatientByDate}`
   );
 
   return { data, isLoading, mutate };
