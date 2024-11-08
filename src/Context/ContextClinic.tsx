@@ -21,8 +21,6 @@ interface ClinicContextType {
   setKeyReloadMedicineTop10: React.Dispatch<React.SetStateAction<number>>;
   keyReloadPatientByDate: number;
   setKeyReloadPatientByDate: React.Dispatch<React.SetStateAction<number>>;
-  idPatientPathname: string;
-  setIDPatientPathname: React.Dispatch<React.SetStateAction<string>>;
 }
 const defaultValue: ClinicContextType = {
   isAuthenticated: false,
@@ -41,8 +39,6 @@ const defaultValue: ClinicContextType = {
   setKeyReloadMedicineTop10: () => {},
   keyReloadPatientByDate: 1,
   setKeyReloadPatientByDate: () => {},
-  idPatientPathname: "",
-  setIDPatientPathname: () => {},
 };
 
 export const ClinicContext = createContext<ClinicContextType>(defaultValue);
@@ -59,7 +55,6 @@ function ContextClinic({ children }: Props) {
   const [keyReloadPatientByDate, setKeyReloadPatientByDate] =
     useState<number>(1);
 
-  const [idPatientPathname, setIDPatientPathname] = useState<string>("");
   const contextValue = {
     isAuthenticated,
     setIsAuthenticated,
@@ -77,9 +72,6 @@ function ContextClinic({ children }: Props) {
     setKeyReloadMedicineTop10,
     keyReloadPatientByDate,
     setKeyReloadPatientByDate,
-
-    idPatientPathname,
-    setIDPatientPathname,
   };
   return (
     <ClinicContext.Provider value={contextValue}>

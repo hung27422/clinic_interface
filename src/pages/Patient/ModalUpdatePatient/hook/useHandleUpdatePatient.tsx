@@ -16,10 +16,9 @@ function useHandleUpdatePatient({
   mutate,
   notifyShow,
 }: Props) {
-  const { idPatientPathname, setKeyReloadPatientByDate } =
-    useContext(ClinicContext);
+  const { setKeyReloadPatientByDate } = useContext(ClinicContext);
   const { mutate: mutatePatient } = useGetPatientById({
-    id: idPatientPathname ?? "",
+    id: id ?? "",
   });
 
   const apiUrl = import.meta.env.VITE_API_URL;
