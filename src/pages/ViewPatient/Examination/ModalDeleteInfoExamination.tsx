@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import { FollowUpData, Patient } from "../../../types";
 import axios from "axios";
 import useToastify from "../../../hooks/Toastify/useToastify";
+import { ClinicContext } from "../../../Context/ContextClinic";
 
 const style = {
   position: "absolute",
@@ -31,9 +32,9 @@ export default function DeleteInfoExamination({
   idFollowUp,
 }: Props) {
   const [open, setOpen] = React.useState(false);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { setKeyReloadPrescription } = React.useContext(ClinicContext);
   //   Thông báo xóa thông tin bệnh nhân nếu thành công
   const { notify } = useToastify({
     title: `Xóa thông tin bệnh nhân ${dataPatient?.name} thành công`,
@@ -46,8 +47,8 @@ export default function DeleteInfoExamination({
     try {
       await axios.delete(`${apiUrl}/FollowUp/${idFollowUp}`);
       //Sau khi xóa update lại checkstatus của bệnh nhân lại bệnh nhân
-      // handleUpdateCheckStatusPatient();
       mutateFollowUp();
+      setKeyReloadPrescription((prev) => prev + 1);
       handleClose();
       notify();
     } catch (err) {

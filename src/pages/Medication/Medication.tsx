@@ -81,10 +81,18 @@ function Medication() {
             onChange={(e) => handleSearchMedical(e.target.value)}
           />
         </div>
-        {valueSearch && dataSearch?.medicines.length === 0 && (
-          <span className="flex items-center justify-center mt-2 text-xl text-red-600 font-medium">
-            Không tìm thấy thuốc
-          </span>
+        {valueSearch && !dataSearch ? (
+          <div className="text-xl text-center font-bold mt-4 text-red-600">
+            Đang tìm kiếm....
+          </div>
+        ) : (
+          <div>
+            {valueSearch && dataSearch?.medicines.length === 0 && (
+              <span className="flex items-center justify-center mt-2 text-xl text-red-600 font-medium">
+                Không tìm thấy thuốc
+              </span>
+            )}
+          </div>
         )}
       </div>
       <div className="mt-5">

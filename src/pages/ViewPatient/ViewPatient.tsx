@@ -63,6 +63,7 @@ function ViewPatients() {
   const totalPages = dataPrescription?.pagination.totalPages || 0;
   const exitPrescription =
     dataPrescription && dataPrescription.prescriptions.length > 0;
+  const exitDataFlowup = dataFollowUp && dataFollowUp?.followUps.length > 0;
   const exitPagination =
     dataPrescription && dataPrescription?.pagination.totalPages > 1;
   return (
@@ -91,26 +92,27 @@ function ViewPatients() {
       <div className="mt-10">
         <div className="">
           {/* Bệnh nhân chưa có thông tin khám */}
-          {dataPatient?.patient.status === "not_examined" && (
-            <div className="text-2xl text-center">
-              Hãy thêm bệnh mới cho bệnh nhân
-              <span className="text-red-500 font-semibold">
-                {" " + dataPatient.patient.name}
-              </span>
-              <div className="mt-3">
-                {dataPatient && (
-                  <ModalAddInfoExamination
-                    idPatient={id}
-                    dataPatient={dataPatient.patient}
-                    mutate={mutate}
-                    mutateFollowUp={mutateFollowUp}
-                  />
-                )}
+          {dataPatient?.patient.status === "not_examined" ||
+            (dataPatient?.patient.status === "examined" && !exitDataFlowup && (
+              <div className="text-2xl text-center">
+                Hãy thêm bệnh mới cho bệnh nhân
+                <span className="text-red-500 font-semibold">
+                  {" " + dataPatient.patient.name}
+                </span>
+                <div className="mt-3">
+                  {dataPatient && (
+                    <ModalAddInfoExamination
+                      idPatient={id}
+                      dataPatient={dataPatient.patient}
+                      mutate={mutate}
+                      mutateFollowUp={mutateFollowUp}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            ))}
           {/* Bệnh nhân đã có thông tin khám */}
-          {dataPatient?.patient.status === "examined" && (
+          {dataPatient?.patient.status === "examined" && exitDataFlowup && (
             <div>
               <div className="flex items-center justify-between mb-4">
                 <div className="">

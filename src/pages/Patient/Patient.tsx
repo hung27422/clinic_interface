@@ -34,7 +34,6 @@ function Patient() {
   const data =
     dataSearch && dataSearch?.patients.length > 0 ? dataSearch : dataPatients;
   const countPage = dataPatients?.pagination?.totalPages || 1;
-  const countPageSearch = dataSearch?.pagination.totalPages || 1;
   const exitDataSearch = dataSearch ? dataSearch?.patients.length > 0 : 0;
   const exitData = dataPatients && dataPatients?.patients.length > 0;
   return (
@@ -70,10 +69,18 @@ function Patient() {
               onChange={(e) => handleSearchPatient(e.target.value)}
             />
           </div>
-          {valueSearch && !exitDataSearch && (
-            <span className="flex items-center justify-center mt-2 text-xl text-red-600 font-medium">
-              Không tìm thấy bệnh nhân
-            </span>
+          {valueSearch && !dataSearch ? (
+            <div className="text-xl text-center font-bold mt-4 text-red-600">
+              Đang tìm kiếm....
+            </div>
+          ) : (
+            <div>
+              {valueSearch && !exitDataSearch && (
+                <span className="flex items-center justify-center mt-2 text-xl text-red-600 font-medium">
+                  Không tìm thấy bệnh nhân
+                </span>
+              )}
+            </div>
           )}
         </div>
         <div className="mt-5">
@@ -91,15 +98,6 @@ function Patient() {
                     <PaginationClinic
                       onChange={handleChangePage}
                       count={countPage}
-                      page={page}
-                    />
-                  </div>
-                )}
-                {data && dataSearch && countPage > 1 && (
-                  <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
-                    <PaginationClinic
-                      onChange={handleChangePage}
-                      count={countPageSearch}
                       page={page}
                     />
                   </div>

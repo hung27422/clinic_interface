@@ -147,7 +147,7 @@ export default function ModalUpdatePrescription({
             manual: med.instructions.manual || "",
           },
         })),
-        notes: medicinal.notes,
+        notes: note,
       });
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -302,7 +302,10 @@ export default function ModalUpdatePrescription({
                       error={!!errors.quantity} // Kiểm tra nếu có lỗi
                       helperText={errors.quantity}
                       onFocus={() =>
-                        setErrors((prev) => ({ ...prev, quantity: undefined }))
+                        setErrors((prev) => ({
+                          ...prev,
+                          quantity: undefined,
+                        }))
                       }
                     />
                     <TextField
@@ -369,7 +372,7 @@ export default function ModalUpdatePrescription({
                 onChange={(e) => handleNotePrescriptions(e.target.value)}
                 placeholder="Nhập lời dặn của bác sĩ..."
                 size="small"
-                value={note}
+                value={note ? note : data.notes}
                 className="w-[90%] ml-3"
               />
             </div>
