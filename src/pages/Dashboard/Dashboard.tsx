@@ -235,7 +235,7 @@ function HomePage() {
         </div>
       ) : (
         <div>
-          <h2 className="font-bold text-2xl my-2">Tổng số bệnh nhân</h2>
+          <h2 className="font-bold text-2xl my-2">Tổng số thuốc</h2>
           <span className="border-red-600 border-2 rounded-md p-2 text-2xl text-red-700 my-4 block">
             Vui lòng chọn đúng định dạng ngày để hiện bảng thống kê thuốc
           </span>
