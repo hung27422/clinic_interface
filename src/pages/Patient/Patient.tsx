@@ -85,7 +85,7 @@ function Patient() {
                 setPage={setPage}
               />
               <div>
-                {countPage > 1 && data && (
+                {!dataSearch && countPage > 1 && data && (
                   <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
                     <PaginationClinic
                       onChange={handleChangePage}

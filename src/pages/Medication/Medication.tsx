@@ -95,7 +95,7 @@ function Medication() {
               page={page}
               setPage={setPage}
             />
-            {data && countPage > 1 && (
+            {data && !dataSearch && countPage > 1 && (
               <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
                 <PaginationClinic
                   onChange={handleChangePage}
