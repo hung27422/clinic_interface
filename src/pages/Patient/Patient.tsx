@@ -34,6 +34,7 @@ function Patient() {
   const data =
     dataSearch && dataSearch?.patients.length > 0 ? dataSearch : dataPatients;
   const countPage = dataPatients?.pagination?.totalPages || 1;
+  const countPageSearch = dataSearch?.pagination.totalPages || 1;
   const exitDataSearch = dataSearch ? dataSearch?.patients.length > 0 : 0;
   const exitData = dataPatients && dataPatients?.patients.length > 0;
   return (
@@ -90,6 +91,15 @@ function Patient() {
                     <PaginationClinic
                       onChange={handleChangePage}
                       count={countPage}
+                      page={page}
+                    />
+                  </div>
+                )}
+                {data && dataSearch && countPage > 1 && (
+                  <div className="flex items-center justify-center py-2 absolute bottom-20 left-0 right-0 mt-5">
+                    <PaginationClinic
+                      onChange={handleChangePage}
+                      count={countPageSearch}
                       page={page}
                     />
                   </div>
