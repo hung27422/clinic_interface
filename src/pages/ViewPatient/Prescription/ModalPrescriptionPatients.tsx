@@ -266,7 +266,6 @@ export default function ModalPrescriptionPatients({
                 <div className="w-full grid grid-cols-5 py-2 ">
                   <div className="col-span-1 py-1">
                     <Tippy
-                      trigger="click"
                       visible={
                         !!valueSearch && !!data && activeRow === field.id
                       }
