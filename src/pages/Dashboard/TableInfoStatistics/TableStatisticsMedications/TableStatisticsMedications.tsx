@@ -75,7 +75,7 @@ export default function TableStatisticsMedications({ data }: Props) {
                 {item.combinedPrice}
               </StyledTableCell>
               <StyledTableCell width={"15%"} align="center">
-                {item.type}
+                {/* {item.type} */}
               </StyledTableCell>
             </StyledTableRow>
           ))}
