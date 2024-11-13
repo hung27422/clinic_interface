@@ -92,25 +92,42 @@ function ViewPatients() {
       <div className="mt-10">
         <div className="">
           {/* Bệnh nhân chưa có thông tin khám */}
-          {dataPatient?.patient.status === "not_examined" ||
-            (dataPatient?.patient.status === "examined" && !exitDataFlowup && (
-              <div className="text-2xl text-center">
-                Hãy thêm bệnh mới cho bệnh nhân
-                <span className="text-red-500 font-semibold">
-                  {" " + dataPatient.patient.name}
-                </span>
-                <div className="mt-3">
-                  {dataPatient && (
-                    <ModalAddInfoExamination
-                      idPatient={id}
-                      dataPatient={dataPatient.patient}
-                      mutate={mutate}
-                      mutateFollowUp={mutateFollowUp}
-                    />
-                  )}
-                </div>
+          {dataPatient?.patient.status === "not_examined" && (
+            <div className="text-2xl text-center">
+              Hãy thêm bệnh mới cho bệnh nhân
+              <span className="text-red-500 font-semibold">
+                {" " + dataPatient.patient.name + " (Chưa khám)"}
+              </span>
+              <div className="mt-3">
+                {dataPatient && (
+                  <ModalAddInfoExamination
+                    idPatient={id}
+                    dataPatient={dataPatient.patient}
+                    mutate={mutate}
+                    mutateFollowUp={mutateFollowUp}
+                  />
+                )}
               </div>
-            ))}
+            </div>
+          )}
+          {dataPatient?.patient.status === "examined" && !exitDataFlowup && (
+            <div className="text-2xl text-center">
+              Hãy thêm bệnh mới cho bệnh nhân
+              <span className="text-red-500 font-semibold">
+                {" " + dataPatient.patient.name + " (Đã khám)"}
+              </span>
+              <div className="mt-3">
+                {dataPatient && (
+                  <ModalAddInfoExamination
+                    idPatient={id}
+                    dataPatient={dataPatient.patient}
+                    mutate={mutate}
+                    mutateFollowUp={mutateFollowUp}
+                  />
+                )}
+              </div>
+            </div>
+          )}
           {/* Bệnh nhân đã có thông tin khám */}
           {dataPatient?.patient.status === "examined" && exitDataFlowup && (
             <div>
@@ -162,7 +179,7 @@ function ViewPatients() {
                         <div className="col-span-1">
                           <div className="truncate">
                             <span className="text-xl font-medium">
-                              Chuẩn đoán:
+                              Chẩn đoán:
                             </span>
                             <span className="text-xl">
                               {item.summary.summary}
@@ -170,7 +187,7 @@ function ViewPatients() {
                           </div>
                           <div className="truncate ">
                             <span className="text-xl font-medium">
-                              Ghi chú:{" "}
+                              Ghi chú:
                             </span>
                             <span className="text-xl  overflow-hidden whitespace-nowrap">
                               {item.notes}

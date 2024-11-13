@@ -41,10 +41,10 @@ function IsInfoPatients({
                 <span className="font-bold">Tiền căn:</span> {item.history}
               </span>
               <span className="text-2xl">
-                <span className="font-bold">Tổng quát:</span> {item.diagnosis}
+                <span className="font-bold">Khám bệnh:</span> {item.diagnosis}
               </span>
               <span className="text-2xl">
-                <span className="font-bold">Chuẩn đoán:</span> {item.summary}
+                <span className="font-bold">Chẩn đoán:</span> {item.summary}
               </span>
               <span className="text-2xl">
                 <span className="font-bold">Ngày khám:</span> {formattedDate}

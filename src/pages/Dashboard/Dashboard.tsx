@@ -13,22 +13,17 @@ import useGetFirstAndLastDayOfMonth from "../../hooks/components/useGetFirstAndL
 import useGetMedicineTop10ByDate from "../../api/hooks/useGetMedicineTop10ByDate";
 import PaginationClinic from "../../components/Pagination";
 import Spinner from "../../hooks/Spinner/Spinner";
-
-const today = new Date();
-// Lấy ngày (ngày trong tháng)
-const day = today.getDate();
-// Lấy tháng
-const month = today.getMonth() + 1;
-// Lấy năm
-const year = today.getFullYear();
+import useCurrentDate from "../../hooks/components/useCurrentDate";
 function formatNumberWithDots(num: number): string {
   return new Intl.NumberFormat("de-DE").format(num); // 'de-DE' sử dụng dấu chấm cho hàng nghìn
 }
 function HomePage() {
-  const currentDate = `${month}-${day}-${year}`;
   const [pageMedicine, setPageMedicine] = useState(1);
   const [pagePatient, setPagePatient] = useState(1);
   const [errDate, setErrDate] = useState(false);
+
+  const { currentDate, month, year } = useCurrentDate();
+
   const { notify } = useToastify({
     title: "Ngày bắt đầu không được lớn hơn ngày kết thúc",
     type: "error",

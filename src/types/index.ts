@@ -31,7 +31,9 @@ export interface Medication {
   name: string;
   stock: number;
   price: number;
-  type: string;
+  specialty: string;
+  nutritional: string;
+  dosage: string;
   company: string;
   status?: string;
   createdAt?: string;
@@ -66,14 +68,15 @@ export interface Prescription {
   followUpId: string;
   products: {
     medicineId: string;
-    quantity: number;
     instructions: {
+      numberOfDays: string;
       day: string;
       lunch: string;
       afternoon: string;
-      manual: string;
     };
   }[];
+  revisit?: string;
+  revisitDate: string;
   notes: string;
 }
 export interface Prescriptions {
@@ -93,32 +96,34 @@ export interface Prescriptions {
     {
       medicineId: string;
       name: string;
-      quantity: number;
+      quantity?: number;
       instructions: {
+        numberOfDays: string;
         day: string;
         lunch: string;
         afternoon: string;
-        manual: string;
       };
     }
   ];
   notes: string;
+  revisit: string;
   totalPrice: number;
   billDate: string;
   createdAt: string;
 }
 export interface PrescriptionUpdate {
   id: string;
-  medicines: {
+  products: {
     medicineId: string;
-    quantity: number;
+    name: string;
     instructions: {
+      numberOfDays: string;
       day: string;
       lunch: string;
       afternoon: string;
-      manual: string;
     };
   }[];
+  revisitDate: string;
   notes: string;
 }
 export interface PrescriptionData {

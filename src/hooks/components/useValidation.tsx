@@ -11,6 +11,9 @@ export interface ValidationErrorsMedicines {
   stock?: number;
   price?: number;
   type?: string;
+  specialty?: string;
+  nutritional?: string;
+  dosage?: string;
 }
 export interface ValidationErrorsExaminations {
   reason?: string;
@@ -19,7 +22,8 @@ export interface ValidationErrorsExaminations {
   summary?: string;
 }
 export interface ValidationErrorsPrescriptions {
-  [key: string]: string | undefined;
+  [key: string]: string | undefined; // Chấp nhận chuỗi làm khóa
+  [key: number]: string | undefined; // Chấp nhận số làm khóa
 }
 export interface ValidationErrorsLogin {
   name?: string;
@@ -43,6 +47,9 @@ function useValidation() {
   const medicineSchema = object({
     name: string().required("Vui lòng nhập tên thuốc"),
     company: string().required("Vui lòng nhập tên công ty"),
+    specialty: string().required("Vui lòng nhập tên biệt dược của thuốc"),
+    nutritional: string().required("Vui lòng nhập hàm lượng của thuốc"),
+    dosage: string().required("Vui lòng nhập bào chế của thuốc"),
     stock: number()
       .required("Vui lòng nhập số lượng tồn kho")
       .typeError("Số lượng tồn kho phải là kiểu số")
@@ -51,21 +58,19 @@ function useValidation() {
       .required("Vui lòng nhập số giá thuốc")
       .typeError("Giá thuốc phải là kiểu số")
       .positive("Giá thuốc phải lớn hơn 0"),
-
-    type: string().required("Vui lòng nhập loại thuốc"),
   });
   const examinationSchema = object({
     reason: string().required("Vui lòng nhập lý do khám"),
     history: string().required("Vui lòng nhập tiền căn của bệnh nhân"),
-    diagnosis: string().required("Vui lòng nhập chuẩn đoán của bác sĩ"),
+    diagnosis: string().required("Vui lòng nhập chẩn đoán của bác sĩ"),
     summary: string().required("Vui lòng nhập thông tin bệnh tổng quát"),
   });
   const prescriptionSchema = object({
     name: string().required("Tên thuốc là bắt buộc"),
-    quantity: number()
-      .required("Số lượng là bắt buộc")
-      .typeError("Số lượng phải là số")
-      .positive("Số lượng phải lớn hơn 0"),
+    numberOfDays: number()
+      .required("Số lượng ngày là bắt buộc")
+      .typeError("Số lượng ngày phải là số")
+      .positive("Số lượng ngày phải lớn hơn 0"),
   });
   const loginSchema = object({
     name: string().required("Vui lòng nhập tài khoản"),

@@ -138,7 +138,7 @@ export default function ModalReExaminationPatient({
             </div>
             <div className="mb-3">
               <TextField
-                label="Chuẩn đoán"
+                label="Chẩn đoán"
                 value={value?.diagnosis}
                 name="diagnosis"
                 variant="outlined"

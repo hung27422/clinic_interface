@@ -5,7 +5,6 @@ import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react/headless";
-import useSearchMedication from "../../../api/hooks/useSearchMedication";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
@@ -14,7 +13,6 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import useHandleAddPrescription from "./hooks/useHandleAddPrescription";
-import Spinner from "../../../hooks/Spinner/Spinner";
 const style = {
   position: "absolute",
   top: "50%",
@@ -37,6 +35,10 @@ import useValidation, {
   ValidationErrorsPrescriptions,
 } from "../../../hooks/components/useValidation";
 import { ValidationError } from "yup";
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
+import useGetDateReExamDefault from "../../../hooks/components/useGetDateReExamDefault";
+import useSearchMedicineOfPrescription from "../../../api/hooks/useSearchMedicineOfPrescription";
 
 export default function ModalPrescriptionPatients({
   flUpId,
@@ -45,25 +47,26 @@ export default function ModalPrescriptionPatients({
 }: Props) {
   const [open, setOpen] = React.useState(false);
   const [activeRow, setActiveRow] = React.useState<number | null>(null);
+  const [valueDateExam, setValueDateExam] = React.useState<Dayjs | null>();
   const [valueSearch, setValueSearch] = React.useState("");
   const [note, setNote] = React.useState("");
   const [errors, setErrors] = React.useState<ValidationErrorsPrescriptions>({});
   const { prescriptionSchema } = useValidation();
-
-  const { data, isLoading } = useSearchMedication({
-    name: valueSearch,
-    limit: 5,
-    page: 1,
+  const { dateReExamDefault, dateReExamDefaultDMY } =
+    useGetDateReExamDefault(5);
+  const { data } = useSearchMedicineOfPrescription({
+    keyword: valueSearch,
   });
+  const examtDate = valueDateExam?.format("DD-MM-YYYY").toString();
+
   const [medicinal, setMedicinal] = React.useState([
     {
       id: 1,
       name: "",
-      quantity: "",
+      numberOfDays: "",
       morning: "",
       afternoon: "",
       night: "",
-      time: "Trước khi ăn",
       idMedication: "",
     },
   ]);
@@ -81,11 +84,10 @@ export default function ModalPrescriptionPatients({
       {
         id: newId,
         name: "",
-        quantity: "",
         morning: "",
         afternoon: "",
         night: "",
-        time: "Trước khi ăn",
+        numberOfDays: "",
         idMedication: "",
       },
     ]);
@@ -98,11 +100,10 @@ export default function ModalPrescriptionPatients({
       {
         id: 1,
         name: "",
-        quantity: "",
         morning: "",
         afternoon: "",
         night: "",
-        time: "",
+        numberOfDays: "",
         idMedication: "",
       },
     ]);
@@ -134,17 +135,17 @@ export default function ModalPrescriptionPatients({
         await prescriptionSchema.validate(med, { abortEarly: false });
       }
       handleSaveInfoPrescriptionPatient({
-        followUpId: flUpId || "",
         patientId: patientId || "",
+        followUpId: flUpId || "",
         notes: note ? note : "Không",
+        revisitDate: examtDate || dateReExamDefaultDMY,
         products: medicinal.map((med) => ({
           medicineId: med.idMedication,
-          quantity: Number(med.quantity),
           instructions: {
-            day: med.morning || "",
-            lunch: med.afternoon || "",
-            afternoon: med.night || "",
-            manual: med.time || "",
+            numberOfDays: med.numberOfDays || "0",
+            day: med.morning || "0",
+            lunch: med.afternoon || "0",
+            afternoon: med.night || "0",
           },
         })),
       });
@@ -176,34 +177,58 @@ export default function ModalPrescriptionPatients({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resultSearchMedication = (id: number, attrs: any) => (
     <div
-      className="w-[150px]  p-2 bg-white shadow-lg shadow-slate-300 border-primary border-2 rounded-md overflow-hidden"
+      className="w-[900px] p-2 bg-white shadow-lg shadow-slate-300 border-primary border-2 rounded-md overflow-hidden"
       {...attrs}
     >
-      {data?.medicines.map((item) => {
-        return (
-          <div key={item.id}>
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <div
-                onClick={() => handleSaveDataMedication(id, item.name, item.id)}
-                key={item.id}
-                className="w-full group"
-              >
-                <div className="flex items-center hover:bg-slate-200 rounded-md px-2 py-1 cursor-pointer">
-                  <span className="w-full block text-xl truncate">
-                    {item.name}
-                  </span>
-                  <FontAwesomeIcon
-                    icon={faCheck}
-                    className="text-green-600 font-extrabold hidden group-hover:block"
-                  />
+      <div>
+        <div className="grid grid-cols-5 border-b-2 border-gray-400 py-2">
+          <span className="col-span-1 text-center text-xl">Tên</span>
+          <span className="col-span-1 text-center text-xl">Biệt dược</span>
+          <span className="col-span-1 text-center text-xl">Công ty</span>
+          <span className="col-span-1 text-center text-xl">Kho</span>
+          <span className="col-span-1 text-center text-xl">Hàm lượng</span>
+        </div>
+        <div className="max-h-52 overflow-hidden hidden-scrollbar overflow-y-auto">
+          {data?.medicines.map((item) => {
+            return (
+              <div key={item.id}>
+                <div>
+                  <div
+                    onClick={() =>
+                      handleSaveDataMedication(id, item.name, item.id)
+                    }
+                    key={item.id}
+                    className="w-full group py-2 "
+                  >
+                    <div className="grid grid-cols-5 hover:bg-gray-300 rounded-md py-1 cursor-pointer relative">
+                      <span className="col-span-1 text-center text-xl truncate ">
+                        {item.name}
+                      </span>
+                      <span className="col-span-1 text-center text-xl truncate ">
+                        {item.specialty}
+                      </span>
+                      <span className="col-span-1 text-center text-xl truncate ">
+                        {item.company}
+                      </span>
+                      <span className="col-span-1 text-center text-xl truncate ">
+                        {item.stock}
+                      </span>
+                      <span className="col-span-1 text-center text-xl truncate ">
+                        {item.nutritional}
+                      </span>
+                      {/* <div className="grid grid-cols-4 hover:bg-slate-200 rounded-md px-2 py-1 cursor-pointer"></div> */}
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-green-600 font-extrabold hidden group-hover:block"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            )}
-          </div>
-        );
-      })}
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
   return (
@@ -217,7 +242,7 @@ export default function ModalPrescriptionPatients({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className="sticky flex justify-between">
+          <div className="sticky flex justify-between mb-4 pb-3 border-b-2 border-primary-300">
             <div className="w-[200px]"></div>
             <div className="w-[200px]">
               <h2 className="text-4xl font-bold text-center mb-4">
@@ -235,18 +260,7 @@ export default function ModalPrescriptionPatients({
               </Button>
             </div>
           </div>
-          <div className="grid grid-cols-4 mb-4 pb-3 border-b-2 border-gray-300">
-            <span className="col-span-1 text-center font-bold text-xl">
-              Tên thuốc
-            </span>
-            <span className="col-span-2 text-center font-bold text-xl">
-              Cách uống thuốc
-            </span>
-            <span className="col-span-1 text-left font-bold text-xl ml-8">
-              Thời gian uống thuốc
-            </span>
-          </div>
-          <div className="h-[400px] overflow-hidden overflow-y-auto hidden-scrollbar">
+          <div className="h-[320px] overflow-hidden overflow-y-auto hidden-scrollbar">
             {medicinal.map((field, index) => (
               <div key={index} className="flex">
                 <div className="w-full grid grid-cols-5 py-2 ">
@@ -262,7 +276,7 @@ export default function ModalPrescriptionPatients({
                         resultSearchMedication(field.id, attrs)
                       }
                       interactive
-                      offset={[50, 10]}
+                      offset={[350, 10]}
                       placement="bottom"
                     >
                       <TextField
@@ -281,18 +295,21 @@ export default function ModalPrescriptionPatients({
                       />
                     </Tippy>
                   </div>
-                  <div className="col-span-3 grid grid-cols-4 gap-1 py-1 px-2">
+                  <div className="col-span-4 grid grid-cols-4 gap-1 py-1 px-2">
                     <TextField
-                      label="Tổng số thuốc"
+                      label="Tổng số ngày"
                       variant="outlined"
-                      name="quantity"
+                      name="numberOfDays"
                       className="w-full col-span-1"
-                      value={field.quantity}
+                      value={field.numberOfDays}
                       onChange={(e) => handleChangeValue(field.id, e)}
-                      error={!!errors.quantity} // Kiểm tra nếu có lỗi
-                      helperText={errors.quantity}
+                      error={!!errors.numberOfDays} // Kiểm tra nếu có lỗi
+                      helperText={errors.numberOfDays}
                       onFocus={() =>
-                        setErrors((prev) => ({ ...prev, quantity: undefined }))
+                        setErrors((prev) => ({
+                          ...prev,
+                          numberOfDays: undefined,
+                        }))
                       }
                     />
                     <TextField
@@ -311,27 +328,15 @@ export default function ModalPrescriptionPatients({
                       value={field.afternoon}
                       onChange={(e) => handleChangeValue(field.id, e)}
                     />
-                    <TextField
-                      label="Chiều"
-                      variant="outlined"
-                      name="night"
-                      className="w-full col-span-1"
-                      value={field.night}
-                      onChange={(e) => handleChangeValue(field.id, e)}
-                    />
-                  </div>
-                  <div className="col-span-1">
-                    <div className="flex justify-center items-center h-14">
-                      <select
-                        name="time"
-                        className="text-xl text-center outline-none h-14 w-full mt-2 border-2 rounded-md block"
-                        id="time"
-                        value={field.time}
+                    <div className="col-span-1 flex">
+                      <TextField
+                        label="Chiều"
+                        variant="outlined"
+                        name="night"
+                        className="w-full "
+                        value={field.night}
                         onChange={(e) => handleChangeValue(field.id, e)}
-                      >
-                        <option value="Trước khi ăn">Trước khi ăn</option>
-                        <option value="Sau khi ăn">Sau khi ăn</option>
-                      </select>
+                      />
                       <div className="flex items-center justify-center">
                         <button
                           color="error"
@@ -347,17 +352,28 @@ export default function ModalPrescriptionPatients({
               </div>
             ))}
           </div>
-          <div>
+          <div className="mb-4 pb-3 border-t-2 border-gray-300">
+            <div className="flex items-center pt-4 mb-2">
+              <span className="text-xl font-bold text-black mr-3 w-36">
+                Ngày tái khám:
+              </span>
+              <DatePicker
+                label="Ngày tái khám"
+                defaultValue={dayjs(dateReExamDefault)}
+                value={valueDateExam}
+                onChange={(newValue) => setValueDateExam(newValue)}
+              />
+            </div>
             <div className="flex items-center mb-2">
-              <label className="text-xl font-bold text-black mr-3">
-                Lời dặn:
+              <label className="w-36 text-xl font-bold text-black mr-3">
+                Lời dặn bác sĩ:
               </label>
               <TextField
                 onChange={(e) => handleNotePrescriptions(e.target.value)}
                 placeholder="Nhập lời dặn của bác sĩ..."
                 size="small"
                 value={note}
-                className="w-[90%] ml-3"
+                className="w-[85%] ml-3"
               />
             </div>
             <div className="flex justify-between items-center pt-3">

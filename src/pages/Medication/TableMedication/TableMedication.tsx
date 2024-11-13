@@ -59,46 +59,35 @@ export default function TableMedication({
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell width={"20%"} align="center">
-                  Tên
-                </StyledTableCell>
-                <StyledTableCell width={"25%"} align="center">
-                  Tên công ty
-                </StyledTableCell>
-                <StyledTableCell width={"10%"} align="center">
-                  Giá
-                </StyledTableCell>
-                <StyledTableCell width={"10%"} align="center">
-                  Tồn kho
-                </StyledTableCell>
-                <StyledTableCell width={"10%"} align="center">
-                  Loại
-                </StyledTableCell>
-                <StyledTableCell width={"25%"} align="center">
-                  Hành động
-                </StyledTableCell>
+                <StyledTableCell align="center">Tên</StyledTableCell>
+                <StyledTableCell align="center">Biệt dược</StyledTableCell>
+                <StyledTableCell align="center">Hàm lượng</StyledTableCell>
+                <StyledTableCell align="center">Tên công ty</StyledTableCell>
+                <StyledTableCell align="center">Bào chế</StyledTableCell>
+                <StyledTableCell align="center">Giá</StyledTableCell>
+                <StyledTableCell align="center">Tồn kho</StyledTableCell>
+                <StyledTableCell align="center">Hành động</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.medicines?.map((item: Medication) => (
                 <StyledTableRow key={item.name}>
-                  <StyledTableCell width={"20%"} align="center">
-                    {item.name}
+                  <StyledTableCell align="center">{item.name}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {item.specialty}
                   </StyledTableCell>
-                  <StyledTableCell width={"25%"} align="center">
+                  <StyledTableCell align="center">
+                    {item.nutritional}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
                     {item.company}
                   </StyledTableCell>
-                  <StyledTableCell width={"10%"} align="center">
-                    {item.price}
+                  <StyledTableCell align="center">
+                    {item.dosage}
                   </StyledTableCell>
-                  <StyledTableCell width={"10%"} align="center">
-                    {item.stock}
-                  </StyledTableCell>
-                  <StyledTableCell width={"10%"} align="center">
-                    {item.type}
-                  </StyledTableCell>
-
-                  <StyledTableCell width={"25%"} align="center">
+                  <StyledTableCell align="center">{item.price}</StyledTableCell>
+                  <StyledTableCell align="center">{item.stock}</StyledTableCell>
+                  <StyledTableCell align="center">
                     <div className="flex justify-center">
                       <div className="mr-3">
                         <ModalUpdateMedication data={item} mutate={mutate} />

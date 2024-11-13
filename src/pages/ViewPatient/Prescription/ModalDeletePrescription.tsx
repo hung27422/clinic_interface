@@ -80,7 +80,7 @@ export default function ModalDeletePrescription({
                 {" " + dataPatient?.name + ". "}
               </span>
               <br />
-              Được chuẩn đoán là:
+              Được chẩn đoán là:
               <span className="text-red-500 font-semibold">
                 {" " + summary}
               </span>

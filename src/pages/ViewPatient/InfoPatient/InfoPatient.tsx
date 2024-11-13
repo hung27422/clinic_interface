@@ -119,7 +119,7 @@ function InfoPatient({
           </div>
           <div className="mb-3">
             <TextField
-              label="Chuẩn đoán"
+              label="Chẩn đoán"
               variant="outlined"
               name="diagnosis"
               className="w-full mb-2 pb-2"
