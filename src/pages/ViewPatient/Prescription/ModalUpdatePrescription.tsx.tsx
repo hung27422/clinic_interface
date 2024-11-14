@@ -24,16 +24,17 @@ interface Props {
   data: Prescriptions;
   mutatePrescription: () => void;
 }
-
-import useValidation, {
-  ValidationErrorsPrescriptions,
-} from "../../../hooks/components/useValidation";
-import { ValidationError } from "yup";
 import { Prescriptions } from "../../../types";
 import useHandleUpdatePrescription from "./hooks/useHandleUpdatePrescription";
 import useSearchMedicineOfPrescription from "../../../api/hooks/useSearchMedicineOfPrescription";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
+
+import { ValidationError } from "yup";
+
+import useValidation, {
+  ValidationErrorsPrescriptionUpdate,
+} from "../../../hooks/components/useValidation";
 const convertDateFormat = (dateString: string): string => {
   const [year, month, day] = dateString.split("-");
   return `${month}-${day}-${year}`;
@@ -42,6 +43,7 @@ const convertDateFormatDMY = (dateString: string): string => {
   const [year, month, day] = dateString.split("-");
   return `${day}-${month}-${year}`;
 };
+
 export default function ModalUpdatePrescription({
   data,
   mutatePrescription,
@@ -53,9 +55,9 @@ export default function ModalUpdatePrescription({
   const [valueSearch, setValueSearch] = React.useState("");
   const [note, setNote] = React.useState("");
   const [valueDateExam, setValueDateExam] = React.useState<Dayjs | null>();
-
-  const [errors, setErrors] = React.useState<ValidationErrorsPrescriptions>({});
-  const { prescriptionSchema } = useValidation();
+  const [errors, setErrors] =
+    React.useState<ValidationErrorsPrescriptionUpdate>();
+  const { prescriptionSchemaUpdate } = useValidation();
   const { handleUpdatePrescription } = useHandleUpdatePrescription({
     idPrescriptions: data.id,
     mutate: mutatePrescription,
@@ -135,17 +137,17 @@ export default function ModalUpdatePrescription({
 
   const handleSavePrescription = async () => {
     try {
-      // Chỉ validate cho hàng activeRow
-      const activeProduct = medicinal.products[activeRow];
-      await prescriptionSchema.validate(activeProduct, { abortEarly: false });
-      // Nếu không có lỗi, thực hiện cập nhật
+      await prescriptionSchemaUpdate.validate(
+        { products: medicinal.products },
+        { abortEarly: false }
+      );
       handleUpdatePrescription({
         id: data.id,
         products: medicinal.products.map((med) => ({
           medicineId: med.medicineId,
           name: med.name,
           instructions: {
-            numberOfDays: med.instructions.numberOfDays || "",
+            numberOfDays: med.instructions.numberOfDays || "0",
             day: med.instructions.day || "0",
             lunch: med.instructions.lunch || "0",
             afternoon: med.instructions.afternoon || "0",
@@ -154,17 +156,24 @@ export default function ModalUpdatePrescription({
         revisitDate: examtDate || convertDateFormatDMY(data.revisit),
         notes: note || data.notes,
       });
-      setErrors({}); // Xóa lỗi sau khi lưu thành công
     } catch (error) {
       if (error instanceof ValidationError) {
-        const validationErrors: ValidationErrorsPrescriptions = {};
-        error.inner.forEach((err) => {
-          validationErrors[`${activeRow}-${err.path}`] = err.message;
-        });
-        setErrors((prev) => ({
-          ...prev,
-          ...validationErrors,
-        }));
+        const validationErrors: ValidationErrorsPrescriptionUpdate = {
+          products: medicinal.products.map((_, index) => ({
+            name:
+              error.inner.find((err) => err.path === `products[${index}].name`)
+                ?.message || "",
+            instructions: {
+              numberOfDays:
+                error.inner.find(
+                  (err) =>
+                    err.path === `products[${index}].instructions.numberOfDays`
+                )?.message || "",
+            },
+          })),
+        };
+
+        setErrors(validationErrors);
       }
     }
   };
@@ -296,14 +305,9 @@ export default function ModalUpdatePrescription({
                           setValueSearch(e.target.value);
                           setActiveRow(index);
                         }}
-                        error={!!errors[`${index}-name`]}
-                        helperText={errors[`${index}-name`]}
-                        onFocus={() => {
-                          setErrors((prev) => ({
-                            ...prev,
-                            [`${index}-name`]: undefined,
-                          }));
-                        }}
+                        error={!!errors?.products?.[index]?.name}
+                        helperText={errors?.products?.[index]?.name}
+                        onFocus={() => setErrors(undefined)}
                       />
                     </Tippy>
                   </div>
@@ -319,14 +323,13 @@ export default function ModalUpdatePrescription({
                         handleChangeValue(e, index);
                         setActiveRow(index);
                       }}
-                      error={!!errors[`${index}-numberOfDays`]}
-                      helperText={errors[`${index}-numberOfDays`]}
-                      onFocus={() => {
-                        setErrors((prev) => ({
-                          ...prev,
-                          [`${index}-numberOfDays`]: undefined,
-                        }));
-                      }}
+                      error={
+                        !!errors?.products?.[index]?.instructions.numberOfDays
+                      }
+                      helperText={
+                        errors?.products?.[index]?.instructions.numberOfDays
+                      }
+                      onFocus={() => setErrors(undefined)}
                     />
                     <TextField
                       label="Sáng"

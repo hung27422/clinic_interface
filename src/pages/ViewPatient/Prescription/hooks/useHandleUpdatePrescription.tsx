@@ -15,7 +15,7 @@ function useHandleUpdatePrescription({
 }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify } = useToastify({
-    title: "Tái khám thành công",
+    title: "Sửa toa thuốc thành công",
     type: "success",
   });
 

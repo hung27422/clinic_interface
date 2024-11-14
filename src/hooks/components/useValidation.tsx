@@ -1,4 +1,4 @@
-import { number, object, string } from "yup";
+import { array, number, object, string } from "yup";
 export interface ValidationErrorsPatient {
   name?: string;
   address?: string;
@@ -21,10 +21,22 @@ export interface ValidationErrorsExaminations {
   diagnosis?: string;
   summary?: string;
 }
-export interface ValidationErrorsPrescriptions {
-  [key: string]: string | undefined; // Chấp nhận chuỗi làm khóa
-  [key: number]: string | undefined; // Chấp nhận số làm khóa
-}
+export type ValidationErrorsPrescriptions = {
+  products:
+    | {
+        name?: string;
+        numberOfDays?: string;
+      }[]
+    | undefined;
+};
+export type ValidationErrorsPrescriptionUpdate = {
+  products: {
+    name?: string;
+    instructions: {
+      numberOfDays: string;
+    };
+  }[];
+};
 export interface ValidationErrorsLogin {
   name?: string;
   password?: string;
@@ -44,6 +56,7 @@ function useValidation() {
       )
       .required("Không được để trống ngày sinh"),
   });
+
   const medicineSchema = object({
     name: string().required("Vui lòng nhập tên thuốc"),
     company: string().required("Vui lòng nhập tên công ty"),
@@ -59,28 +72,51 @@ function useValidation() {
       .typeError("Giá thuốc phải là kiểu số")
       .positive("Giá thuốc phải lớn hơn 0"),
   });
+
   const examinationSchema = object({
     reason: string().required("Vui lòng nhập lý do khám"),
     history: string().required("Vui lòng nhập tiền căn của bệnh nhân"),
     diagnosis: string().required("Vui lòng nhập chẩn đoán của bác sĩ"),
     summary: string().required("Vui lòng nhập thông tin bệnh tổng quát"),
   });
-  const prescriptionSchema = object({
-    name: string().required("Tên thuốc là bắt buộc"),
-    numberOfDays: number()
-      .required("Số lượng ngày là bắt buộc")
-      .typeError("Số lượng ngày phải là số")
-      .positive("Số lượng ngày phải lớn hơn 0"),
+
+  const prescriptionSchema = object().shape({
+    products: array().of(
+      object({
+        name: string().required("Tên thuốc là bắt buộc"),
+        numberOfDays: number()
+          .required("Số lượng ngày là bắt buộc")
+          .typeError("Số lượng ngày phải là số")
+          .positive("Số lượng ngày phải lớn hơn 0"),
+      })
+    ),
   });
+
+  const prescriptionSchemaUpdate = object().shape({
+    products: array().of(
+      object({
+        name: string().required("Tên thuốc là bắt buộc"),
+        instructions: object().shape({
+          numberOfDays: number()
+            .required("Số lượng ngày là bắt buộc")
+            .typeError("Số lượng ngày phải là số")
+            .positive("Số lượng ngày phải lớn hơn 0"),
+        }),
+      })
+    ),
+  });
+
   const loginSchema = object({
     name: string().required("Vui lòng nhập tài khoản"),
     password: string().required("Vui lòng nhập mật khẩu"),
   });
+
   return {
     patientSchema,
     medicineSchema,
     examinationSchema,
     prescriptionSchema,
+    prescriptionSchemaUpdate,
     loginSchema,
   };
 }

@@ -20,8 +20,8 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
     type: "success",
   });
   const { notify: notifyErr } = useToastify({
-    title:
-      "Bạn phải nhập hướng dẫn cách uống thuốc ít nhất là: 'Sáng' hoặc 'Trưa' hoặc 'Chiều ",
+    title: `Bạn phải nhập số thuốc "Sáng", "Trưa" hoặc "Chiều" là số.
+    Vui lòng kiểm tra lại!!!`,
     type: "error",
   });
   const { notify: notifyErrStock } = useToastify({
@@ -56,6 +56,8 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
         notifyErr();
       } else if (error.response.data.code === "Medicine.InsufficientStock") {
         notifyErrStock();
+      } else if (error.response.data.includes("System.FormatException")) {
+        notifyErr();
       } else {
         console.error("Failed to add prescription:", error);
       }

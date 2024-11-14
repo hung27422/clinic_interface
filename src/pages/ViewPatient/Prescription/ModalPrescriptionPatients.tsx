@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -31,14 +32,15 @@ interface Props {
   mutatePrescription: () => void;
 }
 
-import useValidation, {
-  ValidationErrorsPrescriptions,
-} from "../../../hooks/components/useValidation";
 import { ValidationError } from "yup";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import useGetDateReExamDefault from "../../../hooks/components/useGetDateReExamDefault";
 import useSearchMedicineOfPrescription from "../../../api/hooks/useSearchMedicineOfPrescription";
+// import * as Yup from "yup";
+import useValidation, {
+  ValidationErrorsPrescriptions,
+} from "../../../hooks/components/useValidation";
 
 export default function ModalPrescriptionPatients({
   flUpId,
@@ -50,7 +52,7 @@ export default function ModalPrescriptionPatients({
   const [valueDateExam, setValueDateExam] = React.useState<Dayjs | null>();
   const [valueSearch, setValueSearch] = React.useState("");
   const [note, setNote] = React.useState("");
-  const [errors, setErrors] = React.useState<ValidationErrorsPrescriptions>({});
+  const [errors, setErrors] = React.useState<ValidationErrorsPrescriptions>();
   const { prescriptionSchema } = useValidation();
   const { dateReExamDefault, dateReExamDefaultDMY } =
     useGetDateReExamDefault(5);
@@ -131,9 +133,10 @@ export default function ModalPrescriptionPatients({
 
   const handleSavePrescription = async () => {
     try {
-      for (const med of medicinal) {
-        await prescriptionSchema.validate(med, { abortEarly: false });
-      }
+      await prescriptionSchema.validate(
+        { products: medicinal },
+        { abortEarly: false }
+      );
       handleSaveInfoPrescriptionPatient({
         patientId: patientId || "",
         followUpId: flUpId || "",
@@ -151,12 +154,18 @@ export default function ModalPrescriptionPatients({
       });
     } catch (error) {
       if (error instanceof ValidationError) {
-        const validationErrors: ValidationErrorsPrescriptions = {};
-        error.inner.forEach((err) => {
-          validationErrors[err.path as keyof ValidationErrorsPrescriptions] =
-            err.message;
-        });
-        setErrors(validationErrors);
+        const validationErrors: ValidationErrorsPrescriptions = {
+          products: medicinal.map((_, index) => ({
+            name:
+              error.inner.find((err) => err.path === `products[${index}].name`)
+                ?.message || "",
+            numberOfDays:
+              error.inner.find(
+                (err) => err.path === `products[${index}].numberOfDays`
+              )?.message || "",
+          })),
+        };
+        setErrors(validationErrors); // Cập nhật lỗi vào trạng thái
       }
     }
   };
@@ -286,11 +295,9 @@ export default function ModalPrescriptionPatients({
                         name="name"
                         value={field.name}
                         onChange={(e) => handleChangeValue(field.id, e)}
-                        error={!!errors.name} // Kiểm tra nếu có lỗi
-                        helperText={errors.name}
-                        onFocus={() =>
-                          setErrors((prev) => ({ ...prev, name: undefined }))
-                        }
+                        error={!!errors?.products?.[index]?.name}
+                        helperText={errors?.products?.[index]?.name}
+                        onFocus={() => setErrors(undefined)}
                       />
                     </Tippy>
                   </div>
@@ -302,14 +309,9 @@ export default function ModalPrescriptionPatients({
                       className="w-full col-span-1"
                       value={field.numberOfDays}
                       onChange={(e) => handleChangeValue(field.id, e)}
-                      error={!!errors.numberOfDays} // Kiểm tra nếu có lỗi
-                      helperText={errors.numberOfDays}
-                      onFocus={() =>
-                        setErrors((prev) => ({
-                          ...prev,
-                          numberOfDays: undefined,
-                        }))
-                      }
+                      error={!!errors?.products?.[index]?.numberOfDays}
+                      helperText={errors?.products?.[index]?.numberOfDays}
+                      onFocus={() => setErrors(undefined)}
                     />
                     <TextField
                       label="Sáng"
