@@ -31,7 +31,7 @@ export interface Medication {
   name: string;
   stock: number;
   price: number;
-  specialty?: string;
+  specialty: string;
   nutritional: string;
   dosage: string;
   company: string;

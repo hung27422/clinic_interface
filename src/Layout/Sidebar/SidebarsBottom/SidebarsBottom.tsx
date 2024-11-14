@@ -70,10 +70,9 @@ export default function SidebarsBottom() {
           horizontal: "left",
         }}
       >
-        <MenuItem className="min-w-52" onClick={handleClose}>
-          Tài khoản
+        <MenuItem className="min-w-52" onClick={handleLogout}>
+          Đăng xuất
         </MenuItem>
-        <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
       </Menu>
     </div>
   );
