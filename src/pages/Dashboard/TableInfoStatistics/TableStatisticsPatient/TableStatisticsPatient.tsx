@@ -37,35 +37,21 @@ export default function TableStatisticsPatient({ data }: Props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell width={"20%"} align="center">
-              Tên
-            </StyledTableCell>
-            <StyledTableCell width={"20%"} align="center">
-              Tuổi
-            </StyledTableCell>
-            <StyledTableCell width={"20%"} align="center">
-              Số điện thoại
-            </StyledTableCell>
-            <StyledTableCell width={"40%"} align="center">
-              Địa chỉ
-            </StyledTableCell>
+            <StyledTableCell align="center">Tên</StyledTableCell>
+            <StyledTableCell align="center">Tuổi</StyledTableCell>
+            <StyledTableCell align="center">Số điện thoại</StyledTableCell>
+            <StyledTableCell align="center">Địa chỉ</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.patients.map((item) => (
             <StyledTableRow key={item.id}>
-              <StyledTableCell width={"20%"} align="center">
-                {item.name}
-              </StyledTableCell>
-              <StyledTableCell width={"20%"} align="center">
-                {item.age}
-              </StyledTableCell>
-              <StyledTableCell width={"20%"} align="center">
+              <StyledTableCell align="center">{item.name}</StyledTableCell>
+              <StyledTableCell align="center">{item.age}</StyledTableCell>
+              <StyledTableCell align="center">
                 {item.phoneNumber}
               </StyledTableCell>
-              <StyledTableCell width={"40%"} align="center">
-                {item.address}
-              </StyledTableCell>
+              <StyledTableCell align="center">{item.address}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

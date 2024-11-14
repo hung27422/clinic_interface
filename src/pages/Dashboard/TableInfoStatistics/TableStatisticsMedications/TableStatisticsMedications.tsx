@@ -36,46 +36,22 @@ export default function TableStatisticsMedications({ data }: Props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell width={"20%"} align="center">
-              Tên
-            </StyledTableCell>
-            <StyledTableCell width={"25%"} align="center">
-              Tên công ty
-            </StyledTableCell>
-            <StyledTableCell width={"20%"} align="center">
-              Tổng số lượng bán
-            </StyledTableCell>
-            <StyledTableCell width={"20%"} align="center">
-              Tổng tiền
-            </StyledTableCell>
-            <StyledTableCell width={"15%"} align="center">
-              Loại
-            </StyledTableCell>
+            <StyledTableCell align="center">Tên</StyledTableCell>
+            <StyledTableCell align="center">Tên công ty</StyledTableCell>
+            <StyledTableCell align="center">Tổng số lượng bán</StyledTableCell>
+            <StyledTableCell align="center">Tổng tiền</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.medicines.map((item) => (
             <StyledTableRow key={item.id}>
-              <StyledTableCell
-                width={"20%"}
-                align="center"
-                component="th"
-                scope="row"
-              >
+              <StyledTableCell align="center" component="th" scope="row">
                 {item.name}
               </StyledTableCell>
-
-              <StyledTableCell width={"25%"} align="center">
-                {item.company}
-              </StyledTableCell>
-              <StyledTableCell width={"20%"} align="center">
-                {item.amount}
-              </StyledTableCell>
-              <StyledTableCell width={"20%"} align="center">
+              <StyledTableCell align="center">{item.company}</StyledTableCell>
+              <StyledTableCell align="center">{item.amount}</StyledTableCell>
+              <StyledTableCell align="center">
                 {item.combinedPrice}
-              </StyledTableCell>
-              <StyledTableCell width={"15%"} align="center">
-                {/* {item.type} */}
               </StyledTableCell>
             </StyledTableRow>
           ))}

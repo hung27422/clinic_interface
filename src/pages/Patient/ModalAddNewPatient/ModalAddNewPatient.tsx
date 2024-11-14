@@ -99,24 +99,12 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 FormHelperTextProps={{
                   sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
                 }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, name: undefined }))
+                }
               />
             </div>
 
-            <div className="mb-3">
-              <TextField
-                label="Địa chỉ"
-                placeholder="Thủ Đức - TP.HCM"
-                variant="outlined"
-                className="w-full mb-2 pb-2"
-                name="address"
-                onChange={handleChangeValue}
-                error={!!errors.address}
-                helperText={errors.address}
-                FormHelperTextProps={{
-                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
-                }}
-              />
-            </div>
             <div className="mb-3">
               <TextField
                 label="Số điện thoại"
@@ -130,6 +118,27 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 FormHelperTextProps={{
                   sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
                 }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, phone: undefined }))
+                }
+              />
+            </div>
+            <div className="mb-3">
+              <TextField
+                label="Địa chỉ"
+                placeholder="Thủ Đức - TP.HCM"
+                variant="outlined"
+                className="w-full mb-2 pb-2"
+                name="address"
+                onChange={handleChangeValue}
+                error={!!errors.address}
+                helperText={errors.address}
+                FormHelperTextProps={{
+                  sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
+                }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, address: undefined }))
+                }
               />
             </div>
             <div className="mb-3">
@@ -145,6 +154,9 @@ export default function ModalAddNewPatient({ mutate }: Props) {
                 FormHelperTextProps={{
                   sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
                 }}
+                onFocus={() =>
+                  setErrors((prev) => ({ ...prev, dob: undefined }))
+                }
               />
             </div>
           </div>

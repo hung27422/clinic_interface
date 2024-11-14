@@ -59,7 +59,6 @@ export default function TableStatisticsTop10Medications({ data }: Props) {
               >
                 {item.name}
               </StyledTableCell>
-
               <StyledTableCell width={"20%"} align="center">
                 {item.company}
               </StyledTableCell>

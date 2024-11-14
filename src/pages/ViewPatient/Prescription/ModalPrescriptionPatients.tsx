@@ -194,8 +194,8 @@ export default function ModalPrescriptionPatients({
           <span className="col-span-1 text-center text-xl">Tên</span>
           <span className="col-span-1 text-center text-xl">Biệt dược</span>
           <span className="col-span-1 text-center text-xl">Công ty</span>
-          <span className="col-span-1 text-center text-xl">Kho</span>
           <span className="col-span-1 text-center text-xl">Hàm lượng</span>
+          <span className="col-span-1 text-center text-xl">Kho</span>
         </div>
         <div className="max-h-52 overflow-hidden hidden-scrollbar overflow-y-auto">
           {data?.medicines.map((item) => {
@@ -210,22 +210,22 @@ export default function ModalPrescriptionPatients({
                     className="w-full group py-2 "
                   >
                     <div className="grid grid-cols-5 hover:bg-gray-300 rounded-md py-1 cursor-pointer relative">
-                      <span className="col-span-1 text-center text-xl truncate ">
+                      <span className="w-full px-1 col-span-1 text-center text-xl truncate">
                         {item.name}
                       </span>
-                      <span className="col-span-1 text-center text-xl truncate ">
+                      <span className="w-full px-1 col-span-1 text-center text-xl truncate">
                         {item.specialty}
                       </span>
-                      <span className="col-span-1 text-center text-xl truncate ">
+                      <span className="w-full px-1 col-span-1 text-center text-xl truncate">
                         {item.company}
                       </span>
-                      <span className="col-span-1 text-center text-xl truncate ">
-                        {item.stock}
-                      </span>
-                      <span className="col-span-1 text-center text-xl truncate ">
+                      <span className="w-full px-1 col-span-1 text-center text-xl truncate ">
                         {item.nutritional}
                       </span>
-                      {/* <div className="grid grid-cols-4 hover:bg-slate-200 rounded-md px-2 py-1 cursor-pointer"></div> */}
+                      <span className="w-full px-1 col-span-1 text-center text-xl truncate">
+                        {item.stock}
+                      </span>
+
                       <FontAwesomeIcon
                         icon={faCheck}
                         className="absolute right-2 top-1/2 -translate-y-1/2 text-green-600 font-extrabold hidden group-hover:block"

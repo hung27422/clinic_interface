@@ -7,7 +7,6 @@ interface Props {
 }
 function StatisticsMedicine({ data }: Props) {
   if (!data) return <Spinner />;
-
   const exitDataMedicine = data?.medicines.length > 0;
   return (
     <div>
