@@ -22,7 +22,7 @@ function formatNumberWithDots(num: number): string {
 function HomePage() {
   const [pageMedicine, setPageMedicine] = useState(1);
   const [pagePatient, setPagePatient] = useState(1);
-  const [pagePatientNotExamiend, setPagePatientNotExamiend] = useState(1);
+  const [pagePatientNotExamined, setPagePatientNotExamined] = useState(1);
   const [errDate, setErrDate] = useState(false);
 
   const { currentDate, month, year } = useCurrentDate();
@@ -50,7 +50,7 @@ function HomePage() {
     _event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPagePatientNotExamiend(value);
+    setPagePatientNotExamined(value);
   };
   // Lấy ngày đầu tiên và cuối cùng của tháng
   const { firstDay, lastDay } = useGetFirstAndLastDayOfMonth({
@@ -100,7 +100,7 @@ function HomePage() {
   //Lấy dữ liệu bệnh nhân chưa khám
   const { data: dataPatientNotExamined } = useGetPatientNotExamined({
     limit: 5,
-    page: 1,
+    page: pagePatientNotExamined,
   });
   const exitDataMedicineTop10 = dataMedicineTop10?.medicines?.length
     ? dataMedicineTop10.medicines.length > 0
@@ -221,7 +221,7 @@ function HomePage() {
               <PaginationClinic
                 onChange={handleChangePagePatientNotExamined}
                 count={countPagesPatientNotExamined}
-                page={pagePatientNotExamiend}
+                page={pagePatientNotExamined}
               />
             )}
           </div>
