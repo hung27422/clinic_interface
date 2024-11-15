@@ -31,7 +31,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 interface Props {
   data: PatientDataTemp;
 }
-export default function TableStatisticsPatient({ data }: Props) {
+export default function TableStatisticsPatientNotExamined({ data }: Props) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">

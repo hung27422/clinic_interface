@@ -7,6 +7,7 @@ import axios from "axios";
 import useToastify from "../../../hooks/Toastify/useToastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { ClinicContext } from "../../../Context/ContextClinic";
 
 const style = {
   position: "absolute",
@@ -36,7 +37,8 @@ export default function ModalDeletePrescription({
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const { setKeyReloadMedicineTop10, setKeyReloadMedicineByDate } =
+    React.useContext(ClinicContext);
   //   Thông báo xóa thông tin bệnh nhân nếu thành công
   const { notify } = useToastify({
     title: `Xóa thông tin khám bênh của ${dataPatient?.name} thành công`,
@@ -50,6 +52,8 @@ export default function ModalDeletePrescription({
       await axios.delete(`${apiUrl}/Prescription/${idPrescription}`);
       mutatePrescription();
       handleClose();
+      setKeyReloadMedicineTop10((prev) => prev + 1);
+      setKeyReloadMedicineByDate((prev) => prev + 1);
       notify();
     } catch (err) {
       console.log("Lỗi", err);

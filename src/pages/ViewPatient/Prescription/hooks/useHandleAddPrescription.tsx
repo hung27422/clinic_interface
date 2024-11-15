@@ -13,6 +13,7 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
     setKeyReloadPrescription,
     setKeyReloadMedicineTop10,
     setKeyReloadMedicineByDate,
+    setKeyReloadMedication,
   } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
   const { notify: notifySuccess } = useToastify({
@@ -43,6 +44,7 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
       });
       notifySuccess();
       mutate();
+      setKeyReloadMedication((prev) => prev + 1);
       setKeyReloadPrescription((prev) => prev + 1);
       setKeyReloadMedicineTop10((prev) => prev + 1);
       setKeyReloadMedicineByDate((prev) => prev + 1);

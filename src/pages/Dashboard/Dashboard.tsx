@@ -4,7 +4,7 @@ import "../../App.css";
 import TableStatisticsTop10Medications from "./TableInfoStatistics/TableStatisticsTop10Medications/TableStatisticsTop10Medications";
 import { useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
-import StatisticsPatient from "./StatisticsDashboard/StatisticsPatient/StatisticsPatient";
+import StatisticsPatientExamined from "./StatisticsDashboard/StatisticsPatient/StatisticsPatientExamined";
 import useGetPatientByDate from "../../api/hooks/useGetPatientByDate";
 import useToastify from "../../hooks/Toastify/useToastify";
 import useGetMedicinePrescriptionByDate from "../../api/hooks/useGetMedicinePrescriptionByDate";
@@ -14,12 +14,15 @@ import useGetMedicineTop10ByDate from "../../api/hooks/useGetMedicineTop10ByDate
 import PaginationClinic from "../../components/Pagination";
 import Spinner from "../../hooks/Spinner/Spinner";
 import useCurrentDate from "../../hooks/components/useCurrentDate";
+import useGetPatientNotExamined from "../../api/hooks/useGetPatientNotExamined";
+import StatisticsPatientNotExamined from "./StatisticsDashboard/StatisticsPatient/StatisticsPatientNotExamined";
 function formatNumberWithDots(num: number): string {
   return new Intl.NumberFormat("de-DE").format(num); // 'de-DE' sử dụng dấu chấm cho hàng nghìn
 }
 function HomePage() {
   const [pageMedicine, setPageMedicine] = useState(1);
   const [pagePatient, setPagePatient] = useState(1);
+  const [pagePatientNotExamiend, setPagePatientNotExamiend] = useState(1);
   const [errDate, setErrDate] = useState(false);
 
   const { currentDate, month, year } = useCurrentDate();
@@ -35,12 +38,19 @@ function HomePage() {
   ) => {
     setPageMedicine(value);
   };
-  // Chuyển trang của bệnh nhân
+  // Chuyển trang của bệnh nhân đã khám
   const handleChangePagePatient = (
     _event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPagePatient(value);
+  };
+  //Chuyển trang của bệnh nhân chưa khám
+  const handleChangePagePatientNotExamined = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPagePatientNotExamiend(value);
   };
   // Lấy ngày đầu tiên và cuối cùng của tháng
   const { firstDay, lastDay } = useGetFirstAndLastDayOfMonth({
@@ -66,7 +76,7 @@ function HomePage() {
       setErrDate(false);
     }
   }, [valueStartDate, valueEndDate]);
-  // Lấy dữ liệu patient theo ngày
+  // Lấy dữ liệu patient đã khám theo ngày
   const { data: dataPatient } = useGetPatientByDate({
     startDate: startDate || firstDay,
     endDate: endDate || lastDay,
@@ -87,6 +97,11 @@ function HomePage() {
     page: 1,
     limit: 5,
   });
+  //Lấy dữ liệu bệnh nhân chưa khám
+  const { data: dataPatientNotExamined } = useGetPatientNotExamined({
+    limit: 5,
+    page: 1,
+  });
   const exitDataMedicineTop10 = dataMedicineTop10?.medicines?.length
     ? dataMedicineTop10.medicines.length > 0
     : false;
@@ -106,13 +121,19 @@ function HomePage() {
     0
   );
   const countPagesMedicine = dataMedicine?.pagination.totalPages || 0;
-  const countPagesPatient = dataPatient?.pagination.totalPages || 0;
+  const countPagesPatientExamined = dataPatient?.pagination.totalPages || 0;
+  const countPagesPatientNotExamined =
+    dataPatientNotExamined?.pagination.totalPages || 0;
   const formattedTotalAmount = formatNumberWithDots(totalPrice);
   // Menu statistical
   const statistical = [
     {
-      title: "Tổng số bệnh nhân",
+      title: "Tổng số bệnh nhân đã khám",
       result: dataPatient?.patients.length || 0,
+    },
+    {
+      title: "Số bệnh nhân chưa khám",
+      result: dataPatientNotExamined?.patients.length || 0,
     },
     {
       title: "Tổng số lượng thuốc",
@@ -165,7 +186,7 @@ function HomePage() {
           return (
             <div
               key={index}
-              className="flex flex-col border-primary border-2 p-4 rounded-lg"
+              className="flex flex-col col-span-1 border-primary border-2 p-4 rounded-lg"
             >
               <span className="text-2xl text-gray-500">{item.title}</span>
               <span className="font-bold text-xl">{item.result}</span>
@@ -191,16 +212,30 @@ function HomePage() {
           </div>
         )}
       </div>
-
-      {/* Thống kê bệnh nhân */}
+      {/* Thống kê bệnh nhân chưa khám*/}
+      {dataPatientNotExamined && (
+        <div className="mt-4">
+          <StatisticsPatientNotExamined dataPatient={dataPatientNotExamined} />
+          <div className="flex items-center justify-center mt-5">
+            {countPagesPatientNotExamined > 1 && (
+              <PaginationClinic
+                onChange={handleChangePagePatientNotExamined}
+                count={countPagesPatientNotExamined}
+                page={pagePatientNotExamiend}
+              />
+            )}
+          </div>
+        </div>
+      )}
+      {/* Thống kê bệnh nhân đã khám*/}
       {dataPatient && !errDate ? (
         <div className="mt-4">
-          <StatisticsPatient dataPatient={dataPatient} />
+          <StatisticsPatientExamined dataPatient={dataPatient} />
           <div className="flex items-center justify-center mt-5">
-            {countPagesPatient > 1 && (
+            {countPagesPatientExamined > 1 && (
               <PaginationClinic
                 onChange={handleChangePagePatient}
-                count={countPagesPatient}
+                count={countPagesPatientExamined}
                 page={pagePatient}
               />
             )}
