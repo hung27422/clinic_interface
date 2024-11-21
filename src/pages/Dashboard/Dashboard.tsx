@@ -133,7 +133,7 @@ function HomePage() {
     },
     {
       title: "Số bệnh nhân chưa khám",
-      result: dataPatientNotExamined?.patients.length || 0,
+      result: dataPatientNotExamined?.pagination.totalItems || 0,
     },
     {
       title: "Tổng số lượng thuốc",
