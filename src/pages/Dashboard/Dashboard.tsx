@@ -129,7 +129,7 @@ function HomePage() {
   const statistical = [
     {
       title: "Tổng số bệnh nhân đã khám",
-      result: dataPatient?.patients.length || 0,
+      result: dataPatient?.pagination.totalItems || 0,
     },
     {
       title: "Số bệnh nhân chưa khám",
