@@ -29,10 +29,10 @@ function InfoPrescription({ data }: Props) {
           <div className="flex flex-col items-start">
             <span className="text-sm font-bold">BS Nguyễn Thiên Phúc</span>
             <span className="text-sm font-bold">
-              512 Bà Hạt, Phường 8, Quận 10 - Số ĐT: 0987654321
+              512 Bà Hạt, Phường 8, Quận 10 - Số ĐT: 0337117527
             </span>
             <span className="text-sm font-medium">
-              Giấy phép số: 001234/HCM-CCHN
+              Giấy phép số: 052307/HCM-CCHN
             </span>
             <span className="text-sm font-medium">
               Khám Nội - Nội Tiết - Tim Mạch
