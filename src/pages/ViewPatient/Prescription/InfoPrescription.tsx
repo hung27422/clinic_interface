@@ -5,6 +5,9 @@ import { Prescriptions } from "../../../types";
 interface Props {
   data: Prescriptions;
 }
+function formatNumberWithDots(num: number): string {
+  return new Intl.NumberFormat("de-DE").format(num); // 'de-DE' sử dụng dấu chấm cho hàng nghìn
+}
 function InfoPrescription({ data }: Props) {
   const now = new Date();
   const date = now.getDate();
@@ -138,10 +141,6 @@ function InfoPrescription({ data }: Props) {
         <div className="absolute  bottom-2 left-0 right-0">
           <div className="grid grid-cols-5 justify-between ml-4 text-xl mt-4">
             <div className="col-span-3 flex flex-col">
-              <span className="text-sm">
-                Thành tiền:
-                <span className="font-medium">{data.totalPrice} VNĐ</span>
-              </span>
               <span className="mt-2 text-sm">
                 Ngày tái khám: <span className="font-medium">16-11-2024</span>
               </span>
@@ -170,6 +169,14 @@ function InfoPrescription({ data }: Props) {
             </span>
           </div>
         </div>
+      </div>
+      <div className="absolute bottom-[-50px] left-0 mt-6 text-center">
+        <span className="text-lg">
+          Thành tiền:
+          <span className="font-bold">
+            {" " + formatNumberWithDots(data.totalPrice)} VNĐ
+          </span>
+        </span>
       </div>
       <div className="absolute bottom-[-50px] left-0 right-0 mt-6 text-center">
         <Button
