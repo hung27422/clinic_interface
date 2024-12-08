@@ -27,14 +27,14 @@ interface Props {
   mutatePrescription: () => void;
   idPrescription: string;
   dataPrescription: PrescriptionData;
-  mutatePrescriptionByFlowUp: () => void;
+  mutatePrescriptionByFlowUp?: () => void;
 }
 export default function ModalDeletePrescription({
   dataPatient,
   summary,
   mutatePrescription,
   idPrescription,
-  mutatePrescriptionByFlowUp,
+  mutatePrescriptionByFlowUp = () => {},
 }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);

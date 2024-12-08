@@ -45,12 +45,12 @@ const convertDateFormatDMY = (dateString: string): string => {
 interface Props {
   data: Prescriptions;
   mutatePrescription: () => void;
-  mutatePrescriptionByFlowUp: () => void;
+  mutatePrescriptionByFlowUp?: () => void;
 }
 export default function ModalUpdatePrescription({
   data,
   mutatePrescription,
-  mutatePrescriptionByFlowUp,
+  mutatePrescriptionByFlowUp = () => {},
 }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -63,6 +63,7 @@ export default function ModalUpdatePrescription({
     React.useState<ValidationErrorsPrescriptionUpdate>();
   const { prescriptionSchemaUpdate } = useValidation();
   const { errStock } = useContext(ClinicContext);
+
   const { handleUpdatePrescription } = useHandleUpdatePrescription({
     idPrescriptions: data.id,
     mutate: mutatePrescription,
