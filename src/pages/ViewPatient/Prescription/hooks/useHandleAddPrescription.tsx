@@ -14,8 +14,11 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
     setKeyReloadMedicineTop10,
     setKeyReloadMedicineByDate,
     setKeyReloadMedication,
+    errStock,
+    setErrStock,
   } = useContext(ClinicContext);
   const apiUrl = import.meta.env.VITE_API_URL;
+
   const { notify: notifySuccess } = useToastify({
     title: "Kê toa thuốc thành công",
     type: "success",
@@ -26,7 +29,7 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
     type: "error",
   });
   const { notify: notifyErrStock } = useToastify({
-    title: "Số lượng thuốc không đủ để kê toa!!!",
+    title: `Số lượng thuốc ${errStock} không đủ để kê toa!!!`,
     type: "error",
   });
   const handleSaveInfoPrescriptionPatient = async (
@@ -51,6 +54,9 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
       handleClose();
     } catch (error: any) {
       console.error("Failed to add patient:", error);
+      const errorMessage = error.response?.data?.description || "";
+      console.log(errorMessage);
+
       if (
         error.response.data.description ===
         "At least one of Day, Lunch, or Afternoon must be a number."
@@ -58,6 +64,9 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
         notifyErr();
       } else if (error.response.data.code === "Medicine.InsufficientStock") {
         notifyErrStock();
+        const stockError = errorMessage.match(/'([^']+)'/);
+        const medicineName = stockError ? stockError[1] : "Không rõ";
+        setErrStock(medicineName);
       } else if (error.response.data.includes("System.FormatException")) {
         notifyErr();
       } else {

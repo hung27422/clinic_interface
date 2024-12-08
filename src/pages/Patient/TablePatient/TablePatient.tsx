@@ -59,44 +59,31 @@ export default function TablePatient({ data, mutate, setPage, page }: Props) {
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell width={"15%"} align="center">
-                  Tên
-                </StyledTableCell>
-                <StyledTableCell width={"10%"} align="center">
-                  Tuổi
-                </StyledTableCell>
-                <StyledTableCell width={"15%"} align="center">
-                  Số điện thoại
-                </StyledTableCell>
-                <StyledTableCell width={"30%"} align="center">
-                  Địa chỉ
-                </StyledTableCell>
-                <StyledTableCell width={"30%"} align="center">
-                  Hành động
-                </StyledTableCell>
+                <StyledTableCell align="center">Tên</StyledTableCell>
+                <StyledTableCell align="center">Tuổi</StyledTableCell>
+                <StyledTableCell align="center">Giới tính</StyledTableCell>
+                <StyledTableCell align="center">Số điện thoại</StyledTableCell>
+                <StyledTableCell align="center">Địa chỉ</StyledTableCell>
+                <StyledTableCell align="center">Hành động</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.patients?.map((item: Patient) => (
                 <StyledTableRow key={item.id}>
-                  <StyledTableCell
-                    width={"15%"}
-                    align="center"
-                    component="th"
-                    scope="row"
-                  >
+                  <StyledTableCell align="center" component="th" scope="row">
                     {item.name}
                   </StyledTableCell>
-                  <StyledTableCell width={"10%"} align="center">
-                    {item.age}
+                  <StyledTableCell align="center">{item.age}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {item.gender}
                   </StyledTableCell>
-                  <StyledTableCell width={"15%"} align="center">
+                  <StyledTableCell align="center">
                     {item.phoneNumber}
                   </StyledTableCell>
-                  <StyledTableCell width={"30%"} align="center">
+                  <StyledTableCell align="center">
                     {item.address}
                   </StyledTableCell>
-                  <StyledTableCell width={"30%"} align="center">
+                  <StyledTableCell align="center">
                     <div className="flex justify-center">
                       <div>
                         <Link to={`${config.router.viewpatient}${item.id}`}>

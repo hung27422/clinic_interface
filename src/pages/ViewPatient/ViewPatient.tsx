@@ -132,11 +132,17 @@ function ViewPatients() {
           {dataPatient?.patient.status === "examined" && exitDataFlowup && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <div className="">
-                  <span className="text-3xl">
+                <div className="flex items-center justify-between">
+                  <span className="text-3xl block">
                     Thông tin của bệnh nhân
                     <span className="text-red-500 font-semibold">
                       {" " + dataPatient.patient.name}
+                    </span>
+                  </span>
+                  <span className="text-3xl ml-5 block">
+                    Giới tính
+                    <span className="text-red-500 font-semibold">
+                      {" " + dataPatient.patient.gender}
                     </span>
                   </span>
                 </div>
@@ -204,6 +210,7 @@ function ViewPatients() {
                             </span>
                           </div>
                         </div>
+                        {/* In, sửa, xóa toa thuốc */}
                         <div className="col-span-1 flex items-end justify-end">
                           <div>
                             <ModalPrint data={item} />

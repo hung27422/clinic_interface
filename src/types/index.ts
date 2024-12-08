@@ -1,6 +1,7 @@
 export interface Patient {
   id: string;
   name: string;
+  gender: string;
   age?: number;
   dob: string;
   address: string;
@@ -84,6 +85,7 @@ export interface Prescriptions {
   patient: {
     id: string;
     name: string;
+    gender: string;
     age: number;
     dob: string;
     address: string;

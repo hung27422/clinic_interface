@@ -35,6 +35,8 @@ import { ValidationError } from "yup";
 import useValidation, {
   ValidationErrorsPrescriptionUpdate,
 } from "../../../hooks/components/useValidation";
+import { ClinicContext } from "../../../Context/ContextClinic";
+import { useContext } from "react";
 const convertDateFormat = (dateString: string): string => {
   const [year, month, day] = dateString.split("-");
   return `${month}-${day}-${year}`;
@@ -58,6 +60,7 @@ export default function ModalUpdatePrescription({
   const [errors, setErrors] =
     React.useState<ValidationErrorsPrescriptionUpdate>();
   const { prescriptionSchemaUpdate } = useValidation();
+  const { errStock } = useContext(ClinicContext);
   const { handleUpdatePrescription } = useHandleUpdatePrescription({
     idPrescriptions: data.id,
     mutate: mutatePrescription,
@@ -305,8 +308,15 @@ export default function ModalUpdatePrescription({
                           setValueSearch(e.target.value);
                           setActiveRow(index);
                         }}
-                        error={!!errors?.products?.[index]?.name}
-                        helperText={errors?.products?.[index]?.name}
+                        error={
+                          !!errors?.products?.[index]?.name ||
+                          errStock === field.name
+                        }
+                        helperText={
+                          errors?.products?.[index]?.name ||
+                          (errStock === field.name &&
+                            "SL tồn kho không đủ kê toa")
+                        }
                         onFocus={() => setErrors(undefined)}
                       />
                     </Tippy>
@@ -324,7 +334,8 @@ export default function ModalUpdatePrescription({
                         setActiveRow(index);
                       }}
                       error={
-                        !!errors?.products?.[index]?.instructions.numberOfDays
+                        !!errors?.products?.[index]?.instructions
+                          .numberOfDays || errStock === field.name
                       }
                       helperText={
                         errors?.products?.[index]?.instructions.numberOfDays

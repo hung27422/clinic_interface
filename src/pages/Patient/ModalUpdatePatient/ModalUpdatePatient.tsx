@@ -2,7 +2,13 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { TextField } from "@mui/material";
+import {
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
 import { Patient } from "../../../types";
 import useHandleUpdatePatient from "./hook/useHandleUpdatePatient";
 import useValidation, {
@@ -36,6 +42,7 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
     dob: "",
     address: "",
     phoneNumber: "",
+    gender: "",
     checkStatus: "not_examined",
   });
   const handleOpen = () => setOpen(true);
@@ -54,12 +61,17 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
         dob: data.dob || "",
         address: data.address || "",
         phoneNumber: data.phoneNumber || "",
+        gender: data.gender || "",
         checkStatus: data.status || "not_examined",
       });
     }
   }, [data]);
 
   const handleChangeValuePatient = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValue((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleChangeSelectValue = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target;
     setValue((prev) => ({ ...prev, [name]: value }));
   };
@@ -79,6 +91,7 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
         address: value.address,
         phoneNumber: value.phoneNumber,
         dob: formattedDate,
+        gender: value.gender,
         status: data.status || "not_examined",
       });
       setErrors({});
@@ -170,6 +183,23 @@ export default function ModalUpdatePatient({ data, mutate }: Props) {
                   sx: { fontSize: "1rem" }, // Thay đổi kích thước chữ helperText
                 }}
               />
+            </div>
+            <div className="mb-2 pb-2">
+              <InputLabel className="ml-2" id="demo-simple-select-label">
+                Giới tính
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="gender"
+                value={value.gender}
+                className="w-full"
+                onChange={handleChangeSelectValue}
+              >
+                <MenuItem value={"Nam"}>Nam</MenuItem>
+                <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                <MenuItem value={"Khác"}>Khác</MenuItem>
+              </Select>
             </div>
           </div>
           <div className="ml-auto mr-auto w-full text-center">

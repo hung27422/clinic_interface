@@ -27,6 +27,7 @@ function InfoPatient({
   const { handleSaveFollowUp } = useHandleAddFollowUp({
     idPatient: dataPatient.id,
     addressPatient: dataPatient.address,
+    genderPatient: dataPatient.gender,
     checkStatus: "examined",
     dobPatient: formattedDate,
     namePatient: dataPatient.name,

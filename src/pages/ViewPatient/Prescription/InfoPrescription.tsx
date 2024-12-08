@@ -8,6 +8,10 @@ interface Props {
 function formatNumberWithDots(num: number): string {
   return new Intl.NumberFormat("de-DE").format(num); // 'de-DE' sử dụng dấu chấm cho hàng nghìn
 }
+const convertDateFormatDMY = (dateString: string): string => {
+  const [year, month, day] = dateString.split("-");
+  return `${day}-${month}-${year}`;
+};
 function InfoPrescription({ data }: Props) {
   const now = new Date();
   const date = now.getDate();
@@ -62,10 +66,14 @@ function InfoPrescription({ data }: Props) {
         <div>
           <h2 className="text-2xl font-semibold text-center py-1">TOA THUỐC</h2>
           <div className="mx-3">
-            <div className="flex justify-between">
+            <div className="flex ">
               <span className="text-sm">
                 Tên bệnh nhân:
                 <span className="font-bold">{" " + data.patient.name}</span>
+              </span>
+              <span className="col-span-1 text-sm break-words mx-6">
+                Giới tính:
+                <span className="font-bold">{" " + data.patient.gender}</span>
               </span>
               <span className="col-span-1 text-sm break-words">
                 Tuổi:
@@ -73,6 +81,10 @@ function InfoPrescription({ data }: Props) {
               </span>
             </div>
             <div className="flex flex-col">
+              <span className="text-sm">
+                Địa chỉ:
+                <span className="font-bold">{" " + data.patient.address}</span>
+              </span>
               <span className="text-sm break-words">
                 Chẩn đoán:
                 <span className="font-bold"> {" " + data.summary.summary}</span>
@@ -142,7 +154,10 @@ function InfoPrescription({ data }: Props) {
           <div className="grid grid-cols-5 justify-between ml-4 text-xl mt-4">
             <div className="col-span-3 flex flex-col">
               <span className="mt-2 text-sm">
-                Ngày tái khám: <span className="font-medium">16-11-2024</span>
+                Ngày tái khám:{" "}
+                <span className="font-medium">
+                  {convertDateFormatDMY(data.revisit)}
+                </span>
               </span>
               <span className="mt-1 text-sm">
                 Lời dặn: <span className="font-medium">{data.notes}</span>

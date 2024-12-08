@@ -6,6 +6,7 @@ import useToastify from "../../../../hooks/Toastify/useToastify";
 interface Props {
   idPatient: string;
   namePatient: string;
+  genderPatient: string;
   addressPatient: string;
   phonePatient: string;
   dobPatient: string;
@@ -17,6 +18,7 @@ interface Props {
 function useHandleAddFollowUp({
   idPatient,
   namePatient,
+  genderPatient,
   addressPatient,
   phonePatient,
   dobPatient,
@@ -44,6 +46,7 @@ function useHandleAddFollowUp({
       address: addressPatient,
       phoneNumber: phonePatient,
       dob: dobPatient,
+      gender: genderPatient,
       status: checkStatus,
     });
   };

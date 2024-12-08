@@ -41,6 +41,8 @@ import useSearchMedicineOfPrescription from "../../../api/hooks/useSearchMedicin
 import useValidation, {
   ValidationErrorsPrescriptions,
 } from "../../../hooks/components/useValidation";
+import { useContext } from "react";
+import { ClinicContext } from "../../../Context/ContextClinic";
 
 export default function ModalPrescriptionPatients({
   flUpId,
@@ -54,8 +56,7 @@ export default function ModalPrescriptionPatients({
   const [note, setNote] = React.useState("");
   const [errors, setErrors] = React.useState<ValidationErrorsPrescriptions>();
   const { prescriptionSchema } = useValidation();
-  const { dateReExamDefault, dateReExamDefaultDMY } =
-    useGetDateReExamDefault(5);
+  const { errStock } = useContext(ClinicContext);
   const { data } = useSearchMedicineOfPrescription({
     keyword: valueSearch,
   });
@@ -72,7 +73,16 @@ export default function ModalPrescriptionPatients({
       idMedication: "",
     },
   ]);
+  const getMaxNumberOfDays = () => {
+    return medicinal.reduce((max, item) => {
+      const numberOfDays = parseInt(item.numberOfDays, 10);
+      return !isNaN(numberOfDays) && numberOfDays > max ? numberOfDays : max;
+    }, 0);
+  };
+  const maxNumberOfDays = getMaxNumberOfDays();
 
+  const { dateReExamDefault, dateReExamDefaultDMY } =
+    useGetDateReExamDefault(maxNumberOfDays);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { handleSaveInfoPrescriptionPatient } = useHandleAddPrescription({
@@ -295,8 +305,15 @@ export default function ModalPrescriptionPatients({
                         name="name"
                         value={field.name}
                         onChange={(e) => handleChangeValue(field.id, e)}
-                        error={!!errors?.products?.[index]?.name}
-                        helperText={errors?.products?.[index]?.name}
+                        error={
+                          !!errors?.products?.[index]?.name ||
+                          errStock === field.name
+                        }
+                        helperText={
+                          errors?.products?.[index]?.name ||
+                          (errStock === field.name &&
+                            "SL tồn kho không đủ kê toa")
+                        }
                         onFocus={() => setErrors(undefined)}
                       />
                     </Tippy>
@@ -309,7 +326,10 @@ export default function ModalPrescriptionPatients({
                       className="w-full col-span-1"
                       value={field.numberOfDays}
                       onChange={(e) => handleChangeValue(field.id, e)}
-                      error={!!errors?.products?.[index]?.numberOfDays}
+                      error={
+                        !!errors?.products?.[index]?.numberOfDays ||
+                        errStock === field.name
+                      }
                       helperText={errors?.products?.[index]?.numberOfDays}
                       onFocus={() => setErrors(undefined)}
                     />
