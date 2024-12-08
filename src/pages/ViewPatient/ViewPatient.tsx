@@ -170,7 +170,7 @@ function ViewPatients() {
           {exitPrescription ? (
             <div>
               <h2 className="text-3xl font-semibold text-center ">
-                Thông tin toa thuốc
+                Thông tin tất cả toa thuốc
               </h2>
               <div className="bg-black/10 px-2 py-4 mt-2 rounded-md h-fit">
                 <div>

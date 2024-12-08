@@ -27,12 +27,14 @@ interface Props {
   mutatePrescription: () => void;
   idPrescription: string;
   dataPrescription: PrescriptionData;
+  mutatePrescriptionByFlowUp: () => void;
 }
 export default function ModalDeletePrescription({
   dataPatient,
   summary,
   mutatePrescription,
   idPrescription,
+  mutatePrescriptionByFlowUp,
 }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -51,6 +53,7 @@ export default function ModalDeletePrescription({
     try {
       await axios.delete(`${apiUrl}/Prescription/${idPrescription}`);
       mutatePrescription();
+      mutatePrescriptionByFlowUp();
       handleClose();
       setKeyReloadMedicineTop10((prev) => prev + 1);
       setKeyReloadMedicineByDate((prev) => prev + 1);

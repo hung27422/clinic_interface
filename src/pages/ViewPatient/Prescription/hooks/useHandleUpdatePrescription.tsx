@@ -9,12 +9,14 @@ interface Props {
   idPrescriptions: string;
   mutate: () => void;
   handleClose: () => void;
+  mutatePrescriptionByFlowUp: () => void;
 }
 
 function useHandleUpdatePrescription({
   idPrescriptions,
   mutate,
   handleClose,
+  mutatePrescriptionByFlowUp,
 }: Props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const {
@@ -53,6 +55,7 @@ function useHandleUpdatePrescription({
         }
       );
       if (mutate) mutate();
+      if (mutatePrescriptionByFlowUp) mutatePrescriptionByFlowUp();
       if (handleClose) handleClose();
       setKeyReloadMedication((prev) => prev + 1);
       setKeyReloadPrescription((prev) => prev + 1);

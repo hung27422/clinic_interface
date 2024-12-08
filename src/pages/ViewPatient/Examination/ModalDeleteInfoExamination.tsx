@@ -27,7 +27,6 @@ interface Props {
 }
 export default function DeleteInfoExamination({
   dataPatient,
-
   mutateFollowUp,
   idFollowUp,
 }: Props) {

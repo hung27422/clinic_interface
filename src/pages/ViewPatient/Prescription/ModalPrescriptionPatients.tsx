@@ -43,6 +43,7 @@ import useValidation, {
 } from "../../../hooks/components/useValidation";
 import { useContext } from "react";
 import { ClinicContext } from "../../../Context/ContextClinic";
+import useGetPrescriptionByFlowUp from "../../../api/hooks/useGetPrescriptionByFlowUp";
 
 export default function ModalPrescriptionPatients({
   flUpId,
@@ -59,6 +60,11 @@ export default function ModalPrescriptionPatients({
   const { errStock } = useContext(ClinicContext);
   const { data } = useSearchMedicineOfPrescription({
     keyword: valueSearch,
+    page: 1,
+    limit: 15,
+  });
+  const { mutate: mutatePrescriptionByFlowUp } = useGetPrescriptionByFlowUp({
+    idFollowUp: flUpId || "",
   });
   const examtDate = valueDateExam?.format("DD-MM-YYYY").toString();
 
@@ -88,6 +94,7 @@ export default function ModalPrescriptionPatients({
   const { handleSaveInfoPrescriptionPatient } = useHandleAddPrescription({
     mutate: mutatePrescription,
     handleClose: handleClose,
+    mutatePrescriptionByFlowUp: mutatePrescriptionByFlowUp,
   });
   const addFields = () => {
     const newId = medicinal.length + 1;

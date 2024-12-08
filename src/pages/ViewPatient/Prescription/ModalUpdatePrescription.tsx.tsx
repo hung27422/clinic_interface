@@ -20,10 +20,7 @@ const style = {
   p: 4,
   borderRadius: 6,
 };
-interface Props {
-  data: Prescriptions;
-  mutatePrescription: () => void;
-}
+
 import { Prescriptions } from "../../../types";
 import useHandleUpdatePrescription from "./hooks/useHandleUpdatePrescription";
 import useSearchMedicineOfPrescription from "../../../api/hooks/useSearchMedicineOfPrescription";
@@ -45,10 +42,15 @@ const convertDateFormatDMY = (dateString: string): string => {
   const [year, month, day] = dateString.split("-");
   return `${day}-${month}-${year}`;
 };
-
+interface Props {
+  data: Prescriptions;
+  mutatePrescription: () => void;
+  mutatePrescriptionByFlowUp: () => void;
+}
 export default function ModalUpdatePrescription({
   data,
   mutatePrescription,
+  mutatePrescriptionByFlowUp,
 }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -65,6 +67,7 @@ export default function ModalUpdatePrescription({
     idPrescriptions: data.id,
     mutate: mutatePrescription,
     handleClose: handleClose,
+    mutatePrescriptionByFlowUp: mutatePrescriptionByFlowUp,
   });
   const examtDate = valueDateExam?.format("DD-MM-YYYY").toString();
 
@@ -133,6 +136,8 @@ export default function ModalUpdatePrescription({
 
   const { data: dataSearchMedicine } = useSearchMedicineOfPrescription({
     keyword: valueSearch,
+    page: 1,
+    limit: 15,
   });
   const handleNotePrescriptions = (value: string) => {
     setNote(value);

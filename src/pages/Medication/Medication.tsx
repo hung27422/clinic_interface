@@ -4,12 +4,12 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import TableMedication from "./TableMedication/TableMedication";
 import useMedications from "../../api/hooks/useMedications";
 import { useContext, useState } from "react";
-import useSearchMedication from "../../api/hooks/useSearchMedication";
 import PaginationClinic from "../../components/Pagination";
 import Spinner from "../../hooks/Spinner/Spinner";
 import useDebounce from "../../hooks/components/useDebounce";
 import { Button } from "@mui/material";
 import { ClinicContext } from "../../Context/ContextClinic";
+import useSearchMedicineOfPrescription from "../../api/hooks/useSearchMedicineOfPrescription";
 function Medication() {
   const { setKeyReloadMedication } = useContext(ClinicContext);
   const [page, setPage] = useState(1);
@@ -21,12 +21,11 @@ function Medication() {
     page: page,
     limit: 5,
   });
-  const { data: dataSearch } = useSearchMedication({
-    name: debouncedSearchValue,
+  const { data: dataSearch } = useSearchMedicineOfPrescription({
+    keyword: debouncedSearchValue,
     limit: 5,
     page: page,
   });
-
   // --------------------------------------------------
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,

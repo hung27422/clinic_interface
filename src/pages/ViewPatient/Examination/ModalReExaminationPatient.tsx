@@ -90,7 +90,7 @@ export default function ModalReExaminationPatient({
   return (
     <div>
       <Button onClick={handleOpen} variant="contained" color="success">
-        Tái khám
+        Chỉnh sửa
       </Button>
       <Modal
         open={open}

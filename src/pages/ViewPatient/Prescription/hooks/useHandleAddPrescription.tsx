@@ -7,8 +7,13 @@ import { ClinicContext } from "../../../../Context/ContextClinic";
 interface Props {
   mutate: () => void;
   handleClose: () => void;
+  mutatePrescriptionByFlowUp: () => void;
 }
-function useHandleAddPrescription({ mutate, handleClose }: Props) {
+function useHandleAddPrescription({
+  mutate,
+  handleClose,
+  mutatePrescriptionByFlowUp,
+}: Props) {
   const {
     setKeyReloadPrescription,
     setKeyReloadMedicineTop10,
@@ -47,6 +52,7 @@ function useHandleAddPrescription({ mutate, handleClose }: Props) {
       });
       notifySuccess();
       mutate();
+      mutatePrescriptionByFlowUp();
       setKeyReloadMedication((prev) => prev + 1);
       setKeyReloadPrescription((prev) => prev + 1);
       setKeyReloadMedicineTop10((prev) => prev + 1);
