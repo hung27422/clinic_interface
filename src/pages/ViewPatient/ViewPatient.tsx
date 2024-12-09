@@ -139,7 +139,13 @@ function ViewPatients() {
                       {" " + dataPatient.patient.name}
                     </span>
                   </span>
-                  <span className="text-3xl ml-5 block">
+                  <span className="text-3xl mx-5 block">
+                    Tuổi
+                    <span className="text-red-500 font-semibold">
+                      {" " + dataPatient.patient.age}
+                    </span>
+                  </span>
+                  <span className="text-3xl block">
                     Giới tính
                     <span className="text-red-500 font-semibold">
                       {" " + dataPatient.patient.gender}
