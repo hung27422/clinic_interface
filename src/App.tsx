@@ -43,7 +43,6 @@ function AppRoutes() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTokenExpired, pathname, navigate]);
-
   return (
     <Routes>
       {publicRoutes.map((router, index) => {

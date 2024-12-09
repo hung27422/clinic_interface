@@ -7,7 +7,7 @@ interface Props {
   handleClose: () => void;
 }
 function useHandleUpdateFollowUp({ id, mutate, handleClose }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const { notify } = useToastify({
     title: "Tái khám thành công",
     type: "success",

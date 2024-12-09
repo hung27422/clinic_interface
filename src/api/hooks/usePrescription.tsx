@@ -7,7 +7,7 @@ interface Props {
 }
 
 function usePrescription({ page, limit }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const { data, isLoading, mutate } = useSWR<PatientData>(
     `${apiUrl}/Prescription?page=${page}&limit=${limit}`
   );

@@ -7,7 +7,7 @@ interface Props {
   limit: number;
 }
 function useSearchMedication({ name, page, limit }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const shouldFetch = name
     ? `${apiUrl}/Medicine/Name/${name}?page=${page}&limit=${limit}`
     : null;

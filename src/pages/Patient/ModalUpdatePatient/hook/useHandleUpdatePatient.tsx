@@ -21,7 +21,7 @@ function useHandleUpdatePatient({
     id: id ?? "",
   });
 
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const { notify } = useToastify({
     title: "Sửa thông tin bệnh nhân thành công.",
     type: "success",

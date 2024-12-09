@@ -9,7 +9,7 @@ interface Props {
   handleClose: () => void;
 }
 function useHandleAddPatient({ mutate, handleClose }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const { setKeyReloadPatient } = useContext(ClinicContext);
 
   const { notify: notifySuccess } = useToastify({

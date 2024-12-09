@@ -12,7 +12,7 @@ interface LoginData {
 
 function useHandleLogin() {
   const navigate = useNavigate();
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const { setDataUser } = useContext(ClinicContext);
   const { notify: notifySuccess } = useToastify({
     title: "Đăng nhập thành công",

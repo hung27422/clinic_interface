@@ -12,7 +12,7 @@ interface Props {
 
 function useGetMedicineTop10ByDate({ startDate, endDate, page, limit }: Props) {
   const { keyReloadMedicineTop10 } = useContext(ClinicContext);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const { data, isLoading, mutate } = useSWR<MedicationData>(
     `${apiUrl}/Medicine/Prescription/Range/Top10/Start=${startDate}&End=${endDate}?page=${page}&limit=${limit}&reload=${keyReloadMedicineTop10}`
   );

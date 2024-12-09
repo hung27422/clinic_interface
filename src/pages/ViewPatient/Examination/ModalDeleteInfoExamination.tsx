@@ -42,7 +42,7 @@ export default function DeleteInfoExamination({
 
   // Hàm xóa fl up
   const handleDeleteInfoExamination = async () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
+    const apiUrl = window.location.origin + "/api";
     try {
       await axios.delete(`${apiUrl}/FollowUp/${idFollowUp}`);
       //Sau khi xóa update lại checkstatus của bệnh nhân lại bệnh nhân

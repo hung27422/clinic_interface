@@ -10,7 +10,7 @@ interface Props {
 
 function useHandleAddMedication({ handleClose, mutate: mutateAddNew }: Props) {
   const { setKeyReloadMedication } = useContext(ClinicContext);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const { notify: notifySuccess } = useToastify({
     title: "Thêm thuốc thành công",
     type: "success",

@@ -6,7 +6,7 @@ interface Props {
 }
 
 function useSearchPatient({ phone }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const shouldFetch = phone ? `${apiUrl}/Patient/Phone/${phone}` : null;
   const { data, isLoading, mutate } = useSWR<PatientData>(shouldFetch);
   return { data, isLoading, mutate };

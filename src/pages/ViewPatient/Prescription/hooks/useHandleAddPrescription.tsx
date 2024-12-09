@@ -22,7 +22,7 @@ function useHandleAddPrescription({
     errStock,
     setErrStock,
   } = useContext(ClinicContext);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
 
   const { notify: notifySuccess } = useToastify({
     title: "Kê toa thuốc thành công",

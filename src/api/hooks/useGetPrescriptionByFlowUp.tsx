@@ -6,7 +6,7 @@ interface Props {
 }
 
 function useGetPrescriptionByFlowUp({ idFollowUp }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const shouldFetch = `${apiUrl}/Prescription/FollowUp/${idFollowUp}`;
   const { data, isLoading, mutate } = useSWR<PrescriptionData>(shouldFetch);
 

@@ -9,7 +9,7 @@ interface Props {
 }
 function useMedications({ page, limit }: Props) {
   const { keyReloadMedication } = useContext(ClinicContext);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const { data, isLoading, mutate } = useSWR<MedicationData>(
     `${apiUrl}` +
       `/Medicine?page=${page}&limit=${limit}&reload=${keyReloadMedication}`

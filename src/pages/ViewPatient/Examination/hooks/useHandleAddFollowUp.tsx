@@ -27,7 +27,7 @@ function useHandleAddFollowUp({
   mutateFollowUp,
   handleClose,
 }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   //hook update bệnh nhân
   const { handleUpdateInfoPatient } = useHandleUpdatePatient({
     id: idPatient,

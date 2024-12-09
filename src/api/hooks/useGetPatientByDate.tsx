@@ -12,7 +12,7 @@ interface Props {
 
 function useGetPatientByDate({ startDate, endDate, page, limit }: Props) {
   const { keyReloadPatientByDate } = useContext(ClinicContext);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const { data, isLoading, mutate } = useSWR<PatientDataTemp>(
     `${apiUrl}/Patient/Date/Start=${startDate}&End=${endDate}?page=${page}&limit=${limit}&reload=${keyReloadPatientByDate}`
   );

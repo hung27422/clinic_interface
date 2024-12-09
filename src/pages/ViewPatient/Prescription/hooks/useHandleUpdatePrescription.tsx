@@ -18,7 +18,7 @@ function useHandleUpdatePrescription({
   handleClose,
   mutatePrescriptionByFlowUp,
 }: Props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = window.location.origin + "/api";
   const {
     setKeyReloadPrescription,
     setKeyReloadMedicineTop10,
